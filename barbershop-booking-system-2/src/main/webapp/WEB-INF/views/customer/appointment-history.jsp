@@ -16,7 +16,7 @@ function loadHistory(page) {
     <%@ include file="/WEB-INF/views/includes/nav.jsp"%>
     <main class="flex flex-col items-center mx-3 my-4 flex-grow justify-center">
         <div class="bg-white rounded-lg shadow-lg p-6 w-full">
-            <h1 class="text-2xl font-bold mb-6">Your Appointments History:</h1>
+            <h1 class="text-2xl font-bold mb-6">Your Appointmehasdnts History:</h1>
             <div id="history-container">
                 <jsp:include page="appointment-history-list-partial.jsp" />
             </div>
