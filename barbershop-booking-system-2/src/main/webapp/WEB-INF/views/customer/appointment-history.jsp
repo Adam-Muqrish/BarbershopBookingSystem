@@ -22,5 +22,5 @@ function loadHistory(page) {
             </div>
         </div>
     </main>
-    <%@ include file="/WEB-INF/views/includes/footer.jsp"%>gagjda
+    <%@ include file="/WEB-INF/views/includes/footer.jsp"%>jjj
 </body>
