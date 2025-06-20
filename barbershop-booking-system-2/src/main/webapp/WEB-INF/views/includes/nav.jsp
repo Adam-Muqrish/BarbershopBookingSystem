@@ -1,8 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ page import="com.hugi.barbershop.customer.model.Customer"%>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
 Customer customer = (Customer) session.getAttribute("customer");
 String picture = (customer != null) ? customer.getCustPicture() : null;
@@ -125,64 +123,52 @@ String picture = (customer != null) ? customer.getCustPicture() : null;
 					class="block py-2 pl-3 pr-4 text-white rounded lg:hover:bg-transparent lg:border-0 lg:hover:text-yellow-300 lg:p-0 transition duration-300 ease-in-out">
 						About US </a></li>
 				<% if (customer != null) { %>
-			    <li>
-			        <a href="logout"
-			           class="block py-2 pl-3 pr-4 text-white rounded lg:hover:bg-transparent lg:border-0 lg:hover:text-yellow-300 lg:p-0 transition duration-300 ease-in-out">
-			            Logout
-			        </a>
-			    </li>
-			    <li>
-			        <!-- Avatar icon shown on md and up -->
-			        <div class="relative w-10 h-10 overflow-hidden bg-gray-100 rounded-full hidden md:block">
-			            <a href="profile">
-			                <% if (picture != null && !picture.isEmpty()) { %>
-			                    <img src="<%=request.getContextPath()%>/resources/uploads/<%=picture%>"
-			                         class="absolute w-12 h-12 rounded-full" alt="Profile picture" />
-			                <% } else { %>
-			                    <svg class="absolute w-12 h-12 text-gray-400 -left-1"
-			                         fill="currentColor" viewBox="0 0 20 20"
-			                         xmlns="http://www.w3.org/2000/svg">
-			                        <path fill-rule="evenodd"
-			                              d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
-			                              clip-rule="evenodd"></path>
-			                    </svg>
-			                <% } %>
-			            </a>
-			        </div>
-			        <!-- Text shown below md -->
-			        <a href="profile"
-			           class="block md:hidden py-2 pl-3 pr-4 text-white rounded lg:hover:bg-transparent lg:border-0 lg:hover:text-yellow-300 lg:p-0 transition duration-300 ease-in-out">
-			            Profile
-			        </a>
-			    </li>
-			<% } else { %>
-			    <li>
-			        <!-- Avatar icon shown on md and up -->
-			        <div class="relative w-10 h-10 overflow-hidden bg-gray-100 rounded-full hidden md:block">
-			            <a href="profile">
-			                <% if (picture != null && !picture.isEmpty()) { %>
-			                    <img src="<%=request.getContextPath()%>/resources/uploads/<%=picture%>"
-			                         class="absolute w-12 h-12 rounded-full" alt="Profile picture" />
-			                <% } else { %>
-			                    <svg class="absolute w-12 h-12 text-gray-400 -left-1"
-			                         fill="currentColor" viewBox="0 0 20 20"
-			                         xmlns="http://www.w3.org/2000/svg">
-			                        <path fill-rule="evenodd"
-			                              d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
-			                              clip-rule="evenodd"></path>
-			                    </svg>
-			                <% } %>
-			            </a>
-			        </div>
-			        <!-- Text shown below md -->
-			        <a href="profile"
-			           class="block md:hidden py-2 pl-3 pr-4 text-white rounded lg:hover:bg-transparent lg:border-0 lg:hover:text-yellow-300 lg:p-0 transition duration-300 ease-in-out">
-			            Profile
-			        </a>
-			    </li>
-			<% } %>
-
-
+				<li><a href="logout"
+					class="block py-2 pl-3 pr-4 text-white rounded lg:hover:bg-transparent lg:border-0 lg:hover:text-yellow-300 lg:p-0 transition duration-300 ease-in-out">
+						Logout </a></li>
+				<li>
+					<!-- Avatar icon shown on md and up -->
+					<div
+						class="relative w-10 h-10 overflow-hidden bg-gray-100 rounded-full hidden md:block">
+						<a href="profile"> <% if (picture != null && !picture.isEmpty()) { %>
+							<img
+							src="<%=request.getContextPath()%>/resources/uploads/<%=picture%>"
+							class="absolute w-12 h-12 rounded-full" alt="Profile picture" />
+							<% } else { %> <svg
+								class="absolute w-12 h-12 text-gray-400 -left-1"
+								fill="currentColor" viewBox="0 0 20 20"
+								xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd"
+									d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+									clip-rule="evenodd"></path>
+                    </svg> <% } %>
+						</a>
+					</div> <!-- Text shown below md --> <a href="profile"
+					class="block md:hidden py-2 pl-3 pr-4 text-white rounded lg:hover:bg-transparent lg:border-0 lg:hover:text-yellow-300 lg:p-0 transition duration-300 ease-in-out">
+						Profile </a>
+				</li>
+				<% } else { %>
+				<li><a href="auth"
+					class="block py-2 pl-3 pr-4 text-white rounded lg:hover:bg-transparent lg:border-0 lg:hover:text-yellow-300 lg:p-0 transition duration-300 ease-in-out">
+						Login </a></li>
+				<li>
+					<!-- Avatar icon shown on md and up -->
+					<div
+						class="relative w-10 h-10 overflow-hidden bg-gray-100 rounded-full hidden md:block">
+						<a href="profile"> <svg
+								class="absolute w-12 h-12 text-gray-400 -left-1"
+								fill="currentColor" viewBox="0 0 20 20"
+								xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd"
+									d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+									clip-rule="evenodd"></path>
+                </svg>
+						</a>
+					</div> <!-- Text shown below md --> <a href="profile"
+					class="block md:hidden py-2 pl-3 pr-4 text-white rounded lg:hover:bg-transparent lg:border-0 lg:hover:text-yellow-300 lg:p-0 transition duration-300 ease-in-out">
+						Profile </a>
+				</li>
+				<% } %>
 			</ul>
 		</div>
 	</div>
