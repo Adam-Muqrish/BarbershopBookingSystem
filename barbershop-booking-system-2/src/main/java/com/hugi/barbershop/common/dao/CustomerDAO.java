@@ -11,6 +11,47 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CustomerDAO {
+	
+	// Method to insert a new customer into the database
+	public boolean insertCustomer(Customer customer) {
+		String sql = "INSERT INTO CUSTOMER (CUSTID, CUSTNAME, CUSTEMAIL, CUSTPASSWORD, CUSTPHONENUMBER, CUSTPICTURE, LOYALTYPOINTS) VALUES (?, ?, ?, ?, ?, ?, ?)";
+	    try (Connection conn = DBUtil.getConnection();
+	         PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+	    	stmt.setString(1, customer.getCustId());
+	    	stmt.setString(2, customer.getCustName());
+	    	stmt.setString(3, customer.getCustEmail());
+	    	stmt.setString(4, customer.getCustPassword());
+	    	stmt.setString(5, customer.getCustPhoneNumber());
+	    	stmt.setString(6, customer.getCustPicture());
+	    	stmt.setInt(7, customer.getLoyaltyPoints());
+
+	        int rowsAffected = stmt.executeUpdate();
+	        return rowsAffected > 0;
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	        return false;
+	    }
+	}
+	
+	// Generate the next customer ID based on the current maximum ID in the database
+	public String getNextCustomerId() {
+	    String sql = "SELECT MAX(CUSTID) AS MAXID FROM CUSTOMER";
+	    try (Connection conn = DBUtil.getConnection();
+	         PreparedStatement stmt = conn.prepareStatement(sql);
+	         ResultSet rs = stmt.executeQuery()) {
+
+	        if (rs.next() && rs.getString("MAXID") != null) {
+	            String maxId = rs.getString("MAXID");
+	            int num = Integer.parseInt(maxId.substring(1)); // Skip 'C'
+	            return String.format("C%03d", num + 1);
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    return "C001"; // Default if no customers exist
+	}
 
 	public Customer getCustomerById(String custId) {
 		try (Connection conn = DBUtil.getConnection();
