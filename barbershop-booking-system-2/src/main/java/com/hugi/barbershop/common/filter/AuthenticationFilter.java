@@ -11,7 +11,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebFilter(urlPatterns = {"/receipt", "/profile", "/appointment-history", "/booking", "/payment", "/profile-management", "/view-appointment", "/index", "/feedback", "/appointment-management"}) // Add all protected URLs here
+@WebFilter(urlPatterns = {"/receipt", "/profile", "/appointment-history", "/booking", "/payment", "/profile-management", "/view-appointment", "/feedback", "/appointment-management"}) // Add all protected URLs here
 public class AuthenticationFilter implements Filter {
 
     @Override
@@ -22,7 +22,7 @@ public class AuthenticationFilter implements Filter {
 
         String custId = (String) req.getSession().getAttribute("custId");
         if (custId == null) {
-            res.sendRedirect("login");
+            res.sendRedirect("auth");
             return;
         }
         
