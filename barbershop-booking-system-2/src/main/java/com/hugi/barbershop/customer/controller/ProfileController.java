@@ -39,6 +39,7 @@ public class ProfileController extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
 		String custId = (String) request.getSession().getAttribute("custId");
 
 		Customer customer = customerDAO.getCustomerById(custId);
@@ -49,8 +50,9 @@ public class ProfileController extends HttpServlet {
 			return;
 		}
 
-		int loyaltyPoints = customer.getLoyaltyPoints(); // Retrieve from Customer object
+		int loyaltyPoints = appointmentDAO.getTotalLoyaltyPointsByCustomerId(custId);
 
+		// Set customer and loyalty points in request attributes
 		request.setAttribute("customer", customer);
 		request.setAttribute("loyaltyPoints", loyaltyPoints);
 

@@ -14,28 +14,26 @@
 	<%
 	} else {
 	%>
-	<main class="flex flex-col items-center mx-3 my-4 flex-grow justify-center">
-		<div class="bg-white rounded-lg shadow-lg p-6 w-full lg:max-w-2xl">
+	<main class="flex flex-col items-center mx-3 my-4 flex-grow">
+		<div class="bg-white rounded-lg shadow-lg p-6 w-full">
 			<h1 class="text-2xl font-bold mb-4">My Profile</h1>
 			<div class="flex items-center space-x-4">
 				<div class="bg-gray-200 rounded-lg p-4 flex flex-col items-center">
-					<div
-						class="w-16 h-16 bg-gray-300 rounded-full mb-2 flex items-center justify-center overflow-hidden">
+					<div class="w-16 h-16 bg-gray-300 rounded-full mb-2">
 						<%
 						if (picture != null && !picture.isEmpty()) {
 						%>
-						<img
-							src="<%=request.getContextPath()%>/resources/uploads/<%=picture%>"
-							class="w-16 h-16 rounded-full object-cover" alt="Profile Picture">
+						<img src="<%=request.getContextPath()%>/resources/uploads/<%=picture%>"
+							class="w-16 h-16 rounded-full" alt="Profile Picture">
 						<%
 						} else {
 						%>
 						<svg class="w-12 h-12 text-gray-400" fill="currentColor"
 							viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-					        <path fill-rule="evenodd"
+                                <path fill-rule="evenodd"
 								d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
 								clip-rule="evenodd"></path>
-					    </svg>
+                            </svg>
 						<%
 						}
 						%>

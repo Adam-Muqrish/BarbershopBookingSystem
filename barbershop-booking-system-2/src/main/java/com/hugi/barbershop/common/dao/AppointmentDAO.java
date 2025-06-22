@@ -252,9 +252,9 @@ public class AppointmentDAO {
 		}
 	}
 
-	// Method to get total loyalty points by customer ID that not cancelled
+	// Method to get value of loyalty points for an appointment
 	public int getTotalLoyaltyPointsByCustomerId(String custId) {
-	    String sql = "SELECT SUM(VALUELOYALTY) FROM APPOINTMENTS WHERE CUSTID = ? AND SERVICESTATUS <> 'Cancelled'";
+	    String sql = "SELECT SUM(VALUELOYALTY) FROM APPOINTMENTS WHERE CUSTID = ?";
 	    try (Connection conn = DBUtil.getConnection();
 	         PreparedStatement stmt = conn.prepareStatement(sql)) {
 	        stmt.setString(1, custId);
@@ -267,4 +267,6 @@ public class AppointmentDAO {
 	    }
 	    return 0;
 	}
+
+
 }

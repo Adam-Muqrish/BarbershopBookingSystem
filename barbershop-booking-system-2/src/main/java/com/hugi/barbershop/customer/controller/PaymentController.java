@@ -112,9 +112,7 @@ public class PaymentController extends HttpServlet {
 			paymentDAO.insertCashPayment(paymentId, price);
 			appointmentDAO.updatePaymentStatus(custId, bookingDate, selectedTime, "pending");
 		} else if ("online-banking".equals(paymentMethod)) {
-			String bankName = request.getParameter("bankName");
-			String bankHolderName = request.getParameter("bankHolderName");
-			paymentDAO.insertOnlinePayment(paymentId, bankName, bankHolderName);
+			paymentDAO.insertOnlinePayment(paymentId, "Toyyib Pay", "Customer Name");
 			appointmentDAO.updatePaymentStatus(custId, bookingDate, selectedTime, "completed");
 		}
 

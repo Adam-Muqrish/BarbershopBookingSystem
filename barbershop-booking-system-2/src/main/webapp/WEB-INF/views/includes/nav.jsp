@@ -11,7 +11,7 @@ String picture = (customer != null) ? customer.getCustPicture() : null;
 		<ul
 			class="flex flex-col lg:flex-row justify-start md:justify-end space-x-6 text-left w-full md:w-auto">
 			<li class="block text-white">CONTACT US: 0127865132</li>
-			<li class="block text-white">OPENING HOUR: TUESDAY - SUNDAY (10
+			<li class="block text-white">OPENING HOUR: TUESDAY - SUNDAY(10
 				a.m - 10 p.m)</li>
 		</ul>
 		<div
@@ -59,7 +59,7 @@ String picture = (customer != null) ? customer.getCustPicture() : null;
 	<div class="flex flex-wrap items-center p-4 mx-auto justify-between">
 		<a href="index" class="flex items-center"> <img src="#"
 			class="h-8 mr-3 hidden" alt="#"> <span
-			class="self-center text-2xl font-semibold whitespace-nowrap text-white">Hugi
+			class="self-center text-2xl font-semibold whitespace-nowrap text-yellow-300">Hugi
 				Barbershop</span>
 		</a>
 		<button id="menu-button" data-collapse-toggle="navbar-default"
@@ -119,7 +119,7 @@ String picture = (customer != null) ? customer.getCustPicture() : null;
 								History</a></li>
 					</ul>
 				</li>
-				<li><a href="index#aboutUs"
+				<li><a href="#aboutUs"
 					class="block py-2 pl-3 pr-4 text-white rounded lg:hover:bg-transparent lg:border-0 lg:hover:text-yellow-300 lg:p-0 transition duration-300 ease-in-out">
 						About US </a></li>
 				<% if (customer != null) { %>

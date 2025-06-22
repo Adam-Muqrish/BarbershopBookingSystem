@@ -54,19 +54,16 @@
 					class="hover:underline">Hugi Barbershop™</a>. All Rights Reserved.
 			</p>
 		</div>
-		<div class="flex flex-1 flex-col justify-start md:text-center">
+		<div class="flex flex-1 flex-col justify-between md:text-center">
 			<h1 class="text-lg font-semibold">More Information</h1>
 			<ul class="mt-2 space-y-1 text-sm">
-				<li><a href="booking">Booking</a></li>
-				<!-- <li><a href="feedback">Feedback</a></li> -->
-				<li><a href="index#aboutUs">About Us</a></li>
-				<% if (customer != null) { %>
-				<li><a href="logout">Logout</a></li>
-				<% } else { %>
-				<li><a href="auth">Login</a></li>
-				<li><a href="auth">Register</a></li>
-				<% } %>
+				<li><a href="#booking">Booking</a></li>
+				<li><a href="#feedback">Feedback</a></li>
+				<li><a href="#aboutUs">About Us</a></li>
+				<li><a href="#login">Login</a></li>
+				<li><a href="#register">Register</a></li>
 			</ul>
+
 		</div>
 		<div class="flex flex-1 flex-col justify-between">
 			<h1 class="text-lg font-semibold">Barbershop Information</h1>
