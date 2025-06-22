@@ -1,3 +1,4 @@
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/views/includes/header.jsp"%>
 <body class="flex flex-col min-h-screen bg-neutral-900">
 	<%@ include file="/WEB-INF/views/includes/nav.jsp"%>
@@ -5,7 +6,7 @@
 	<main class="flex-1 w-full bg-white">
 		<!-- HERO BANNER (small height) -->
 		<section
-			class="relative w-full h-[160px] md:h-[220px] lg:h-[280px] bg-cover bg-center flex items-center"
+			class="relative w-full h-[160px] md:h-[220px] lg:h-[280px] bg-cover bg-center flex items-center overflow-hidden -mt-[1px]"
 			style="background-image: url('https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=crop&w=1200&q=80');">
 			<div class="absolute inset-0 bg-black/50"></div>
 			<div class="relative z-10 w-full flex justify-center items-center">
@@ -73,7 +74,7 @@
 
 		<!-- APPOINTMENT CTA WITH IMAGE LEFT -->
 		<section
-			class="relative max-w-6xl mx-auto px-4 md:px-8 lg:px-12 py-8 bg-neutral-100 my-4 rounded-lg shadow">
+			class="relative max-w-6xl mx-auto px-4 md:px-8 lg:px-12 py-8 bg-neutral-100 my-4 rounded-lg shadow mb-16">
 			<div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
 				<!-- IMAGE LEFT -->
 				<div class="relative flex justify-center md:justify-start">
