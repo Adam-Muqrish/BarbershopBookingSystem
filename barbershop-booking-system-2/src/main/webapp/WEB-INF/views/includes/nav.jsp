@@ -8,11 +8,11 @@ String picture = (customer != null) ? customer.getCustPicture() : null;
 <nav class="border-b border-gray-200 shadow-xl bg-neutral-900">
 	<div
 		class="flex flex-col md:flex-row items-center justify-between p-4 mx-auto space-y-4 lg:space-y-0"
-		style="background-color: #101820; border-bottom: 1px solid #e4b94e;">
+		style="background-color: #101820; border-bottom: 1px solid #FFFCFB;">
 		<ul
 			class="flex flex-col lg:flex-row justify-start md:justify-end space-x-6 text-left w-full md:w-auto">
 			<li class="block text-white">CONTACT US: 0127865132</li>
-			<li class="block text-white">OPENING HOUR: TUESDAY - SUNDAY(10
+			<li class="block text-white">OPENING HOUR: TUESDAY - SUNDAY (10
 				a.m - 10 p.m)</li>
 		</ul>
 		<div
@@ -57,7 +57,7 @@ String picture = (customer != null) ? customer.getCustPicture() : null;
 			</svg>
 		</div>
 	</div>
-	<div class="flex flex-wrap items-center p-4 mx-auto justify-between" style="background-color: #101820; border-bottom: 1px solid #e4b94e;">
+	<div class="flex flex-wrap items-center p-4 mx-auto justify-between relative z-50" style="background-color: #101820;">
 		<a href="index" class="flex items-center"> <img src="#"
 			class="h-8 mr-3 hidden" alt="#"> <span
 			class="self-center text-2xl font-semibold whitespace-nowrap text-white">Hugi
