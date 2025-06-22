@@ -18,6 +18,8 @@ public class AuthController extends HttpServlet {
             return;
         }
         request.getRequestDispatcher("/WEB-INF/views/customer/register.jsp").forward(request, response);
+        
+        
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
