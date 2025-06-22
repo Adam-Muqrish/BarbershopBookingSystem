@@ -1,6 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ page import="com.hugi.barbershop.customer.model.Customer"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql" %>
+<%@ taglib prefix="x" uri="http://java.sun.com/jsp/jstl/xml" %>
 <%@ include file="/WEB-INF/views/includes/header.jsp"%>
 <body class="flex flex-col h-screen justify-between bg-yellow-100">
 	<%@ include file="/WEB-INF/views/includes/nav.jsp"%>

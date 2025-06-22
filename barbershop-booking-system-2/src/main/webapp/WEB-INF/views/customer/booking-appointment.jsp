@@ -10,7 +10,7 @@
 <body class="flex flex-col h-screen justify-between bg-yellow-100">
 	<%@ include file="/WEB-INF/views/includes/nav.jsp"%>
 	<main class="flex flex-col items-center mx-3 my-4 flex-grow">
-		<div class="bg-white rounded-lg shadow-lg p-6 w-full">
+		<div class="bg-white rounded-lg shadow-lg p-6 w-full lg:max-w-7xl">
 			<h1 class="text-3xl font-bold mb-6">Book Appointment</h1>
 			<form action="booking" method="post">
 				<!-- Booking For -->
