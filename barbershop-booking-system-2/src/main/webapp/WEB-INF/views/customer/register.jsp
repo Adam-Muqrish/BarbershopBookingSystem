@@ -79,7 +79,7 @@ response.setDateHeader("Expires", 0);
     </style>
 </head>
 <body class="flex flex-col h-screen justify-between bg-yellow-100">
-    <%@ include file="/WEB-INF/views/includes/nav.jsp"%>
+    <%-- <%@ include file="/WEB-INF/views/includes/nav.jsp"%> --%>
     <!-- Modal Notification -->
     <div id="modal-overlay" class="modal-overlay">
         <div class="modal-content" id="modal-content"></div>
@@ -137,31 +137,33 @@ response.setDateHeader("Expires", 0);
                             </label>
                             <a href="#" class="text-sm text-blue-600 hover:underline">Forgot password?</a>
                         </div>
-                        <button type="submit" class="bg-black text-white py-2 px-6 rounded-full hover:bg-gray-800 transition-colors">
+                        <button type="submit" class="bg-[#101820] text-white py-2 px-6 rounded-full hover:bg-gray-800 transition-colors">
                             Login
                         </button>
                     </form>
                 </div>
                 <!-- Sliding Panel -->
-                <div id="sliding-panel" class="sliding-panel right transition-all duration-500">
+                <div id="sliding-panel" class="sliding-panel right transition-all duration-500"  style="background-color: #101820;">
                     <div class="flex-1 flex flex-col items-center justify-center">
                         <div class="mb-12">
-                            <h1 class="text-2xl font-bold mb-1 text-center">HUGI BARBERSHOP</h1>
-                            <div class="border-t-2 border-black mb-4"></div>
-                            <p class="text-lg text-center">Customer Account</p>
+                            <h1 class="text-2xl font-bold mb-1 text-center text-white">HUGI BARBERSHOP</h1>
+                            <div class="border-t-2 border-white mb-4"></div>
+                            <p class="text-lg text-center text-white">Customer Account</p>
                         </div>
                         <button id="toggle-login" class="bg-white text-black py-2 px-10 rounded-full hover:bg-gray-100 transition-colors">
                             Login
                         </button>
-                        <button id="toggle-register" class="bg-white text-black py-2 px-10 rounded-full hover:bg-gray-100 transition-colors mt-4" style="display: none;">
-                            Register
-                        </button>
+                        <button id="toggle-register" 
+							class="text-white py-2 px-6 rounded-full hover:bg-gray-800 transition-colors mt-4 hidden" style="background-color: !#101820;">
+							Register
+						</button>
+
                     </div>
                 </div>
             </div>
         </div>
     </main>
-    <%@ include file="/WEB-INF/views/includes/footer.jsp" %>
+    <%-- <%@ include file="/WEB-INF/views/includes/footer.jsp" %> --%>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const slidingPanel = document.getElementById('sliding-panel');
