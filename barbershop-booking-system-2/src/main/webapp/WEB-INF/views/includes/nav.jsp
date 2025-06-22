@@ -7,7 +7,8 @@ String picture = (customer != null) ? customer.getCustPicture() : null;
 %>
 <nav class="border-b border-gray-200 shadow-xl bg-neutral-900">
 	<div
-		class="flex flex-col md:flex-row items-center justify-between p-4 mx-auto border-b border-white space-y-4 lg:space-y-0">
+		class="flex flex-col md:flex-row items-center justify-between p-4 mx-auto space-y-4 lg:space-y-0"
+		style="background-color: #101820; border-bottom: 1px solid #e4b94e;">
 		<ul
 			class="flex flex-col lg:flex-row justify-start md:justify-end space-x-6 text-left w-full md:w-auto">
 			<li class="block text-white">CONTACT US: 0127865132</li>
@@ -38,7 +39,7 @@ String picture = (customer != null) ? customer.getCustPicture() : null;
 				<path
 					d="M17.525,9h-3.525v-2c0,-1.032 0.084,-1.682 1.563,-1.682h1.868v-3.18c-0.909,-0.094 -1.823,-0.14 -2.738,-0.138c-2.713,0 -4.693,1.657 -4.693,4.699v2.301h-3v4l3,-0.001v9.001h4v-9.003l3.066,-0.001z"></path></g></g>
 			</svg>
-			<svg class="w-5 h-5 text-gray-800 dark:text-white" aria-hidden="true"
+			<svg class="w-5 h-5 text-white dark:text-white" aria-hidden="true"
 				xmlns="http://www.w3.org/2000/svg" width="24" height="24"
 				fill="currentColor" viewBox="0 0 24 24">
 			  <path fill-rule="evenodd"
@@ -47,7 +48,7 @@ String picture = (customer != null) ? customer.getCustPicture() : null;
 			  <path d="M7.2 8.809H4V19.5h3.2V8.809Z" />
 			</svg>
 
-			<svg class="w-5 h-5 text-gray-800 dark:text-white" aria-hidden="true"
+			<svg class="w-5 h-5 text-white dark:text-white" aria-hidden="true"
 				xmlns="http://www.w3.org/2000/svg" width="24" height="24"
 				fill="currentColor" viewBox="0 0 24 24">
 			  <path fill-rule="evenodd"
@@ -56,10 +57,10 @@ String picture = (customer != null) ? customer.getCustPicture() : null;
 			</svg>
 		</div>
 	</div>
-	<div class="flex flex-wrap items-center p-4 mx-auto justify-between">
+	<div class="flex flex-wrap items-center p-4 mx-auto justify-between" style="background-color: #101820; border-bottom: 1px solid #e4b94e;">
 		<a href="index" class="flex items-center"> <img src="#"
 			class="h-8 mr-3 hidden" alt="#"> <span
-			class="self-center text-2xl font-semibold whitespace-nowrap text-yellow-300">Hugi
+			class="self-center text-2xl font-semibold whitespace-nowrap text-white">Hugi
 				Barbershop</span>
 		</a>
 		<button id="menu-button" data-collapse-toggle="navbar-default"
@@ -77,14 +78,14 @@ String picture = (customer != null) ? customer.getCustPicture() : null;
 			<ul
 				class="font-medium flex flex-col p-4 md:p-0 mt-4 rounded-lg md:flex-row md:space-x-8 md:mt-0 md:border-0 bg-gray-800 md:bg-transparent md:items-center">
 				<li><a href="index"
-					class="block py-2 pl-3 pr-4 text-white rounded lg:hover:bg-transparent lg:border-0 lg:hover:text-yellow-300 lg:p-0 transition duration-300 ease-in-out">
+					class="block py-2 pl-3 pr-4 text-white rounded lg:hover:bg-transparent lg:border-0 lg:hover:text-white lg:p-0 transition duration-300 ease-in-out">
 						Home </a></li>
 				<!-- Appointment Dropdown Start -->
 				<li class="relative group">
 					<!-- Mobile Dropdown Button -->
 					<button type="button"
 						class="dropdown-toggle flex items-center w-full py-2 pl-3 pr-4 text-white rounded transition duration-300 ease-in-out
-				           lg:hover:bg-transparent lg:border-0 lg:hover:text-yellow-300 lg:p-0 md:hidden"
+				           lg:hover:bg-transparent lg:border-0 lg:hover:text-white lg:p-0 md:hidden"
 						aria-haspopup="true" aria-expanded="false">
 						Appointment
 						<svg class="ml-2 w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
@@ -95,7 +96,7 @@ String picture = (customer != null) ? customer.getCustPicture() : null;
 					</button> <!-- Desktop Dropdown Trigger (clickable) --> <span
 					id="appointment-desktop-trigger"
 					class="hidden md:flex items-center w-full py-2 pl-3 pr-4 text-white rounded transition duration-300 ease-in-out
-				           lg:hover:bg-transparent lg:border-0 lg:hover:text-yellow-300 lg:p-0 cursor-pointer">
+				           lg:hover:bg-transparent lg:border-0 lg:hover:text-white lg:p-0 cursor-pointer">
 						Appointment <svg class="ml-2 w-4 h-4" fill="currentColor"
 							viewBox="0 0 20 20">
 				      <path fill-rule="evenodd"
@@ -109,22 +110,22 @@ String picture = (customer != null) ? customer.getCustPicture() : null;
 				           md:absolute
 				           md:bg-gray-900">
 						<li><a href="booking"
-							class="block px-4 py-2 text-white hover:bg-yellow-300 hover:text-gray-900 transition">Book
+							class="block px-4 py-2 text-white hover:text-white hover:text-gray-900 transition">Book
 								Appointment</a></li>
 						<li><a href="view-appointment"
-							class="block px-4 py-2 text-white hover:bg-yellow-300 hover:text-gray-900 transition">Current
+							class="block px-4 py-2 text-white hover:text-white hover:text-gray-900 transition">Current
 								Appointment</a></li>
 						<li><a href="appointment-history"
-							class="block px-4 py-2 text-white hover:bg-yellow-300 hover:text-gray-900 transition">Appointment
+							class="block px-4 py-2 text-white hover:text-white hover:text-gray-900 transition">Appointment
 								History</a></li>
 					</ul>
 				</li>
 				<li><a href="#aboutUs"
-					class="block py-2 pl-3 pr-4 text-white rounded lg:hover:bg-transparent lg:border-0 lg:hover:text-yellow-300 lg:p-0 transition duration-300 ease-in-out">
-						About US </a></li>
+					class="block py-2 pl-3 pr-4 text-white rounded lg:hover:bg-transparent lg:border-0 lg:hover:text-white lg:p-0 transition duration-300 ease-in-out">
+						About Us </a></li>
 				<% if (customer != null) { %>
 				<li><a href="logout"
-					class="block py-2 pl-3 pr-4 text-white rounded lg:hover:bg-transparent lg:border-0 lg:hover:text-yellow-300 lg:p-0 transition duration-300 ease-in-out">
+					class="block py-2 pl-3 pr-4 !text-white rounded lg:hover:bg-transparent lg:border-0 lg:hover:!text-white lg:p-0 transition duration-300 ease-in-out">
 						Logout </a></li>
 				<li>
 					<!-- Avatar icon shown on md and up -->
@@ -144,13 +145,17 @@ String picture = (customer != null) ? customer.getCustPicture() : null;
                     </svg> <% } %>
 						</a>
 					</div> <!-- Text shown below md --> <a href="profile"
-					class="block md:hidden py-2 pl-3 pr-4 text-white rounded lg:hover:bg-transparent lg:border-0 lg:hover:text-yellow-300 lg:p-0 transition duration-300 ease-in-out">
+					class="block md:hidden py-2 pl-3 pr-4 text-white rounded lg:hover:bg-transparent lg:border-0 lg:hover:text-white lg:p-0 transition duration-300 ease-in-out">
 						Profile </a>
 				</li>
 				<% } else { %>
 				<li><a href="auth"
-					class="block py-2 pl-3 pr-4 text-white rounded lg:hover:bg-transparent lg:border-0 lg:hover:text-yellow-300 lg:p-0 transition duration-300 ease-in-out">
-						Login </a></li>
+					  class="block py-2 pl-3 pr-4 !text-white rounded 
+					  lg:hover:bg-transparent lg:border-0 
+					  lg:hover:!text-white lg:p-0 transition duration-300 ease-in-out">
+					  Login
+					</a>
+					</li>
 				<li>
 					<!-- Avatar icon shown on md and up -->
 					<div
@@ -165,7 +170,7 @@ String picture = (customer != null) ? customer.getCustPicture() : null;
                 </svg>
 						</a>
 					</div> <!-- Text shown below md --> <a href="profile"
-					class="block md:hidden py-2 pl-3 pr-4 text-white rounded lg:hover:bg-transparent lg:border-0 lg:hover:text-yellow-300 lg:p-0 transition duration-300 ease-in-out">
+					class="block md:hidden py-2 pl-3 pr-4 text-white rounded lg:hover:bg-transparent lg:border-0 lg:hover:text-white lg:p-0 transition duration-300 ease-in-out">
 						Profile </a>
 				</li>
 				<% } %>
