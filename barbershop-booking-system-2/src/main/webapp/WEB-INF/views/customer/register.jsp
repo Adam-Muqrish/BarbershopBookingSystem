@@ -84,7 +84,7 @@ response.setDateHeader("Expires", 0);
     <div id="modal-overlay" class="modal-overlay">
         <div class="modal-content" id="modal-content"></div>
     </div>
-    <main class="flex flex-col items-center mx-3 my-4 flex-grow">
+    <main class="flex flex-col items-center mx-3 my-4 flex-grow justify-center">
         <div class="form-container bg-white rounded-2xl shadow-xl w-full max-w-3xl mx-4 md:mx-auto overflow-hidden" style="height: 600px;">
             <div class="flex w-full h-full relative">
                 <!-- Register Form -->
