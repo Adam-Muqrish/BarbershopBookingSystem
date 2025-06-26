@@ -4,8 +4,8 @@
 <%@ include file="/WEB-INF/views/includes/header.jsp"%>
 <body class="flex flex-col h-screen justify-between bg-yellow-100">
 	<%@ include file="/WEB-INF/views/includes/nav.jsp"%>
-	<main class="flex flex-col items-center mx-3 my-4 flex-grow">
-		<div class="bg-white rounded-lg shadow-lg p-6 w-full">
+	<main class="flex flex-col items-center mx-3 my-20 flex-grow">
+		<div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-xl mx-auto">
 			<h1 class="text-2xl font-bold mb-4">Profile Management</h1>
 			<%
 			String error = (String) request.getAttribute("error");
@@ -68,11 +68,15 @@
 				</div>
 				<div class="flex space-x-2">
 					<button type="submit"
-						class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 flex-1">
+						class="bg-green-500 text-white border border-green-500
+				           hover:bg-white hover:text-green-500 rounded
+				           transition duration-300 flex-1 cursor-pointer">
 						Save Changes</button>
-					<button type="button"
-						class="bg-gray-300 text-black px-4 py-2 rounded hover:bg-gray-400 flex-1">
-						Cancel</button>
+						
+					<a href="profile" type="button"
+						class="bg-gray-300 text-black text-center px-4 py-2 rounded hover:bg-gray-400 flex-1">
+						Cancel
+					</a>
 				</div>
 			</form>
 			<%
@@ -81,4 +85,12 @@
 		</div>
 	</main>
 	<%@ include file="/WEB-INF/views/includes/footer.jsp"%>
+	
+	<!-- Scroll to top button -->
+	<button onclick="window.scrollTo({ top: 0, behavior: 'smooth' });"
+	  class="fixed bottom-5 right-5 bg-[#101820] text-white p-3 rounded-full shadow-lg hover:bg-gray-800 transition z-50">
+	  ↑
+	</button>
 </body>
+
+
