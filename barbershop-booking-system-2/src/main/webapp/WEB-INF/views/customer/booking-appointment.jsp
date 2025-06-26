@@ -9,8 +9,8 @@
 <%@ include file="/WEB-INF/views/includes/header.jsp"%>
 <body class="flex flex-col h-screen justify-between bg-yellow-100">
 	<%@ include file="/WEB-INF/views/includes/nav.jsp"%>
-	<main class="flex flex-col items-center mx-3 my-4 flex-grow">
-		<div class="bg-white rounded-lg shadow-lg p-6 w-full">
+	<main class="flex flex-col items-center mx-3 my-12 flex-grow">
+		<div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-3xl mx-auto">
 			<h1 class="text-3xl font-bold mb-6">Book Appointment</h1>
 			<form action="booking" method="post">
 				<!-- Booking For -->
@@ -94,7 +94,7 @@
 				<!-- Button -->
 				<div class="flex">
 					<button type="submit"
-						class="bg-blue-500 text-white px-5 py-2 rounded shadow hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400">
+						class="bg-blue-500 text-white hover:bg-white hover:text-blue-500 border border-blue-500 px-5 py-2 rounded shadow focus:outline-none focus:ring-2 focus:ring-blue-400 cursor-pointer">
 						Book Appointment</button>
 				</div>
 			</form>
