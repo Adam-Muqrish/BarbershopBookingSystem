@@ -1,9 +1,20 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ page import="com.hugi.barbershop.customer.model.Customer"%>
+<%@ page import="java.io.File"%>
 <%
 Customer customer = (Customer) session.getAttribute("customer");
 String picture = (customer != null) ? customer.getCustPicture() : null;
+
+// Check if the picture exists in the uploads directory
+boolean showDefaultAvatar = true;
+if (picture != null && !picture.isEmpty()) {
+    String uploadPath = application.getRealPath("/resources/uploads/" + picture);
+    File file = new File(uploadPath);
+    if (file.exists()) {
+        showDefaultAvatar = false;
+    }
+}
 %>
 <nav class="border-b border-gray-200 shadow-xl bg-neutral-900">
 	<div
@@ -57,7 +68,9 @@ String picture = (customer != null) ? customer.getCustPicture() : null;
 			</svg>
 		</div>
 	</div>
-	<div class="flex flex-wrap items-center p-4 mx-auto justify-between relative z-50" style="background-color: #101820;">
+	<div
+		class="flex flex-wrap items-center p-4 mx-auto justify-between relative z-50"
+		style="background-color: #101820;">
 		<a href="index" class="flex items-center"> <img src="#"
 			class="h-8 mr-3 hidden" alt="#"> <span
 			class="self-center text-2xl font-semibold whitespace-nowrap text-white">Hugi
@@ -131,18 +144,22 @@ String picture = (customer != null) ? customer.getCustPicture() : null;
 					<!-- Avatar icon shown on md and up -->
 					<div
 						class="relative w-10 h-10 overflow-hidden bg-gray-100 rounded-full hidden md:block">
-						<a href="profile"> <% if (picture != null && !picture.isEmpty()) { %>
-							<img
+						<a href="profile"> <%
+						 if (!showDefaultAvatar) {
+						 %> <img
 							src="<%=request.getContextPath()%>/resources/uploads/<%=picture%>"
 							class="absolute w-12 h-12 rounded-full" alt="Profile picture" />
-							<% } else { %> <svg
-								class="absolute w-12 h-12 text-gray-400 -left-1"
+							<%
+							} else {
+							%> <svg class="absolute w-12 h-12 text-gray-400 -left-1"
 								fill="currentColor" viewBox="0 0 20 20"
 								xmlns="http://www.w3.org/2000/svg">
-                        <path fill-rule="evenodd"
+					                <path fill-rule="evenodd"
 									d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
 									clip-rule="evenodd"></path>
-                    </svg> <% } %>
+					            </svg> <%
+ }
+ %>
 						</a>
 					</div> <!-- Text shown below md --> <a href="profile"
 					class="block md:hidden py-2 pl-3 pr-4 text-white rounded lg:hover:bg-transparent lg:border-0 lg:hover:text-white lg:p-0 transition duration-300 ease-in-out">
@@ -150,12 +167,10 @@ String picture = (customer != null) ? customer.getCustPicture() : null;
 				</li>
 				<% } else { %>
 				<li><a href="auth"
-					  class="block py-2 pl-3 pr-4 !text-white rounded 
+					class="block py-2 pl-3 pr-4 !text-white rounded 
 					  lg:hover:bg-transparent lg:border-0 
 					  lg:hover:!text-white lg:p-0 transition duration-300 ease-in-out">
-					  Login
-					</a>
-					</li>
+						Login </a></li>
 				<li>
 					<!-- Avatar icon shown on md and up -->
 					<div
