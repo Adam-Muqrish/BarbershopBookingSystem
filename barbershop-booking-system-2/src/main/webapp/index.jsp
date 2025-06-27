@@ -94,7 +94,7 @@
 						barber, get instant confirmation, and enjoy hassle-free reminders.
 						Your perfect haircut is just a click away!</p>
 					<a href="#booking"
-						class="inline-block bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-6 rounded-md shadow transition duration-300">
+						class="inline-block bg-green-600 hover:bg-white text-white hover:text-green-500 border border-green-500 font-semibold py-3 px-6 rounded-md shadow transition duration-300">
 						BOOK NOW ! </a>
 				</div>
 			</div>
