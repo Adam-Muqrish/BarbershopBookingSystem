@@ -166,12 +166,35 @@ if (picture != null && !picture.isEmpty()) {
 						Profile </a>
 				</li>
 				<% } else { %>
-				<li><a href="auth"
-					class="block py-2 pl-3 pr-4 !text-white rounded 
-					  lg:hover:bg-transparent lg:border-0 
-					  lg:hover:!text-white lg:p-0 transition duration-300 ease-in-out">
-						Login </a></li>
-				<li>
+				<li class="relative group">
+				    <!-- Button trigger dropdown -->
+				    <button id="loginToggleBtn" type="button"
+					    class="flex items-center py-2 pl-3 pr-4 text-white rounded lg:hover:bg-transparent lg:border-0 lg:hover:text-white lg:p-0 transition duration-300 ease-in-out"
+					    aria-haspopup="true" aria-expanded="false">
+					    Login
+					    <svg class="ml-2 w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+					        <path fill-rule="evenodd"
+					            d="M5.23 7.21a.75.75 0 0 1 1.06-.02L10 10.67l3.71-3.5a.75.75 0 1 1 1.04 1.08l-4.25 4a.75.75 0 0 1-1.04 0l-4.25-4a.75.75 0 0 1-.02-1.06z"
+					            clip-rule="evenodd" />
+					    </svg>
+					</button>
+				    
+				    <!-- Dropdown content -->
+				    <ul id="loginDropdown" class="absolute z-10 hidden bg-gray-900 rounded-lg shadow-lg mt-2 w-48">
+				        <li>
+				            <a href="register"
+				                class="block px-4 py-2 text-white hover:bg-gray-700 transition duration-200">
+				                Login as Customer
+				            </a>
+				        </li>
+				        <li>
+				            <a href="adminLogin"
+				                class="block px-4 py-2 text-white hover:bg-gray-700 transition duration-200">
+				                Login as Staff
+				            </a>
+				        </li>
+				    </ul>
+				</li>
 					<!-- Avatar icon shown on md and up -->
 					<div
 						class="relative w-10 h-10 overflow-hidden bg-gray-100 rounded-full hidden md:block">
@@ -193,3 +216,21 @@ if (picture != null && !picture.isEmpty()) {
 		</div>
 	</div>
 </nav>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const toggleBtn = document.getElementById('loginToggleBtn');
+        const dropdown = document.getElementById('loginDropdown');
+
+        toggleBtn.addEventListener('click', function (e) {
+            e.stopPropagation(); // Elak klik trigger global
+            dropdown.classList.toggle('hidden');
+        });
+
+        // Tutup dropdown bila klik luar
+        document.addEventListener('click', function (e) {
+            if (!dropdown.contains(e.target) && !toggleBtn.contains(e.target)) {
+                dropdown.classList.add('hidden');
+            }
+        });
+    });
+</script>
