@@ -6,22 +6,20 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
 
-import com.hugi.barbershop.common.dao.CustomerDAO;
-import com.hugi.barbershop.customer.model.Customer;
+import com.hugi.barbershop.common.dao.AppointmentDAO;
 
 /**
- * Servlet implementation class listCustomer
+ * Servlet implementation class UpdateServiceStatus
  */
-@WebServlet("/listCustomer")
-public class listCustomer extends HttpServlet {
+@WebServlet("/UpdateServiceStatus")
+public class UpdateServiceStatus extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public listCustomer() {
+    public UpdateServiceStatus() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -31,11 +29,6 @@ public class listCustomer extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		CustomerDAO customerDAO = new CustomerDAO();
-	    List<Customer> customerList = customerDAO.getAllCustomers();
-
-	    request.setAttribute("customerList", customerList);
-	    request.getRequestDispatcher("/WEB-INF/views/admin/listCustomer.jsp").forward(request, response);
 	}
 
 	/**
@@ -43,7 +36,17 @@ public class listCustomer extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		doGet(request, response);
+		String appointmentId = request.getParameter("appointmentId");
+		System.out.println("Received appointmentId: " + appointmentId);
+
+        AppointmentDAO dao = new AppointmentDAO();
+        boolean updated = dao.updateServiceStatusToDone(appointmentId);
+
+        if (updated) {
+            response.sendRedirect("listAppointment"); // ganti dengan JSP kau
+        } else {
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Failed to update status");
+        }
 	}
 
 }

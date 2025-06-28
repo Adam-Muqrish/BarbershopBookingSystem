@@ -6,22 +6,20 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
-
 import com.hugi.barbershop.common.dao.CustomerDAO;
 import com.hugi.barbershop.customer.model.Customer;
 
 /**
- * Servlet implementation class listCustomer
+ * Servlet implementation class viewCustomerDetails
  */
-@WebServlet("/listCustomer")
-public class listCustomer extends HttpServlet {
+@WebServlet("/viewCustomerDetails")
+public class viewCustomerDetails extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public listCustomer() {
+    public viewCustomerDetails() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -31,11 +29,17 @@ public class listCustomer extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		CustomerDAO customerDAO = new CustomerDAO();
-	    List<Customer> customerList = customerDAO.getAllCustomers();
+		String custId = request.getParameter("custId");
 
-	    request.setAttribute("customerList", customerList);
-	    request.getRequestDispatcher("/WEB-INF/views/admin/listCustomer.jsp").forward(request, response);
+        CustomerDAO customerDAO = new CustomerDAO();
+        Customer customer = customerDAO.getCustomerById(custId);
+
+        if (customer != null) {
+            request.setAttribute("customer", customer);
+            request.getRequestDispatcher("/WEB-INF/views/admin/custProfile-Admin.jsp").forward(request, response);
+        } else {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND, "Customer not found");
+        }
 	}
 
 	/**

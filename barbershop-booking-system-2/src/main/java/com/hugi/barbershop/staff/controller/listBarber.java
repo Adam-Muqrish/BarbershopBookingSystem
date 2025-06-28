@@ -8,8 +8,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-import com.hugi.barbershop.common.dao.CustomerDAO;
-import com.hugi.barbershop.customer.model.Customer;
+import com.hugi.barbershop.staff.model.ViewBarber;
+import com.hugi.barbershop.common.dao.StaffDAO;
 
 /**
  * Servlet implementation class listBarber
@@ -31,9 +31,9 @@ public class listBarber extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		CustomerDAO customerDAO = new CustomerDAO();
-        List<Customer> customerList = customerDAO.getAllCustomers();
-        request.setAttribute("customerList", customerList);
+		StaffDAO staffDAO = new StaffDAO();
+        List<ViewBarber> barberList = staffDAO.getAllBarbers();
+        request.setAttribute("barberList", barberList);
         request.getRequestDispatcher("/WEB-INF/views/admin/listBarber.jsp").forward(request, response);
 	}
 

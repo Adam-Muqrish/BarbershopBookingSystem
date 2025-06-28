@@ -8,8 +8,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-import com.hugi.barbershop.common.dao.CustomerDAO;
-import com.hugi.barbershop.customer.model.Customer;
+import com.hugi.barbershop.common.dao.PaymentDAO;
+import com.hugi.barbershop.staff.model.ViewTransaction;
 
 /**
  * Servlet implementation class listTransaction
@@ -31,9 +31,9 @@ public class listTransaction extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		CustomerDAO customerDAO = new CustomerDAO();
-        List<Customer> customerList = customerDAO.getAllCustomers();
-        request.setAttribute("customerList", customerList);
+		PaymentDAO paymentDAO = new PaymentDAO();
+		List<ViewTransaction> transactionList = paymentDAO.getAllTransactions();
+		request.setAttribute("transactionList", transactionList);
         request.getRequestDispatcher("/WEB-INF/views/admin/listTransaction.jsp").forward(request, response);
 	}
 
