@@ -3,6 +3,10 @@ package com.hugi.barbershop.common.dao;
 import com.hugi.barbershop.staff.model.Staff;
 import com.hugi.barbershop.common.util.DBUtil;
 
+import com.hugi.barbershop.staff.model.ViewBarber;
+import com.hugi.barbershop.common.dao.StaffDAO;
+
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -137,23 +141,29 @@ public class StaffDAO {
 		}
 	}
 
-	public List<Staff> getAllBarbers() {
+	public List<ViewBarber> getAllBarbers() {
 		// TODO Auto-generated method stub
-		List<Staff> barbers = new ArrayList<>();
+		
+		List<ViewBarber> barbers = new ArrayList<>();
 		String sql = "SELECT * FROM STAFF WHERE ROLE = 'Barber'";
+		
 		try (Connection conn = DBUtil.getConnection();
 				PreparedStatement stmt = conn.prepareStatement(sql);
 				ResultSet rs = stmt.executeQuery()) {
+			
 			while (rs.next()) {
-				Staff staff = new Staff();
-				staff.setStaffId(rs.getString("STAFFID"));
-				staff.setStaffName(rs.getString("NAME"));
-				// set other fields if needed
-				barbers.add(staff);
+				ViewBarber barber = new ViewBarber();
+	            barber.setStaffId(rs.getString("STAFFID"));
+	            barber.setName(rs.getString("NAME"));
+	            barber.setPhoneNumber(rs.getString("PHONENUMBER"));
+	            barber.setDescription(rs.getString("DESCRIPTION"));
+	            barbers.add(barber);
 			}
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		
 		return barbers;
 	}
 

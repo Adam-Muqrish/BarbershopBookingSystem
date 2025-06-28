@@ -8,6 +8,11 @@ import com.hugi.barbershop.customer.model.OnlinePayment;
 import java.sql.*;
 import java.time.LocalDate;
 
+import java.util.List;
+import java.util.ArrayList;
+import com.hugi.barbershop.staff.model.ViewTransaction;
+
+
 public class PaymentDAO {
 
 	// Insert payment and return Payment object
@@ -190,6 +195,51 @@ public class PaymentDAO {
 			e.printStackTrace();
 			return false;
 		}
+	}
+	
+	//View Transaction - Admin Part
+	public List<ViewTransaction> getAllTransactions() {
+	    List<ViewTransaction> transactions = new ArrayList<>();
+
+	    String sql = """
+	        SELECT c.CUSTPICTURE, c.CUSTNAME, c.CUSTEMAIL, 
+	               p.PAYMENTID, p.PAYMENTDATE, p.PAYMENTAMOUNT,
+	               CASE 
+	                   WHEN op.PAYMENTID IS NOT NULL THEN 'Online Payment'
+	                   WHEN cs.PAYMENTID IS NOT NULL THEN 'Cash'
+	                   ELSE 'Unknown'
+	               END AS PAYMENTTYPE
+	        FROM PAYMENT p
+	        JOIN APPOINTMENTS a ON p.APPOINTMENTID = a.APPOINTMENTID
+	        JOIN CUSTOMER c ON a.CUSTID = c.CUSTID
+	        LEFT JOIN ONLINEPAYMENT op ON p.PAYMENTID = op.PAYMENTID
+	        LEFT JOIN CASH cs ON p.PAYMENTID = cs.PAYMENTID
+	        ORDER BY p.PAYMENTDATE DESC
+	        FETCH FIRST 10 ROWS ONLY
+	    """;
+
+	    try (Connection conn = DBUtil.getConnection();
+	         PreparedStatement stmt = conn.prepareStatement(sql);
+	         ResultSet rs = stmt.executeQuery()) {
+
+	        while (rs.next()) {
+	        	ViewTransaction tx = new ViewTransaction();
+	            tx.setCustomerPicture(rs.getString("CUSTPICTURE"));
+	            tx.setCustomerName(rs.getString("CUSTNAME"));
+	            tx.setCustomerEmail(rs.getString("CUSTEMAIL"));
+	            tx.setPaymentId(rs.getString("PAYMENTID"));
+	            tx.setPaymentDate(rs.getDate("PAYMENTDATE").toLocalDate());
+	            tx.setPaymentAmount(rs.getDouble("PAYMENTAMOUNT"));
+	            tx.setPaymentType(rs.getString("PAYMENTTYPE"));
+	            transactions.add(tx);
+	        }
+
+	    } catch (Exception e) {
+	        System.out.println("Error fetching transaction list:");
+	        e.printStackTrace();
+	    }
+
+	    return transactions;
 	}
 
 

@@ -7,6 +7,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+import java.sql.SQLException;
+
+
+import com.hugi.barbershop.common.dao.AppointmentDAO;
+import com.hugi.barbershop.staff.model.ViewAppointment;
 
 public class AppointmentDAO {
 	// Get appointment by ID
@@ -267,6 +272,57 @@ public class AppointmentDAO {
 	    }
 	    return 0;
 	}
+	
+	public List<ViewAppointment> getAllAppointments() {
+	    List<ViewAppointment> list = new ArrayList<>();
+	    String sql = """
+	        SELECT a.APPOINTMENTID, c.CUSTNAME, a.APPOINTMENTDATE, a.APPOINTMENTTIME, 
+	               a.CUSTTYPE, a.SERVICESTATUS
+	        FROM APPOINTMENTS a
+	        JOIN CUSTOMER c ON a.CUSTID = c.CUSTID
+	        ORDER BY a.APPOINTMENTID DESC
+	        FETCH FIRST 10 ROWS ONLY
+	    """;
+
+	    try (Connection conn = DBUtil.getConnection();
+	         PreparedStatement stmt = conn.prepareStatement(sql);
+	         ResultSet rs = stmt.executeQuery()) {
+
+	        while (rs.next()) {
+	            ViewAppointment app = new ViewAppointment();
+	            app.setAppointmentId(rs.getString("APPOINTMENTID"));
+	            app.setCustomerName(rs.getString("CUSTNAME"));
+	            app.setAppointmentDate(rs.getDate("APPOINTMENTDATE").toLocalDate());
+	            app.setAppointmentTime(rs.getString("APPOINTMENTTIME"));
+	            app.setCustType(rs.getString("CUSTTYPE"));
+	            app.setServiceStatus(rs.getString("SERVICESTATUS"));
+	            list.add(app);
+	        }
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+
+	    return list;
+	}
+	
+	//Update service status to done
+	public boolean updateServiceStatusToDone(String appointmentId) {
+	    String sql = "UPDATE APPOINTMENTS SET SERVICESTATUS = 'Done' WHERE APPOINTMENTID = ?";
+
+	    try (Connection conn = DBUtil.getConnection();
+	         PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+	        stmt.setString(1, appointmentId);
+	        int rows = stmt.executeUpdate();
+	        return rows > 0;
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	        return false;
+	    }
+	}
+
 
 
 }
