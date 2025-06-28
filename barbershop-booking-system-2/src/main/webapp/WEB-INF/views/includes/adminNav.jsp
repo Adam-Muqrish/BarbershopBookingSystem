@@ -8,6 +8,8 @@
 <link rel="shortcut icon" href="./images/hugiBarber.jpg">
 <link rel="stylesheet"
 	href="./resources/assetsAdmin/css/style.css?v1.1.2">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
 </head>
 <body class="nk-body" data-sidebar-collapse="lg"
 	data-navbar-collapse="lg">
@@ -36,7 +38,7 @@
 									class="icon ni ni-user"></em></span><span class="nk-menu-text">Customer</span></a></li>
 						<li class="nk-menu-item"><a href="listBarber"
 							class="nk-menu-link"><span class="nk-menu-icon"><em
-									class="icon ni ni-scissors"></em></span><span class="nk-menu-text">Barber</span></a></li>
+									class="fas fa-scissors"></em></span><span class="nk-menu-text">Barber</span></a></li>
 						<li class="nk-menu-item"><a href="listAppointment"
 							class="nk-menu-link"><span class="nk-menu-icon"><em
 									class="icon ni ni-calendar-booking"></em></span><span
@@ -65,6 +67,9 @@
 						<li class="nk-menu-item"><a href="listFeedback"
 							class="nk-menu-link"><span class="nk-menu-icon"><em
 									class="icon ni ni-chat-circle"></em></span><span class="nk-menu-text">Feedback</span></a></li>
+						<li class="nk-menu-item"><a href="AdminLoginController"
+							class="nk-menu-link"><span class="nk-menu-icon"><em
+									class="icon ni ni-user"></em></span><span class="nk-menu-text">Log Out</span></a></li>
 					</ul>
 				</div>
 			</div>

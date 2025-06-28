@@ -1,5 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+
+<%@ page import="java.util.List" %>
+<%@ page import="com.hugi.barbershop.customer.model.Customer" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -89,20 +94,26 @@
                                                     <thead class="table-light table-head-sm">
                                                         <tr>
                                                             <th>Name</th>
-                                                            <th>Age</th>
                                                             <th>Phone Number</th>
                                                             <th>Email</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        <tr>
-                                                            <td>Tun Dr Mahathir</td>
-                                                            <td>22</td>
-                                                            <td>012-3456789</td>
-                                                            <td>user@gmail.com</td>
-                                                        </tr>
-                                                        <!-- Tambah baris lain jika perlu -->
-                                                    </tbody>
+													    <c:choose>
+													        <c:when test="${not empty customerList}">
+													            <c:forEach var="cust" items="${customerList}">
+													                <tr>
+													                    <td>${cust.custName}</td>
+													                    <td>${cust.custEmail}</td>
+													                    <td>${cust.custPhoneNumber}</td>
+													                </tr>
+													            </c:forEach>
+													        </c:when>
+													        <c:otherwise>
+													            <tr><td colspan="3">No customers found.</td></tr>
+													        </c:otherwise>
+													    </c:choose>
+													</tbody>
                                                 </table>
                                             </div>
                                         </div>
@@ -115,5 +126,30 @@
             </div> <!-- .nk-wrap -->
         </div> <!-- .nk-main -->
     </div> <!-- .nk-app-root -->
+
+	<!-- JavaScript Section -->
+	<%
+	if (request.getAttribute("loginError") != null) {
+	%>
+	<script>
+    alert("<%=request.getAttribute("loginError")%>
+		");
+	</script>
+	<%
+	}
+	%>
+
+	<%
+	String loginSuccess = (String) session.getAttribute("loginSuccess");
+	if (loginSuccess != null) {
+	%>
+	<script>
+    alert("<%=loginSuccess%>");
+</script>
+	<%
+	session.removeAttribute("loginSuccess"); // padam supaya popup tak ulang
+	}
+	%>
+
 </body>
 </html>
