@@ -1,5 +1,7 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,6 +10,12 @@
     <link rel="shortcut icon" href="/uploads/hugiBarber.jpg">
     <link rel="stylesheet" href="/resources/assetsAdmin/css/style.css?v1.1.2">
 </head>
+<!-- jQuery (optional jika Bootstrap v5 tak perlu) -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Bootstrap Bundle JS (termasuk Popper.js) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
 <body class="nk-body" data-sidebar-collapse="lg" data-navbar-collapse="lg">
     <div class="nk-app-root">
         <div class="nk-main">
@@ -68,113 +76,55 @@
                                                     </th>
                                                 </tr>
                                             </thead>
-                                            <%-- <tbody>
+											<tbody>
 											    <c:forEach var="customer" items="${customerList}">
 											        <tr>
-											            <td class="tb-col">${customer.name}</td>
-											            <td class="tb-col">${customer.phone}</td>
-											            <td class="tb-col">${customer.loyaltyPoints}</td>
+											            <td class="tb-col">
+											                <div class="media-group">
+											                    <div class="media media-md media-middle media-circle">
+											                        <c:choose>
+											                            <c:when test="${not empty customer.custPicture}">
+											                                <img src="${pageContext.request.contextPath}/uploads/${customer.custPicture}" alt="user" />
+											                            </c:when>
+											                            <c:otherwise>
+											                                <div class="media media-md media-middle media-circle text-bg-info-soft">
+											                                    <span class="smaller">
+											                                        <c:out value="${fn:substring(customer.custName, 0, 2)}" />
+											                                    </span>
+											                                </div>
+											                            </c:otherwise>
+											                        </c:choose>
+											                    </div>
+											                    <div class="media-text">
+											                        <a href="viewCustomer?custId=${customer.custId}" class="title">${customer.custName}</a>
+											                        <span class="small text">${customer.custEmail}</span>
+											                    </div>
+											                </div>
+											            </td>
+											            <td class="tb-col">${customer.custPhoneNumber}</td>
+											            <td class="tb-col tb-col-xl">${customer.loyaltyPoints}</td>
 											            <td class="tb-col tb-col-end">
-											                <a href="viewCustomer?id=${customer.id}" class="btn btn-sm btn-outline-primary">View</a>
+											                <div class="dropdown">
+											                    <a href="#" class="btn btn-sm btn-icon btn-zoom me-n1" data-bs-toggle="dropdown">
+											                        <em class="icon ni ni-more-v"></em>
+											                    </a>
+											                    <div class="dropdown-menu dropdown-menu-sm dropdown-menu-end">
+											                        <div class="dropdown-content py-1">
+											                            <ul class="link-list link-list-hover-bg-primary link-list-md">
+											                                <li>
+											                                    <a href="viewCustomerDetails?custId=${customer.custId}">
+											                                        <em class="icon ni ni-eye"></em>
+											                                        <span>View Details</span>
+											                                    </a>
+											                                </li>
+											                            </ul>
+											                        </div>
+											                    </div>
+											                </div>
 											            </td>
 											        </tr>
 											    </c:forEach>
-											</tbody> --%>
-                                            <tbody>
-                                                <tr>
-                                                    <td class="tb-col">
-                                                        <div class="media-group">
-                                                            <div class="media media-md media-middle media-circle">
-                                                                <img src="./images/avatar/a.jpg" alt="user">
-                                                            </div>
-                                                            <div class="media-text">
-                                                                <a href="./html/user-manage/user-profile.html" class="title">Florenza Desporte</a>
-                                                                <span class="small text">florenza@gmail.com</span>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td class="tb-col">011-13424432</td>
-                                                    <td class="tb-col tb-col-xl">RM5.00</td>
-                                                    <td class="tb-col tb-col-end">
-                                                        <div class="dropdown">
-                                                            <a href="#" class="btn btn-sm btn-icon btn-zoom me-n1" data-bs-toggle="dropdown">
-                                                                <em class="icon ni ni-more-v"></em>
-                                                            </a>
-                                                            <div class="dropdown-menu dropdown-menu-sm dropdown-menu-end">
-                                                                <div class="dropdown-content py-1">
-                                                                    <ul class="link-list link-list-hover-bg-primary link-list-md">
-                                                                        <li>
-                                                                            <a href="./html/custProfile.html"><em class="icon ni ni-eye"></em><span>View Details</span></a>
-                                                                        </li>
-                                                                    </ul>
-                                                                </div>
-                                                            </div>
-                                                        </div><!-- dropdown -->
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="tb-col">
-                                                        <div class="media-group">
-                                                            <div class="media media-md media-middle media-circle">
-                                                                <img src="./images/avatar/b.jpg" alt="user">
-                                                            </div>
-                                                            <div class="media-text">
-                                                                <a href="./html/user-manage/user-profile.html" class="title">Anna Adame</a>
-                                                                <span class="small text">anna@gmail.com</span>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td class="tb-col">012-56576656</td>
-                                                    <td class="tb-col">RM5.00</td>
-                                                    <td class="tb-col tb-col-end">
-                                                        <div class="dropdown">
-                                                            <a href="#" class="btn btn-sm btn-icon btn-zoom me-n1" data-bs-toggle="dropdown">
-                                                                <em class="icon ni ni-more-v"></em>
-                                                            </a>
-                                                            <div class="dropdown-menu dropdown-menu-sm dropdown-menu-end">
-                                                                <div class="dropdown-content py-1">
-                                                                    <ul class="link-list link-list-hover-bg-primary link-list-md">
-                                                                        <li>
-                                                                            <a href="./html/user-manage/user-profile.html"><em class="icon ni ni-eye"></em><span>View Details</span></a>
-                                                                        </li>
-                                                                    </ul>
-                                                                </div>
-                                                            </div>
-                                                        </div><!-- dropdown -->
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="tb-col">
-                                                        <div class="media-group">
-                                                            <div class="media media-md media-middle media-circle text-bg-info-soft">
-                                                                <span class="smaller">SB</span>
-                                                            </div>
-                                                            <div class="media-text">
-                                                                <a href="./html/user-manage/user-profile.html" class="title">Sean Bean</a>
-                                                                <span class="small text">sean@dellito.com</span>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td class="tb-col">016-8879807</td>
-                                                    <td class="tb-col">RM0.00</td>
-                                                    <td class="tb-col tb-col-end">
-                                                        <div class="dropdown">
-                                                            <a href="#" class="btn btn-sm btn-icon btn-zoom me-n1" data-bs-toggle="dropdown">
-                                                                <em class="icon ni ni-more-v"></em>
-                                                            </a>
-                                                            <div class="dropdown-menu dropdown-menu-sm dropdown-menu-end">
-                                                                <div class="dropdown-content py-1">
-                                                                    <ul class="link-list link-list-hover-bg-primary link-list-md">
-                                                                        <li>
-                                                                            <a href="./html/user-manage/user-profile.html"><em class="icon ni ni-eye"></em><span>View Details</span></a>
-                                                                        </li>
-                                                                    </ul>
-                                                                </div>
-                                                            </div>
-                                                        </div><!-- dropdown -->
-                                                    </td>
-                                                </tr>
-                                            </tbody>
+											</tbody>
                                         </table>
                                     </div><!-- .card -->
                                 </div><!-- .nk-block -->
@@ -185,5 +135,8 @@
             </div> <!-- .nk-wrap -->
         </div> <!-- .nk-main -->
     </div> <!-- .nk-app-root -->
+    
+    
+<script src="./assets/js/data-tables/data-tables.js"></script>
 </body>
 </html>

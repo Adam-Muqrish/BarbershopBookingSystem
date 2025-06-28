@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+    <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -31,22 +33,6 @@
                                                     </ol>
                                                 </nav>
                                         </div>
-                                        <div class="nk-block-head-content">
-                                            <ul class="d-flex">
-                                                <li>
-                                                    <a href="#" class="btn btn-md d-md-none btn-primary" data-bs-toggle="modal" data-bs-target="#addUserModal">
-                                                        <em class="icon ni ni-plus"></em>
-                                                        <span>Add</span>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="#" class="btn btn-primary d-none d-md-inline-flex" data-bs-toggle="modal" data-bs-target="#addUserModal">
-                                                        <em class="icon ni ni-plus"></em>
-                                                        <span>Create Appointment</span>
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </div>
                                     </div><!-- .nk-block-head-between -->
                                 </div><!-- .nk-block-head -->
                                 <div class="nk-block">
@@ -69,9 +55,9 @@
                                                     <th class="tb-col tb-col-xl">
                                                         <span class="overline-title">Service Status</span>
                                                     </th>
-                                                    <th class="tb-col tb-col-xl">
+                                                    <!-- <th class="tb-col tb-col-xl">
                                                         <span class="overline-title">Loyalty Point</span>
-                                                    </th>
+                                                    </th> -->
                                                     <th class="tb-col tb-col-end">
                                                         <span class="overline-title">Action</span>
                                                     </th>
@@ -79,126 +65,51 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td class="tb-col">
-                                                        <div class="media-group">
-                                                            <div class="media media-md media-middle media-circle">
-                                                                <img src="./images/avatar/a.jpg" alt="user">
-                                                            </div>
-                                                            <div class="media-text">
-                                                                <a href="./html/user-manage/user-profile.html" class="title">Florenza Desporte</a>
-                                                                <span class="small text">florenza@gmail.com</span>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td class="tb-col">10/10/2025</td>
-                                                    <td class="tb-col">14:00 p.m.</td>
-                                                    <td class="tb-col">Adult</td>
-                                                    <td class="tb-col">Done</td>
-                                                    <td class="tb-col tb-col-xl">RM5.00</td>
-                                                    <td class="tb-col tb-col-end">
-                                                        <div class="dropdown">
-                                                            <a href="#" class="btn btn-sm btn-icon btn-zoom me-n1" data-bs-toggle="dropdown">
-                                                                <em class="icon ni ni-more-v"></em>
-                                                            </a>
-                                                            <div class="dropdown-menu dropdown-menu-sm dropdown-menu-end">
-                                                                <div class="dropdown-content py-1">
-                                                                    <ul class="link-list link-list-hover-bg-primary link-list-md">
-                                                                        <!--<li>
-                                                                            <a href="./html/user-manage/user-edit.html"><em class="icon ni ni-edit"></em><span>Edit</span></a>
-                                                                        </li>-->
-                                                                        <li>
-                                                                            <a href="./html/user-manage/user-edit.html"><em class="icon ni ni-trash"></em><span>Delete</span></a>
-                                                                        </li>
-                                                                        <!-- <li>
-                                                                            <a href="./html/user-manage/user-profile.html"><em class="icon ni ni-eye"></em><span>View Details</span></a>
-                                                                        </li> -->
-                                                                    </ul>
-                                                                </div>
-                                                            </div>
-                                                        </div><!-- dropdown -->
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="tb-col">
-                                                        <div class="media-group">
-                                                            <div class="media media-md media-middle media-circle">
-                                                                <img src="./images/avatar/b.jpg" alt="user">
-                                                            </div>
-                                                            <div class="media-text">
-                                                                <a href="./html/user-manage/user-profile.html" class="title">Anna Adame</a>
-                                                                <span class="small text">anna@gmail.com</span>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                     <td class="tb-col">10/10/2025</td>
-                                                    <td class="tb-col">14:30 p.m.</td>
-                                                    <td class="tb-col">Student</td>
-                                                    <td class="tb-col">Done</td>
-                                                    <td class="tb-col tb-col-xl">RM5.00</td>
-                                                    <td class="tb-col tb-col-end">
-                                                        <div class="dropdown">
-                                                            <a href="#" class="btn btn-sm btn-icon btn-zoom me-n1" data-bs-toggle="dropdown">
-                                                                <em class="icon ni ni-more-v"></em>
-                                                            </a>
-                                                            <div class="dropdown-menu dropdown-menu-sm dropdown-menu-end">
-                                                                <div class="dropdown-content py-1">
-                                                                    <ul class="link-list link-list-hover-bg-primary link-list-md">
-                                                                        <!--<li>
-                                                                            <a href="./html/user-manage/user-edit.html"><em class="icon ni ni-edit"></em><span>Edit</span></a>
-                                                                        </li>-->
-                                                                        <li>
-                                                                            <a href="./html/user-manage/user-edit.html"><em class="icon ni ni-trash"></em><span>Delete</span></a>
-                                                                        </li>
-                                                                        <!-- <li>
-                                                                            <a href="./html/user-manage/user-profile.html"><em class="icon ni ni-eye"></em><span>View Details</span></a>
-                                                                        </li> -->
-                                                                    </ul>
-                                                                </div>
-                                                            </div>
-                                                        </div><!-- dropdown -->
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="tb-col">
-                                                        <div class="media-group">
-                                                            <div class="media media-md media-middle media-circle text-bg-info-soft">
-                                                                <span class="smaller">SB</span>
-                                                            </div>
-                                                            <div class="media-text">
-                                                                <a href="./html/user-manage/user-profile.html" class="title">Sean Bean</a>
-                                                                <span class="small text">sean@dellito.com</span>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                     <td class="tb-col">10/10/2025</td>
-                                                    <td class="tb-col">15:00 p.m.</td>
-                                                    <td class="tb-col">Kids</td>
-                                                    <td class="tb-col">Done</td>
-                                                    <td class="tb-col tb-col-xl">RM5.00</td>
-                                                    <td class="tb-col tb-col-end">
-                                                        <div class="dropdown">
-                                                            <a href="#" class="btn btn-sm btn-icon btn-zoom me-n1" data-bs-toggle="dropdown">
-                                                                <em class="icon ni ni-more-v"></em>
-                                                            </a>
-                                                            <div class="dropdown-menu dropdown-menu-sm dropdown-menu-end">
-                                                                <div class="dropdown-content py-1">
-                                                                    <ul class="link-list link-list-hover-bg-primary link-list-md">
-                                                                        <!--<li>
-                                                                            <a href="./html/user-manage/user-edit.html"><em class="icon ni ni-edit"></em><span>Edit</span></a>
-                                                                        </li>-->
-                                                                        <li>
-                                                                            <a href="./html/user-manage/user-edit.html"><em class="icon ni ni-trash"></em><span>Delete</span></a>
-                                                                        </li>
-                                                                        <!-- <li>
-                                                                            <a href="./html/user-manage/user-profile.html"><em class="icon ni ni-eye"></em><span>View Details</span></a>
-                                                                        </li> -->
-                                                                    </ul>
-                                                                </div>
-                                                            </div>
-                                                        </div><!-- dropdown -->
-                                                    </td>
-                                                </tr>
+                                                <c:forEach var="a" items="${appointmentList}">
+										            <tr>
+										                <td>${a.customerName}</td>
+										                <td>${a.appointmentDate}</td>
+										                <td>${a.appointmentTime}</td>
+										                <td>${a.custType}</td> 
+										                <td>
+														    <c:choose>
+														        <c:when test="${fn:toLowerCase(a.serviceStatus) == 'pending'}">
+														            <form action="UpdateServiceStatus" method="post" style="display:inline;">
+														                <input type="hidden" name="appointmentId" value="${a.appointmentId}" />
+														                <button type="submit" class="btn btn-warning btn-sm">
+														                    Pending
+														                </button>
+														            </form>
+														        </c:when>
+														        <c:otherwise>
+														            <button class="btn btn-success btn-sm" disabled>
+														                Done
+														            </button>
+														        </c:otherwise>
+														    </c:choose>
+														</td>
+										                <%-- <td>${a.loyaltyPoint}</td> --%>
+										                <td class="tb-col tb-col-end">
+											                <div class="dropdown">
+											                    <a href="#" class="btn btn-sm btn-icon btn-zoom me-n1" data-bs-toggle="dropdown">
+											                        <em class="icon ni ni-more-v"></em>
+											                    </a>
+											                    <div class="dropdown-menu dropdown-menu-sm dropdown-menu-end">
+											                        <div class="dropdown-content py-1">
+											                            <ul class="link-list link-list-hover-bg-primary link-list-md">
+											                                <li>
+											                                    <a href="appointmentDetail?appointmentId=${a.appointmentId}">
+											                                        <em class="icon ni ni-eye"></em>
+											                                        <span>View Details</span>
+											                                    </a>
+											                                </li>
+											                            </ul>
+											                        </div>
+											                    </div>
+											                </div>
+											            </td>
+										            </tr>
+										        </c:forEach>
                                             </tbody>
                                         </table>
                                     </div><!-- .card -->

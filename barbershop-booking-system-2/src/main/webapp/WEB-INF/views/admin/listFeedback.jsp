@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,6 +10,12 @@
     <link rel="shortcut icon" href="/uploads/hugiBarber.jpg">
     <link rel="stylesheet" href="/resources/assetsAdmin/css/style.css?v1.1.2">
 </head>
+<!-- jQuery (optional jika Bootstrap v5 tak perlu) -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Bootstrap Bundle JS (termasuk Popper.js) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
 <body class="nk-body" data-sidebar-collapse="lg" data-navbar-collapse="lg">
     <div class="nk-app-root">
         <div class="nk-main">
@@ -63,117 +71,32 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td class="tb-col">
-                                                        <div class="media-group">
-                                                            <div class="media media-md media-middle media-circle">
-                                                                <img src="./images/avatar/a.jpg" alt="user">
-                                                            </div>
-                                                            <div class="media-text">
-                                                                <a href="./html/user-manage/user-profile.html" class="title">Florenza Desporte</a>
-                                                                <span class="small text">florenza@gmail.com</span>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td class="tb-col">I love this barbershop !</td>
-                                                    <td class="tb-col">5 star</td>
-                                                    <td class="tb-col tb-col-end">
-                                                        <div class="dropdown">
-                                                            <a href="#" class="btn btn-sm btn-icon btn-zoom me-n1" data-bs-toggle="dropdown">
-                                                                <em class="icon ni ni-more-v"></em>
-                                                            </a>
-                                                            <div class="dropdown-menu dropdown-menu-sm dropdown-menu-end">
-                                                                <div class="dropdown-content py-1">
-                                                                    <ul class="link-list link-list-hover-bg-primary link-list-md">
-                                                                        <!-- <li>
-                                                                            <a href="./html/user-manage/user-edit.html"><em class="icon ni ni-edit"></em><span>Edit</span></a>
-                                                                        </li> -->
-                                                                        <!-- <li>
-                                                                            <a href="./html/user-manage/user-edit.html"><em class="icon ni ni-trash"></em><span>Delete</span></a>
-                                                                        </li> -->
-                                                                        <li>
-                                                                            <a href="#"><em class="icon ni ni-eye"></em><span>View Details</span></a>
-                                                                        </li>
-                                                                    </ul>
-                                                                </div>
-                                                            </div>
-                                                        </div><!-- dropdown -->
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="tb-col">
-                                                        <div class="media-group">
-                                                            <div class="media media-md media-middle media-circle">
-                                                                <img src="./images/avatar/b.jpg" alt="user">
-                                                            </div>
-                                                            <div class="media-text">
-                                                                <a href="./html/user-manage/user-profile.html" class="title">Anna Adame</a>
-                                                                <span class="small text">anna@gmail.com</span>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td class="tb-col">Good Haircut !</td>
-                                                    <td class="tb-col">5 star</td>
-                                                    <td class="tb-col tb-col-end">
-                                                        <div class="dropdown">
-                                                            <a href="#" class="btn btn-sm btn-icon btn-zoom me-n1" data-bs-toggle="dropdown">
-                                                                <em class="icon ni ni-more-v"></em>
-                                                            </a>
-                                                            <div class="dropdown-menu dropdown-menu-sm dropdown-menu-end">
-                                                                <div class="dropdown-content py-1">
-                                                                    <ul class="link-list link-list-hover-bg-primary link-list-md">
-                                                                        <!-- <li>
-                                                                            <a href="./html/user-manage/user-edit.html"><em class="icon ni ni-edit"></em><span>Edit</span></a>
-                                                                        </li> -->
-                                                                        <!-- <li>
-                                                                            <a href="./html/user-manage/user-edit.html"><em class="icon ni ni-trash"></em><span>Delete</span></a>
-                                                                        </li> -->
-                                                                        <li>
-                                                                            <a href="#"><em class="icon ni ni-eye"></em><span>View Details</span></a>
-                                                                        </li>
-                                                                    </ul>
-                                                                </div>
-                                                            </div>
-                                                        </div><!-- dropdown -->
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="tb-col">
-                                                        <div class="media-group">
-                                                            <div class="media media-md media-middle media-circle text-bg-info-soft">
-                                                                <span class="smaller">SB</span>
-                                                            </div>
-                                                            <div class="media-text">
-                                                                <a href="./html/user-manage/user-profile.html" class="title">Sean Bean</a>
-                                                                <span class="small text">sean@dellito.com</span>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td class="tb-col">Bad Haircut !</td>
-                                                    <td class="tb-col">1 Star</td>
-                                                    <td class="tb-col tb-col-end">
-                                                        <div class="dropdown">
-                                                            <a href="#" class="btn btn-sm btn-icon btn-zoom me-n1" data-bs-toggle="dropdown">
-                                                                <em class="icon ni ni-more-v"></em>
-                                                            </a>
-                                                            <div class="dropdown-menu dropdown-menu-sm dropdown-menu-end">
-                                                                <div class="dropdown-content py-1">
-                                                                    <ul class="link-list link-list-hover-bg-primary link-list-md">
-                                                                        <!-- <li>
-                                                                            <a href="./html/user-manage/user-edit.html"><em class="icon ni ni-edit"></em><span>Edit</span></a>
-                                                                        </li> -->
-                                                                        <!-- <li>
-                                                                            <a href="./html/user-manage/user-edit.html"><em class="icon ni ni-trash"></em><span>Delete</span></a>
-                                                                        </li> -->
-                                                                        <li>
-                                                                            <a href="#"><em class="icon ni ni-eye"></em><span>View Details</span></a>
-                                                                        </li>
-                                                                    </ul>
-                                                                </div>
-                                                            </div>
-                                                        </div><!-- dropdown -->
-                                                    </td>
-                                                </tr>
+                                                <c:forEach var="fb" items="${feedbackList}">
+										            <tr>
+										                <td>${fb.customerName}</td>
+										                <td>${fb.comments}</td>
+										                <td>${fb.rating}</td>
+										                <td class="tb-col tb-col-end">
+											                <div class="dropdown">
+											                    <a href="#" class="btn btn-sm btn-icon btn-zoom me-n1" data-bs-toggle="dropdown">
+											                        <em class="icon ni ni-more-v"></em>
+											                    </a>
+											                    <div class="dropdown-menu dropdown-menu-sm dropdown-menu-end">
+											                        <div class="dropdown-content py-1">
+											                            <ul class="link-list link-list-hover-bg-primary link-list-md">
+											                                <li>
+											                                    <a href="feedbackDetail?feedbackId=${fb.feedbackId}">
+											                                        <em class="icon ni ni-eye"></em>
+											                                        <span>View Details</span>
+											                                    </a>
+											                                </li>
+											                            </ul>
+											                        </div>
+											                    </div>
+											                </div>
+											            </td>
+										            </tr>
+										        </c:forEach>
                                             </tbody>
                                         </table>
                                     </div><!-- .card -->

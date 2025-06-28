@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -60,126 +63,24 @@
                                                     <th class="tb-col">
                                                         <span class="overline-title">Payment Type</span>
                                                     </th>
-                                                    <th class="tb-col tb-col-end" data-sortable="false">
+                                                    <!-- <th class="tb-col tb-col-end" data-sortable="false">
                                                         <span class="overline-title">Action</span>
-                                                    </th>
+                                                    </th> -->
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                	<td class="tb-col">
-                                                        <div class="media-group">
-                                                            <div class="media media-md media-middle media-circle text-bg-info-soft">
-                                                                <span class="smaller">SB</span>
-                                                            </div>
-                                                            <div class="media-text">
-                                                                <a href="./html/user-manage/user-profile.html" class="title">Sean Bean</a>
-                                                                <span class="small text">sean@dellito.com</span>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td class="tb-col">10/10/2025</td>
-                                                    <td class="tb-col">RM20.00</td>
-                                                    <td class="tb-col tb-col-xl">Cash</td>
-                                                    <td class="tb-col tb-col-end">
-                                                        <div class="dropdown">
-                                                            <a href="#" class="btn btn-sm btn-icon btn-zoom me-n1" data-bs-toggle="dropdown">
-                                                                <em class="icon ni ni-more-v"></em>
-                                                            </a>
-                                                            <div class="dropdown-menu dropdown-menu-sm dropdown-menu-end">
-                                                                <div class="dropdown-content py-1">
-                                                                    <ul class="link-list link-list-hover-bg-primary link-list-md">
-                                                                        <!-- <li>
-                                                                            <a href="./html/user-manage/user-edit.html"><em class="icon ni ni-edit"></em><span>Edit</span></a>
-                                                                        </li> -->
-                                                                        <!-- <li>
-                                                                            <a href="./html/user-manage/user-edit.html"><em class="icon ni ni-trash"></em><span>Delete</span></a>
-                                                                        </li> -->
-                                                                        <li>
-                                                                            <a href="#"><em class="icon ni ni-eye"></em><span>View Details</span></a>
-                                                                        </li>
-                                                                    </ul>
-                                                                </div>
-                                                            </div>
-                                                        </div><!-- dropdown -->
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                	<td class="tb-col">
-                                                        <div class="media-group">
-                                                            <div class="media media-md media-middle media-circle text-bg-info-soft">
-                                                                <span class="smaller">SB</span>
-                                                            </div>
-                                                            <div class="media-text">
-                                                                <a href="./html/user-manage/user-profile.html" class="title">Sean Bean</a>
-                                                                <span class="small text">sean@dellito.com</span>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td class="tb-col">10/10/2025</td>
-                                                    <td class="tb-col">RM15.00</td>
-                                                    <td class="tb-col tb-col-xl">Online Banking (QR Code)</td>
-                                                    <td class="tb-col tb-col-end">
-                                                        <div class="dropdown">
-                                                            <a href="#" class="btn btn-sm btn-icon btn-zoom me-n1" data-bs-toggle="dropdown">
-                                                                <em class="icon ni ni-more-v"></em>
-                                                            </a>
-                                                            <div class="dropdown-menu dropdown-menu-sm dropdown-menu-end">
-                                                                <div class="dropdown-content py-1">
-                                                                    <ul class="link-list link-list-hover-bg-primary link-list-md">
-                                                                        <!-- <li>
-                                                                            <a href="./html/user-manage/user-edit.html"><em class="icon ni ni-edit"></em><span>Edit</span></a>
-                                                                        </li> -->
-                                                                        <!-- <li>
-                                                                            <a href="./html/user-manage/user-edit.html"><em class="icon ni ni-trash"></em><span>Delete</span></a>
-                                                                        </li> -->
-                                                                        <li>
-                                                                            <a href="#"><em class="icon ni ni-eye"></em><span>View Details</span></a>
-                                                                        </li>
-                                                                    </ul>
-                                                                </div>
-                                                            </div>
-                                                        </div><!-- dropdown -->
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                	<td class="tb-col">
-                                                        <div class="media-group">
-                                                            <div class="media media-md media-middle media-circle text-bg-info-soft">
-                                                                <span class="smaller">SB</span>
-                                                            </div>
-                                                            <div class="media-text">
-                                                                <a href="./html/user-manage/user-profile.html" class="title">Sean Bean</a>
-                                                                <span class="small text">sean@dellito.com</span>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td class="tb-col">10/10/2025</td>
-                                                    <td class="tb-col">RM18.00</td>
-                                                    <td class="tb-col tb-col-xl">Cash</td>
-                                                    <td class="tb-col tb-col-end">
-                                                        <div class="dropdown">
-                                                            <a href="#" class="btn btn-sm btn-icon btn-zoom me-n1" data-bs-toggle="dropdown">
-                                                                <em class="icon ni ni-more-v"></em>
-                                                            </a>
-                                                            <div class="dropdown-menu dropdown-menu-sm dropdown-menu-end">
-                                                                <div class="dropdown-content py-1">
-                                                                    <ul class="link-list link-list-hover-bg-primary link-list-md">
-                                                                        <!-- <li>
-                                                                            <a href="./html/user-manage/user-edit.html"><em class="icon ni ni-edit"></em><span>Edit</span></a>
-                                                                        </li> -->
-                                                                        <!-- <li>
-                                                                            <a href="./html/user-manage/user-edit.html"><em class="icon ni ni-trash"></em><span>Delete</span></a>
-                                                                        </li> -->
-                                                                        <li>
-                                                                            <a href="#"><em class="icon ni ni-eye"></em><span>View Details</span></a>
-                                                                        </li>
-                                                                    </ul>
-                                                                </div>
-                                                            </div>
-                                                        </div><!-- dropdown -->
-                                                    </td>
-                                                </tr>
+                                            	<c:forEach var="tx" items="${transactionList}">
+												    <tr>
+												        <td>${tx.customerName}</td>
+												        <td>${tx.paymentDate}</td>
+												        <td>RM <fmt:formatNumber value="${tx.paymentAmount}" type="number" minFractionDigits="2" maxFractionDigits="2"/></td>
+												        <td>${tx.paymentType}</td>
+												        <%-- <td>
+												            <!-- contoh button -->
+												            <a href="transactionDetail?paymentId=${tx.paymentId}" class="btn btn-info btn-sm">View</a>
+												        </td> --%>
+												    </tr>
+												</c:forEach>
                                             </tbody>
                                         </table>
                                     </div><!-- .card -->
