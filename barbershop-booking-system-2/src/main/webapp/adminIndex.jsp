@@ -94,8 +94,8 @@
                                                     <thead class="table-light table-head-sm">
                                                         <tr>
                                                             <th>Name</th>
-                                                            <th>Phone Number</th>
                                                             <th>Email</th>
+                                                            <th>Phone Number</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
