@@ -67,7 +67,7 @@
 						<li class="nk-menu-item"><a href="listFeedback"
 							class="nk-menu-link"><span class="nk-menu-icon"><em
 									class="icon ni ni-chat-circle"></em></span><span class="nk-menu-text">Feedback</span></a></li>
-						<li class="nk-menu-item"><a href="AdminLoginController"
+						<li class="nk-menu-item"><a href="logout"
 							class="nk-menu-link"><span class="nk-menu-icon"><em
 									class="icon ni ni-user"></em></span><span class="nk-menu-text">Log Out</span></a></li>
 					</ul>
