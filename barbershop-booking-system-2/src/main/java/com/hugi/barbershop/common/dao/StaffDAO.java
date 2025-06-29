@@ -1,13 +1,13 @@
 package com.hugi.barbershop.common.dao;
 
 import com.hugi.barbershop.staff.model.Staff;
-import com.hugi.barbershop.common.util.DBUtil;
 import com.hugi.barbershop.common.dao.StaffDAO;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import com.hugi.barbershop.common.util.DBUtil;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -15,6 +15,48 @@ import java.util.List;
 import java.util.Locale;
 
 public class StaffDAO {
+	
+	//Insert New Staff
+	public boolean insertStaff(Staff staff) {
+		String sql = "INSERT INTO STAFF (STAFFID, NAME, EMAIL, PASSWORD, PHONENUMBER, DESCRIPTION, PICTURE, ROLE, ADMINID) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+   try (Connection conn = DBUtil.getConnection();
+        PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+	       stmt.setString(1, staff.getStaffId());
+	       stmt.setString(2, staff.getStaffName());
+	       stmt.setString(3, staff.getStaffEmail());
+	       stmt.setString(4, staff.getStaffPassword());
+	       stmt.setString(5, staff.getStaffPhoneNumber());
+	       stmt.setString(6, staff.getDescription());
+	       stmt.setString(7, staff.getStaffPicture());
+	       stmt.setString(8, staff.getStaffRole());
+	       stmt.setString(9, staff.getAdminId());
+	
+	       return stmt.executeUpdate() > 0;
+	
+	   } catch (SQLException e) {
+	       e.printStackTrace();
+	       return false;
+	   }
+
+	}
+	
+	// Check kalau email dah wujud dalam STAFF table
+	public boolean emailExists(String email) {
+	    String sql = "SELECT 1 FROM STAFF WHERE EMAIL = ?";
+	    try (Connection conn = DBUtil.getConnection();
+	         PreparedStatement stmt = conn.prepareStatement(sql)) {
+	        stmt.setString(1, email);
+	        ResultSet rs = stmt.executeQuery();
+	        return rs.next(); // Kalau ada, return true
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	        return false;
+	    }
+	}
+
+
 
 	// Get staff by STAFFID
 	public Staff getStaffById(String staffId) {
