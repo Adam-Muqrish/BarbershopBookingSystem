@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.List;
 
 import com.hugi.barbershop.common.dao.FeedbackDAO;
-import com.hugi.barbershop.staff.model.ViewFeedback;
+import com.hugi.barbershop.customer.model.Feedback;
 
 /**
  * Servlet implementation class listFeedback
@@ -32,7 +32,7 @@ public class listFeedback extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		FeedbackDAO feedbackDAO = new FeedbackDAO();
-        List<ViewFeedback> feedbackList = feedbackDAO.getAllFeedbacks();
+        List<Feedback> feedbackList = feedbackDAO.getAllFeedbacks();
         request.setAttribute("feedbackList", feedbackList);
         request.getRequestDispatcher("/WEB-INF/views/admin/listFeedback.jsp").forward(request, response);
 	}

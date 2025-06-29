@@ -12,6 +12,7 @@ public class Appointment {
 	private String staffId;
 	private int valueLoyalty;
 	private String appointmentBarber;
+	private String customerName;
 	
 	public String getAppointmentId() {
 		return appointmentId;
@@ -79,4 +80,12 @@ public class Appointment {
 	public void setAppointmentBarber(String appointmentBarber) {
 		this.appointmentBarber = appointmentBarber;
 	}	
+	
+	public String getCustomerName() {
+	    return customerName;
+	}
+
+	public void setCustomerName(String customerName) {
+	    this.customerName = customerName;
+	}
 }

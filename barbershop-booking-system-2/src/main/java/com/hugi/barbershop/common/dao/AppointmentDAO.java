@@ -11,7 +11,6 @@ import java.sql.SQLException;
 
 
 import com.hugi.barbershop.common.dao.AppointmentDAO;
-import com.hugi.barbershop.staff.model.ViewAppointment;
 
 public class AppointmentDAO {
 	// Get appointment by ID
@@ -273,8 +272,9 @@ public class AppointmentDAO {
 	    return 0;
 	}
 	
-	public List<ViewAppointment> getAllAppointments() {
-	    List<ViewAppointment> list = new ArrayList<>();
+	//view appointment
+	public List<Appointment> getAllAppointments() {
+	    List<Appointment> list = new ArrayList<>();
 	    String sql = """
 	        SELECT a.APPOINTMENTID, c.CUSTNAME, a.APPOINTMENTDATE, a.APPOINTMENTTIME, 
 	               a.CUSTTYPE, a.SERVICESTATUS
@@ -289,10 +289,10 @@ public class AppointmentDAO {
 	         ResultSet rs = stmt.executeQuery()) {
 
 	        while (rs.next()) {
-	            ViewAppointment app = new ViewAppointment();
+	            Appointment app = new Appointment();
 	            app.setAppointmentId(rs.getString("APPOINTMENTID"));
 	            app.setCustomerName(rs.getString("CUSTNAME"));
-	            app.setAppointmentDate(rs.getDate("APPOINTMENTDATE").toLocalDate());
+	            app.setAppointmentDate(rs.getDate("APPOINTMENTDATE").toString());
 	            app.setAppointmentTime(rs.getString("APPOINTMENTTIME"));
 	            app.setCustType(rs.getString("CUSTTYPE"));
 	            app.setServiceStatus(rs.getString("SERVICESTATUS"));

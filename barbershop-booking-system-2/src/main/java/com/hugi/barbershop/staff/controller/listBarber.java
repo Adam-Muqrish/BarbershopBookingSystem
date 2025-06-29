@@ -8,7 +8,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-import com.hugi.barbershop.staff.model.ViewBarber;
+import com.hugi.barbershop.staff.model.Staff;
 import com.hugi.barbershop.common.dao.StaffDAO;
 
 /**
@@ -32,7 +32,7 @@ public class listBarber extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		StaffDAO staffDAO = new StaffDAO();
-        List<ViewBarber> barberList = staffDAO.getAllBarbers();
+        List<Staff> barberList = staffDAO.getAllBarbers();
         request.setAttribute("barberList", barberList);
         request.getRequestDispatcher("/WEB-INF/views/admin/listBarber.jsp").forward(request, response);
 	}

@@ -6,6 +6,7 @@ public class Feedback {
 	private int rating;
 	private int appointmentId;
 	private String custId;
+	private String customerName;
 	
 	public String getFeedbackId() {
 		return feedbackId;
@@ -36,6 +37,12 @@ public class Feedback {
 	}
 	public void setCustId(String custId) {
 		this.custId = custId;
+	}
+	public void setCustomerName(String customerName) {
+	    this.customerName = customerName;
+	}
+	public String getCustomerName() {
+	    return customerName;
 	}
 	
 	
