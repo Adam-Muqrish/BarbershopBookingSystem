@@ -10,7 +10,6 @@ import java.time.LocalDate;
 
 import java.util.List;
 import java.util.ArrayList;
-import com.hugi.barbershop.staff.model.ViewTransaction;
 
 
 public class PaymentDAO {
@@ -198,8 +197,8 @@ public class PaymentDAO {
 	}
 	
 	//View Transaction - Admin Part
-	public List<ViewTransaction> getAllTransactions() {
-	    List<ViewTransaction> transactions = new ArrayList<>();
+	public List<Payment> getAllPayments() {
+	    List<Payment> transactions = new ArrayList<>();
 
 	    String sql = """
 	        SELECT c.CUSTPICTURE, c.CUSTNAME, c.CUSTEMAIL, 
@@ -223,14 +222,14 @@ public class PaymentDAO {
 	         ResultSet rs = stmt.executeQuery()) {
 
 	        while (rs.next()) {
-	        	ViewTransaction tx = new ViewTransaction();
+	        	Payment tx = new Payment();
 	            tx.setCustomerPicture(rs.getString("CUSTPICTURE"));
 	            tx.setCustomerName(rs.getString("CUSTNAME"));
 	            tx.setCustomerEmail(rs.getString("CUSTEMAIL"));
 	            tx.setPaymentId(rs.getString("PAYMENTID"));
 	            tx.setPaymentDate(rs.getDate("PAYMENTDATE").toLocalDate());
 	            tx.setPaymentAmount(rs.getDouble("PAYMENTAMOUNT"));
-	            tx.setPaymentType(rs.getString("PAYMENTTYPE"));
+	            tx.setPaymentMethod(rs.getString("PAYMENTTYPE"));
 	            transactions.add(tx);
 	        }
 
