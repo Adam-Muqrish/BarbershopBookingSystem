@@ -47,12 +47,12 @@
                                                         <span>Add</span>
                                                     </a>
                                                 </li>
-                                                <li>
+                                                <!-- <li>
                                                     <a href="#" class="btn btn-primary d-none d-md-inline-flex" data-bs-toggle="modal" data-bs-target="#addUserModal">
                                                         <em class="icon ni ni-plus"></em>
                                                         <span>Register New Customer</span>
                                                     </a>
-                                                </li>
+                                                </li> -->
                                             </ul>
                                         </div>
                                     </div><!-- .nk-block-head-between -->

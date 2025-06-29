@@ -65,9 +65,9 @@
                                                     <th class="tb-col">
                                                         <span class="overline-title">Ratings</span>
                                                     </th>
-                                                    <th class="tb-col tb-col-end" data-sortable="false">
+                                                    <!-- <th class="tb-col tb-col-end" data-sortable="false">
                                                         <span class="overline-title">Action</span>
-                                                    </th>
+                                                    </th> -->
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -76,7 +76,7 @@
 										                <td>${fb.customerName}</td>
 										                <td>${fb.comments}</td>
 										                <td>${fb.rating}</td>
-										                <td class="tb-col tb-col-end">
+										                <%-- <td class="tb-col tb-col-end">
 											                <div class="dropdown">
 											                    <a href="#" class="btn btn-sm btn-icon btn-zoom me-n1" data-bs-toggle="dropdown">
 											                        <em class="icon ni ni-more-v"></em>
@@ -94,7 +94,7 @@
 											                        </div>
 											                    </div>
 											                </div>
-											            </td>
+											            </td> --%>
 										            </tr>
 										        </c:forEach>
                                             </tbody>

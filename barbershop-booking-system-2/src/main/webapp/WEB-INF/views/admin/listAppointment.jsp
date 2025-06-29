@@ -10,6 +10,12 @@
     <link rel="shortcut icon" href="/uploads/hugiBarber.jpg">
     <link rel="stylesheet" href="/resources/assetsAdmin/css/style.css?v1.1.2">
 </head>
+<!-- jQuery (optional jika Bootstrap v5 tak perlu) -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Bootstrap Bundle JS (termasuk Popper.js) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
 <body class="nk-body" data-sidebar-collapse="lg" data-navbar-collapse="lg">
     <div class="nk-app-root">
         <div class="nk-main">
@@ -98,9 +104,9 @@
 											                        <div class="dropdown-content py-1">
 											                            <ul class="link-list link-list-hover-bg-primary link-list-md">
 											                                <li>
-											                                    <a href="appointmentDetail?appointmentId=${a.appointmentId}">
+											                                    <a href="editAppointment?appointmentId=${a.appointmentId}">
 											                                        <em class="icon ni ni-eye"></em>
-											                                        <span>View Details</span>
+											                                        <span>Edit Appointment</span>
 											                                    </a>
 											                                </li>
 											                            </ul>
