@@ -2,10 +2,7 @@ package com.hugi.barbershop.common.dao;
 
 import com.hugi.barbershop.staff.model.Staff;
 import com.hugi.barbershop.common.util.DBUtil;
-
-import com.hugi.barbershop.staff.model.ViewBarber;
 import com.hugi.barbershop.common.dao.StaffDAO;
-
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -141,32 +138,33 @@ public class StaffDAO {
 		}
 	}
 
-	public List<ViewBarber> getAllBarbers() {
-		// TODO Auto-generated method stub
-		
-		List<ViewBarber> barbers = new ArrayList<>();
+	// Get all barbers
+	public List<Staff> getAllBarbers() {
+		List<Staff> barbers = new ArrayList<>();
 		String sql = "SELECT * FROM STAFF WHERE ROLE = 'Barber'";
-		
+
 		try (Connection conn = DBUtil.getConnection();
 				PreparedStatement stmt = conn.prepareStatement(sql);
 				ResultSet rs = stmt.executeQuery()) {
-			
+
 			while (rs.next()) {
-				ViewBarber barber = new ViewBarber();
-	            barber.setStaffId(rs.getString("STAFFID"));
-	            barber.setName(rs.getString("NAME"));
-	            barber.setPhoneNumber(rs.getString("PHONENUMBER"));
-	            barber.setDescription(rs.getString("DESCRIPTION"));
-	            barbers.add(barber);
+				Staff staff = new Staff();
+				staff.setStaffId(rs.getString("STAFFID"));
+				staff.setStaffName(rs.getString("NAME"));
+				staff.setStaffPhoneNumber(rs.getString("PHONENUMBER"));
+				staff.setDescription(rs.getString("DESCRIPTION"));
+				// Set other fields if needed
+				barbers.add(staff);
 			}
-			
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
+
 		return barbers;
 	}
 
+	// Check if any barber is available for a specific slot and date
 	public boolean isAnyBarberAvailable(String slot, String date) {
 		String sql = "SELECT COUNT(*) AS available " +
 				"FROM STAFF s " +
@@ -197,38 +195,38 @@ public class StaffDAO {
 
 	// Get unavailable barbers for a specific slot and date
 	public List<String> getUnavailableBarbersForSlot(String slot, String date, String excludeAppointmentId) {
-	    List<String> unavailable = new ArrayList<>();
-	    String sql = "SELECT s.STAFFID FROM STAFF s " +
-	            "JOIN APPOINTMENTS a ON s.STAFFID = a.STAFFID " +
-	            "WHERE s.ROLE = 'Barber' AND a.APPOINTMENTDATE = ? AND a.APPOINTMENTTIME = ? ";
-	    if (excludeAppointmentId != null) {
-	        sql += "AND a.APPOINTMENTID <> ? ";
-	    }
-	    try (Connection conn = DBUtil.getConnection();
-	         PreparedStatement stmt = conn.prepareStatement(sql)) {
-	        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-	        DateTimeFormatter oracleFormatter = DateTimeFormatter.ofPattern("dd-MMM-yy", Locale.ENGLISH);
-	        LocalDate localDate = LocalDate.parse(date, inputFormatter);
-	        String oracleDate = localDate.format(oracleFormatter).toUpperCase();
-	        stmt.setString(1, oracleDate);
-	        stmt.setString(2, slot);
-	        if (excludeAppointmentId != null) {
-	            stmt.setString(3, excludeAppointmentId);
-	        }
-	        try (ResultSet rs = stmt.executeQuery()) {
-	            while (rs.next()) {
-	                unavailable.add(rs.getString("STAFFID"));
-	            }
-	        }
-	    } catch (SQLException e) {
-	        e.printStackTrace();
-	    }
-	    return unavailable;
+		List<String> unavailable = new ArrayList<>();
+		String sql = "SELECT s.STAFFID FROM STAFF s " +
+				"JOIN APPOINTMENTS a ON s.STAFFID = a.STAFFID " +
+				"WHERE s.ROLE = 'Barber' AND a.APPOINTMENTDATE = ? AND a.APPOINTMENTTIME = ? ";
+		if (excludeAppointmentId != null) {
+			sql += "AND a.APPOINTMENTID <> ? ";
+		}
+		try (Connection conn = DBUtil.getConnection();
+				PreparedStatement stmt = conn.prepareStatement(sql)) {
+			DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+			DateTimeFormatter oracleFormatter = DateTimeFormatter.ofPattern("dd-MMM-yy", Locale.ENGLISH);
+			LocalDate localDate = LocalDate.parse(date, inputFormatter);
+			String oracleDate = localDate.format(oracleFormatter).toUpperCase();
+			stmt.setString(1, oracleDate);
+			stmt.setString(2, slot);
+			if (excludeAppointmentId != null) {
+				stmt.setString(3, excludeAppointmentId);
+			}
+			try (ResultSet rs = stmt.executeQuery()) {
+				while (rs.next()) {
+					unavailable.add(rs.getString("STAFFID"));
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return unavailable;
 	}
 
 	// Update the original method to call the new one with null
 	public List<String> getUnavailableBarbersForSlot(String slot, String date) {
-	    return getUnavailableBarbersForSlot(slot, date, null);
+		return getUnavailableBarbersForSlot(slot, date, null);
 	}
 
 	public boolean isBarberAvailable(String staffId, String date, String slot) {
