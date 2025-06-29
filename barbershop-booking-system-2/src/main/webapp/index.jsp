@@ -8,7 +8,7 @@
 		<!-- HERO BANNER (small height) -->
 		<section
 			class="relative w-full h-[160px] md:h-[220px] lg:h-[280px] bg-cover bg-center flex items-center overflow-hidden -mt-[1px]"
-			style="background-image: url('https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=crop&w=1200&q=80');">
+			style="background-image: url('<%=request.getContextPath()%>/resources/uploads/barber-images/barber-7.jpg');">
 			<div class="absolute inset-0 bg-black/50"></div>
 			<div class="relative z-10 w-full flex justify-center items-center">
 				<h1
@@ -61,13 +61,14 @@
 					class="relative hidden md:flex h-[320px] md:h-[340px] lg:h-[380px] w-full md:w-auto">
 					<!-- Top right: Portrait image, touches the hero banner -->
 					<img
-						src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=400&q=80"
+						src="<%=request.getContextPath()%>/resources/uploads/barber-images/barber-1.jpg"
 						alt="Portrait"
 						class="absolute -top-12 right-0 w-32 md:w-40 lg:w-44 xl:w-48 h-auto rounded-lg shadow-xl border-4 border-white z-30 object-cover" />
 					<!-- Center right, slightly rotated: Landscape image -->
 					<img
-						src="https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=400&q=80"
+						src="<%=request.getContextPath()%>/resources/uploads/barber-images/barber-4.jpg"
 						alt="Barbershop interior"
+						style="object-fit:cover";
 						class="absolute top-24 right-4 md:top-24 md:right-16 w-44 md:w-56 lg:w-64 xl:w-72 h-auto rounded-lg shadow-lg border-4 border-white z-20 object-cover rotate-3" />
 				</div>
 			</div>
@@ -82,7 +83,7 @@
 					<div
 						class="w-72 h-48 md:w-80 md:h-56 rounded shadow-lg overflow-hidden border-4 border-white">
 						<img
-							src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80"
+							src="<%=request.getContextPath()%>/resources/uploads/barber-images/barber-8.jpg"
 							alt="Haircut Action" class="object-cover w-full h-full">
 					</div>
 				</div>
