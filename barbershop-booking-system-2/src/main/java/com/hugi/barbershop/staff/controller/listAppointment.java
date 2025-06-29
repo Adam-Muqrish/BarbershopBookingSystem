@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.List;
 
 import com.hugi.barbershop.common.dao.AppointmentDAO;
-import com.hugi.barbershop.staff.model.ViewAppointment;
+import com.hugi.barbershop.customer.model.Appointment;
 
 /**
  * Servlet implementation class listAppointment
@@ -32,7 +32,7 @@ public class listAppointment extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		AppointmentDAO dao = new AppointmentDAO();
-        List<ViewAppointment> appointments = dao.getAllAppointments();
+        List<Appointment> appointments = dao.getAllAppointments();
         request.setAttribute("appointmentList", appointments);
         request.getRequestDispatcher("/WEB-INF/views/admin/listAppointment.jsp").forward(request, response);
 	}

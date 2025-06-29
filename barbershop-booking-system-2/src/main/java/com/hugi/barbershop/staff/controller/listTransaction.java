@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.List;
 
 import com.hugi.barbershop.common.dao.PaymentDAO;
-import com.hugi.barbershop.staff.model.ViewTransaction;
+import com.hugi.barbershop.customer.model.Payment;
 
 /**
  * Servlet implementation class listTransaction
@@ -32,8 +32,8 @@ public class listTransaction extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		PaymentDAO paymentDAO = new PaymentDAO();
-		List<ViewTransaction> transactionList = paymentDAO.getAllTransactions();
-		request.setAttribute("transactionList", transactionList);
+		List<Payment> paymentList = paymentDAO.getAllPayments();
+		request.setAttribute("transactionList", paymentList);
         request.getRequestDispatcher("/WEB-INF/views/admin/listTransaction.jsp").forward(request, response);
 	}
 
