@@ -8,6 +8,9 @@ public class Payment {
 	private double paymentAmount;
 	private String appointmentId;
 	private String paymentMethod;
+	private String customerName;
+	private String customerPicture;
+	private String customerEmail;
 
 	// Getters and setters
 	public String getPaymentId() { return paymentId; }
@@ -28,6 +31,24 @@ public class Payment {
 
 	public void setPaymentMethod(String paymentMethod) {
 	    this.paymentMethod = paymentMethod;
+	}
+	public void setCustomerName(String customerName) {
+	    this.customerName = customerName;
+	}
+	public String getCustomerName() {
+	    return customerName;
+	}
+	public void setCustomerPicture(String CustomerPicture) {
+	    this.customerPicture = CustomerPicture;
+	}
+	public String getCustomerPicture() {
+	    return customerPicture;
+	}
+	public void setCustomerEmail(String CustomerEmail) {
+	    this.customerEmail = CustomerEmail;
+	}
+	public String getCustomerEmail() {
+	    return customerEmail;
 	}
 
 }
