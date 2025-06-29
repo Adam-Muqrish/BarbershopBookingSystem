@@ -25,8 +25,15 @@ public class AuthController extends HttpServlet {
 
         } else if (path.equals("/adminLogin")) {
             request.getRequestDispatcher("/WEB-INF/views/admin/adminLogin.jsp").forward(request, response);
+        } else if (path.equals("/auth")) {
+            // Show login page or redirect to register
+            request.getRequestDispatcher("/WEB-INF/views/customer/register.jsp").forward(request, response);
+        } else {
+            // Optionally, redirect to a default page or show 404
+            response.sendRedirect("register");
         }
     }
+
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String path = request.getServletPath();
