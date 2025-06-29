@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.ArrayList;
 
 import com.hugi.barbershop.common.dao.FeedbackDAO;
-import com.hugi.barbershop.staff.model.ViewFeedback;
 
 public class FeedbackDAO {
 	// Insert a new feedback
@@ -80,8 +79,8 @@ public class FeedbackDAO {
 	}
 	
 	//View List Feedback - Admin Part
-	public List<ViewFeedback> getAllFeedbacks() {
-	    List<ViewFeedback> feedbackList = new ArrayList<>();
+	public List<Feedback> getAllFeedbacks() {
+	    List<Feedback> feedbackList = new ArrayList<>();
 
 	    String sql = """
 	        SELECT f.FEEDBACKID, f.COMMENTS, f.RATING, c.CUSTNAME
@@ -95,7 +94,7 @@ public class FeedbackDAO {
 	         ResultSet rs = stmt.executeQuery()) {
 
 	        while (rs.next()) {
-	            ViewFeedback fb = new ViewFeedback();
+	        	Feedback fb = new Feedback();
 	            fb.setFeedbackId(rs.getString("FEEDBACKID"));
 	            fb.setCustomerName(rs.getString("CUSTNAME"));
 	            fb.setComments(rs.getString("COMMENTS"));
