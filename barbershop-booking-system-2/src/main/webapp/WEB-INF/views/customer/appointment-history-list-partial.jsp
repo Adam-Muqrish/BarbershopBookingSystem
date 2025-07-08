@@ -8,7 +8,7 @@ int currentPage = request.getAttribute("currentPage") != null ? (Integer) reques
 int totalPages = request.getAttribute("totalPages") != null ? (Integer) request.getAttribute("totalPages") : 1;
 String pageUrl = "appointment-history?page=";
 %>
-<div class="grid grid-cols-1 md:grid-cols-2 gap-6">hgjhgj
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 	<%
 	if (doneAppointments != null && !doneAppointments.isEmpty()) {
 		for (Appointment appt : doneAppointments) {

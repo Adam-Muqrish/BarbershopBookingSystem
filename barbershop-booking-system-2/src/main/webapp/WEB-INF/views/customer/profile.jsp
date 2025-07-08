@@ -35,25 +35,26 @@
 				<div
 					class="bg-gray-100 rounded-xl p-4 flex flex-col items-center w-full md:w-1/3">
 					<div
-						class="w-20 h-20 bg-gray-300 rounded-full mb-3 overflow-hidden">
+						class="w-20 h-20 bg-gray-300 rounded-full mb-3 overflow-hidden flex items-center justify-center">
 						<%
-                                if (picture != null && !picture.isEmpty()) {
-                            %>
+						if (!showDefaultAvatar) {
+						%>
 						<img
-							src="<%=request.getContextPath()%>/resources/uploads/<%=picture%>"
-							class="w-full h-full object-cover" alt="Profile Picture">
+						    src="<%=request.getContextPath()%>/resources/uploads/<%=picture%>"
+						    class="w-full h-full rounded-full object-cover"
+						    alt="Profile picture" />
 						<%
-                                } else {
-                            %>
-						<svg class="w-full h-full text-gray-400" fill="currentColor"
-							viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd"
+						} else {
+						%>
+						<svg class="w-12 h-12 text-gray-400" fill="currentColor"
+							viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+					            <path fill-rule="evenodd"
 								d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
 								clip-rule="evenodd"></path>
-                                </svg>
+					        </svg>
 						<%
-                                }
-                            %>
+						}
+						%>
 					</div>
 					<p class="text-sm font-medium text-gray-600">Loyalty Points</p>
 					<p

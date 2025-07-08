@@ -95,7 +95,7 @@
 						for a stress-free experience—skip the wait, choose your preferred
 						barber, get instant confirmation, and enjoy hassle-free reminders.
 						Your perfect haircut is just a click away!</p>
-					<a href="#booking"
+					<a href="booking"
 						class="inline-block bg-green-600 hover:bg-white text-white hover:text-green-500 border border-green-500 font-semibold py-3 px-6 rounded-md shadow transition duration-300">
 						BOOK NOW ! </a>
 				</div>

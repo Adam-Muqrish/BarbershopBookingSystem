@@ -133,7 +133,7 @@ if (picture != null && !picture.isEmpty()) {
 								History</a></li>
 					</ul>
 				</li>
-				<li><a href="#aboutUs"
+				<li><a href="index#aboutUs"
 					class="block py-2 pl-3 pr-4 text-white rounded lg:hover:bg-transparent lg:border-0 lg:hover:text-white lg:p-0 transition duration-300 ease-in-out">
 						About Us </a></li>
 				<% if (customer != null) { %>
@@ -158,8 +158,8 @@ if (picture != null && !picture.isEmpty()) {
 									d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
 									clip-rule="evenodd"></path>
 					            </svg> <%
- }
- %>
+						 }
+						 %>
 						</a>
 					</div> <!-- Text shown below md --> <a href="profile"
 					class="block md:hidden py-2 pl-3 pr-4 text-white rounded lg:hover:bg-transparent lg:border-0 lg:hover:text-white lg:p-0 transition duration-300 ease-in-out">
