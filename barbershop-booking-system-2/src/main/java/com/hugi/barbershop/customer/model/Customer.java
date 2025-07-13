@@ -45,10 +45,10 @@ public class Customer {
 	public void setCustPicture(String custPicture) {
 		this.custPicture = custPicture;
 	}
-	public int getLoyaltyPoints() {
+	public int getCustLoyaltyPoints() {
 		return loyaltyPoints;
 	}
-	public void setLoyaltyPoints(int loyaltyPoints) {
+	public void setCustLoyaltyPoints(int loyaltyPoints) {
 		this.loyaltyPoints = loyaltyPoints;
 	}
 
