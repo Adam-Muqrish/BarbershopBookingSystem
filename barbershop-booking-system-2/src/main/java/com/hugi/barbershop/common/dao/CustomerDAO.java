@@ -3,196 +3,185 @@ package com.hugi.barbershop.common.dao;
 import com.hugi.barbershop.customer.model.Customer;
 import com.hugi.barbershop.common.util.DBUtil;
 
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class CustomerDAO {
-	
-	// Method to insert a new customer into the database
-	public boolean insertCustomer(Customer customer) {
-		String sql = "INSERT INTO CUSTOMER (CUSTID, CUSTNAME, CUSTEMAIL, CUSTPASSWORD, CUSTPHONENUMBER, CUSTPICTURE, LOYALTYPOINTS) VALUES (?, ?, ?, ?, ?, ?, ?)";
-	    try (Connection conn = DBUtil.getConnection();
-	         PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-	    	stmt.setString(1, customer.getCustId());
-	    	stmt.setString(2, customer.getCustName());
-	    	stmt.setString(3, customer.getCustEmail());
-	    	stmt.setString(4, customer.getCustPassword());
-	    	stmt.setString(5, customer.getCustPhoneNumber());
-	    	stmt.setString(6, customer.getCustPicture());
-	    	stmt.setInt(7, customer.getLoyaltyPoints());
+    // Insert a new customer (CUST_ID is auto-incremented)
+    public String insertCustomer(Customer customer) {
+        String sql = "INSERT INTO CUSTOMERS (CUST_NAME, CUST_EMAIL, CUST_PASSWORD, CUST_PHONE_NUMBER, CUST_PICTURE, CUST_LOYALTY_POINTS) VALUES (?, ?, ?, ?, ?, ?)";
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql, new String[] {"CUST_ID"})) {
 
-	        int rowsAffected = stmt.executeUpdate();
-	        return rowsAffected > 0;
+            stmt.setString(1, customer.getCustName());
+            stmt.setString(2, customer.getCustEmail());
+            stmt.setString(3, customer.getCustPassword());
+            stmt.setString(4, customer.getCustPhoneNumber());
+            stmt.setString(5, customer.getCustPicture());
+            stmt.setInt(6, customer.getCustLoyaltyPoints());
 
-	    } catch (SQLException e) {
-	        e.printStackTrace();
-	        return false;
-	    }
-	}
-	
-	// Generate the next customer ID based on the current maximum ID in the database
-	public String getNextCustomerId() {
-	    String sql = "SELECT MAX(CUSTID) AS MAXID FROM CUSTOMER";
-	    try (Connection conn = DBUtil.getConnection();
-	         PreparedStatement stmt = conn.prepareStatement(sql);
-	         ResultSet rs = stmt.executeQuery()) {
+            int rowsAffected = stmt.executeUpdate();
+            if (rowsAffected > 0) {
+                ResultSet rs = stmt.getGeneratedKeys();
+                if (rs.next()) {
+                    return rs.getString(1); // Return generated CUST_ID
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
-	        if (rs.next() && rs.getString("MAXID") != null) {
-	            String maxId = rs.getString("MAXID");
-	            int num = Integer.parseInt(maxId.substring(1)); // Skip 'C'
-	            return String.format("C%03d", num + 1);
-	        }
-	    } catch (SQLException e) {
-	        e.printStackTrace();
-	    }
-	    return "C001"; // Default if no customers exist
-	}
+    // Get customer by ID
+    public Customer getCustomerById(String custId) {
+        String sql = "SELECT * FROM CUSTOMERS WHERE CUST_ID = ?";
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-	public Customer getCustomerById(String custId) {
-		try (Connection conn = DBUtil.getConnection();
-				PreparedStatement stmt = conn.prepareStatement("SELECT * FROM CUSTOMER WHERE CUSTID = ?")) {
+            stmt.setString(1, custId);
+            ResultSet rs = stmt.executeQuery();
 
-			stmt.setString(1, custId);
-			ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                Customer customer = new Customer();
+                customer.setCustId(rs.getString("CUST_ID"));
+                customer.setCustName(rs.getString("CUST_NAME"));
+                customer.setCustEmail(rs.getString("CUST_EMAIL"));
+                customer.setCustPhoneNumber(rs.getString("CUST_PHONE_NUMBER"));
+                customer.setCustLoyaltyPoints(rs.getInt("CUST_LOYALTY_POINTS"));
+                customer.setCustPassword(rs.getString("CUST_PASSWORD"));
+                customer.setCustPicture(rs.getString("CUST_PICTURE"));
+                return customer;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
-			if (rs.next()) {
-				Customer customer = new Customer();
-				customer.setCustId(rs.getString("CUSTID"));
-				customer.setCustName(rs.getString("CUSTNAME"));
-				customer.setCustEmail(rs.getString("CUSTEMAIL"));
-				customer.setCustPhoneNumber(rs.getString("CUSTPHONENUMBER"));
-				customer.setLoyaltyPoints(rs.getInt("LOYALTYPOINTS"));
-				customer.setCustPassword(rs.getString("CUSTPASSWORD"));
-				customer.setCustPicture(rs.getString("CUSTPICTURE"));
-				return customer;
-			}
+    // Get customer by email
+    public Customer getCustomerByEmail(String email) {
+        String sql = "SELECT * FROM CUSTOMERS WHERE CUST_EMAIL = ?";
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+            stmt.setString(1, email);
+            ResultSet rs = stmt.executeQuery();
 
-		return null;
-	}
+            if (rs.next()) {
+                Customer customer = new Customer();
+                customer.setCustId(rs.getString("CUST_ID"));
+                customer.setCustName(rs.getString("CUST_NAME"));
+                customer.setCustEmail(rs.getString("CUST_EMAIL"));
+                customer.setCustPhoneNumber(rs.getString("CUST_PHONE_NUMBER"));
+                customer.setCustLoyaltyPoints(rs.getInt("CUST_LOYALTY_POINTS"));
+                customer.setCustPassword(rs.getString("CUST_PASSWORD"));
+                customer.setCustPicture(rs.getString("CUST_PICTURE"));
+                return customer;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
-	public Customer getCustomerByEmail(String email) {
-		String sql = "SELECT * FROM CUSTOMER WHERE CUSTEMAIL = ?";
-		try (Connection conn = DBUtil.getConnection();
-				PreparedStatement stmt = conn.prepareStatement(sql)) {
+    // Verify password
+    public boolean verifyPassword(Customer customer, String inputPassword) {
+        return customer.getCustPassword() != null &&
+               customer.getCustPassword().equals(inputPassword);
+    }
 
-			stmt.setString(1, email);
-			System.out.println("Looking up email: " + email); // Debug line
+    // Update customer
+    public boolean updateCustomer(Customer customer) {
+        String sql = "UPDATE CUSTOMERS SET CUST_NAME = ?, CUST_EMAIL = ?, CUST_PHONE_NUMBER = ?, CUST_PASSWORD = ?, CUST_PICTURE = ? WHERE CUST_ID = ?";
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-			ResultSet rs = stmt.executeQuery();
+            stmt.setString(1, customer.getCustName());
+            stmt.setString(2, customer.getCustEmail());
+            stmt.setString(3, customer.getCustPhoneNumber());
+            stmt.setString(4, customer.getCustPassword());
+            stmt.setString(5, customer.getCustPicture());
+            stmt.setString(6, customer.getCustId());
 
-			if (rs.next()) {
-			    Customer customer = new Customer();
-			    customer.setCustId(rs.getString("CUSTID"));
-			    customer.setCustName(rs.getString("CUSTNAME"));
-			    customer.setCustEmail(rs.getString("CUSTEMAIL"));
-			    customer.setCustPhoneNumber(rs.getString("CUSTPHONENUMBER"));
-			    customer.setLoyaltyPoints(rs.getInt("LOYALTYPOINTS"));
-			    customer.setCustPassword(rs.getString("CUSTPASSWORD"));
-			    customer.setCustPicture(rs.getString("CUSTPICTURE"));
-			    return customer;
-			}
+            int rowsAffected = stmt.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-
-	public boolean verifyPassword(Customer customer, String inputPassword) {
-		return customer.getCustPassword() != null &&
-				customer.getCustPassword().equals(inputPassword);
-
-	}
-
-	public boolean updateCustomer(Customer customer) {
-		String sql = "UPDATE CUSTOMER SET CUSTNAME = ?, CUSTEMAIL = ?, CUSTPHONENUMBER = ?, CUSTPASSWORD = ?, CUSTPICTURE = ? WHERE CUSTID = ?";
-		try (Connection conn = DBUtil.getConnection();
-				PreparedStatement stmt = conn.prepareStatement(sql)) {
-
-			stmt.setString(1, customer.getCustName());
-			stmt.setString(2, customer.getCustEmail());
-			stmt.setString(3, customer.getCustPhoneNumber());
-			stmt.setString(4, customer.getCustPassword());
-			stmt.setString(5, customer.getCustPicture());
-			stmt.setString(6, customer.getCustId());
-
-			int rowsAffected = stmt.executeUpdate();
-			return rowsAffected > 0;
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return false;
-		}
-	}
-	
-    // Get all customers (for admin/staff view)
+    // Get all customers
     public List<Customer> getAllCustomers() {
         List<Customer> customers = new ArrayList<>();
-        String sql = "SELECT * FROM CUSTOMER";
+        String sql = "SELECT * FROM CUSTOMERS";
         try (Connection conn = DBUtil.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
                 Customer customer = new Customer();
-                customer.setCustId(rs.getString("CUSTID"));
-                customer.setCustName(rs.getString("CUSTNAME"));
-                customer.setCustEmail(rs.getString("CUSTEMAIL"));
-                customer.setCustPhoneNumber(rs.getString("CUSTPHONENUMBER"));
-                customer.setLoyaltyPoints(rs.getInt("LOYALTYPOINTS"));
-                customer.setCustPassword(rs.getString("CUSTPASSWORD"));
-                customer.setCustPicture(rs.getString("CUSTPICTURE"));
+                customer.setCustId(rs.getString("CUST_ID"));
+                customer.setCustName(rs.getString("CUST_NAME"));
+                customer.setCustEmail(rs.getString("CUST_EMAIL"));
+                customer.setCustPhoneNumber(rs.getString("CUST_PHONE_NUMBER"));
+                customer.setCustLoyaltyPoints(rs.getInt("CUST_LOYALTY_POINTS"));
+                customer.setCustPassword(rs.getString("CUST_PASSWORD"));
+                customer.setCustPicture(rs.getString("CUST_PICTURE"));
                 customers.add(customer);
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return customers;
     }
 
-    // Delete customer by ID (optional)
+    // Delete customer by ID
     public boolean deleteCustomerById(String custId) {
-        String sql = "DELETE FROM CUSTOMER WHERE CUSTID = ?";
+        String sql = "DELETE FROM CUSTOMERS WHERE CUST_ID = ?";
         try (Connection conn = DBUtil.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, custId);
             int rowsAffected = stmt.executeUpdate();
             return rowsAffected > 0;
-
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
     }
 
-    // Check if email exists (for registration)
+    // Check if email exists
     public boolean emailExists(String email) {
-        String sql = "SELECT 1 FROM CUSTOMER WHERE CUSTEMAIL = ?";
+        String sql = "SELECT 1 FROM CUSTOMERS WHERE CUST_EMAIL = ?";
         try (Connection conn = DBUtil.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, email);
             ResultSet rs = stmt.executeQuery();
             return rs.next();
-
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
     }
+    
+    // Update loyalty points, capped at 10
+    public boolean updateLoyaltyPoints(String custId, int points) {
+        int cappedPoints = Math.min(points, 10);
+        String sql = "UPDATE CUSTOMERS SET CUST_LOYALTY_POINTS = ? WHERE CUST_ID = ?";
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, cappedPoints);
+            stmt.setString(2, custId);
+            return stmt.executeUpdate() > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 }

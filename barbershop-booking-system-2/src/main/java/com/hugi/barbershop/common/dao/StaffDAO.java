@@ -1,131 +1,64 @@
 package com.hugi.barbershop.common.dao;
 
 import com.hugi.barbershop.staff.model.Staff;
-import com.hugi.barbershop.common.dao.StaffDAO;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import com.hugi.barbershop.common.util.DBUtil;
+
+import java.sql.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 public class StaffDAO {
-	
-	//Insert New Staff
-	public boolean insertStaff(Staff staff) {
-		String sql = "INSERT INTO STAFF (STAFFID, NAME, EMAIL, PASSWORD, PHONENUMBER, DESCRIPTION, PICTURE, ROLE, ADMINID) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-   try (Connection conn = DBUtil.getConnection();
-        PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-	       stmt.setString(1, staff.getStaffId());
-	       stmt.setString(2, staff.getStaffName());
-	       stmt.setString(3, staff.getStaffEmail());
-	       stmt.setString(4, staff.getStaffPassword());
-	       stmt.setString(5, staff.getStaffPhoneNumber());
-	       stmt.setString(6, staff.getDescription());
-	       stmt.setString(7, staff.getStaffPicture());
-	       stmt.setString(8, staff.getStaffRole());
-	       stmt.setString(9, staff.getAdminId());
-	
-	       return stmt.executeUpdate() > 0;
-	
-	   } catch (SQLException e) {
-	       e.printStackTrace();
-	       return false;
-	   }
-
-	}
-	
-	// Check kalau email dah wujud dalam STAFF table
-	public boolean emailExists(String email) {
-	    String sql = "SELECT 1 FROM STAFF WHERE EMAIL = ?";
-	    try (Connection conn = DBUtil.getConnection();
-	         PreparedStatement stmt = conn.prepareStatement(sql)) {
-	        stmt.setString(1, email);
-	        ResultSet rs = stmt.executeQuery();
-	        return rs.next(); // Kalau ada, return true
-	    } catch (SQLException e) {
-	        e.printStackTrace();
-	        return false;
-	    }
-	}
-
-
-
-	// Get staff by STAFFID
+	// Get staff by STAFF_ID
 	public Staff getStaffById(String staffId) {
+		String sql = "SELECT * FROM STAFFS WHERE STAFF_ID = ?";
 		try (Connection conn = DBUtil.getConnection();
-				PreparedStatement stmt = conn.prepareStatement("SELECT * FROM STAFF WHERE STAFFID = ?")) {
-
+				PreparedStatement stmt = conn.prepareStatement(sql)) {
 			stmt.setString(1, staffId);
 			ResultSet rs = stmt.executeQuery();
-
 			if (rs.next()) {
-				System.out.println("Staff found: " + rs.getString("EMAIL"));
-				System.out.println("DB password: " + rs.getString("PASSWORD")); // DEBUG
-
 				Staff staff = new Staff();
-				staff.setStaffId(rs.getString("STAFFID"));
-				staff.setStaffName(rs.getString("NAME"));
-				staff.setStaffEmail(rs.getString("EMAIL"));
-				staff.setStaffPhoneNumber(rs.getString("PHONENUMBER"));
-				staff.setStaffPassword(rs.getString("PASSWORD"));
-				staff.setStaffPicture(rs.getString("PICTURE"));
-				staff.setDescription(rs.getString("DESCRIPTION"));
+				staff.setStaffId(rs.getString("STAFF_ID"));
+				staff.setStaffName(rs.getString("STAFF_NAME"));
+				staff.setStaffEmail(rs.getString("STAFF_EMAIL"));
+				staff.setStaffPhoneNumber(rs.getString("STAFF_PHONE_NUMBER"));
+				staff.setStaffPassword(rs.getString("STAFF_PASSWORD"));
+				staff.setStaffPicture(rs.getString("STAFF_PICTURE"));
+				staff.setDescription(rs.getString("STAFF_DESCRIPTION"));
 				staff.setStaffRole(rs.getString("ROLE"));
-				staff.setAdminId(rs.getString("ADMINID"));
+				staff.setAdminId(rs.getString("ADMIN_ID"));
 				return staff;
 			}
-
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-
 		return null;
 	}
 
 	// Get staff by EMAIL
 	public Staff getStaffByEmail(String email) {
-		String sql = "SELECT * FROM STAFF WHERE EMAIL = ?";
+		String sql = "SELECT * FROM STAFFS WHERE STAFF_EMAIL = ?";
 		try (Connection conn = DBUtil.getConnection();
 				PreparedStatement stmt = conn.prepareStatement(sql)) {
-
 			stmt.setString(1, email);
-			System.out.println("Looking up staff email: " + email); // Debug line
-
 			ResultSet rs = stmt.executeQuery();
-
 			if (rs.next()) {
-				System.out.println("Staff found: " + rs.getString("EMAIL"));
-				String dbPassword = rs.getString("PASSWORD");
-				System.out.println("DB password: " + dbPassword);
-
 				Staff staff = new Staff();
-				staff.setStaffId(rs.getString("STAFFID"));
-				staff.setStaffName(rs.getString("NAME"));
-				staff.setStaffEmail(rs.getString("EMAIL"));
-				staff.setStaffPhoneNumber(rs.getString("PHONENUMBER"));
-				staff.setStaffPassword(rs.getString("PASSWORD"));
-				staff.setStaffPicture(rs.getString("PICTURE"));
-				staff.setDescription(rs.getString("DESCRIPTION"));
+				staff.setStaffId(rs.getString("STAFF_ID"));
+				staff.setStaffName(rs.getString("STAFF_NAME"));
+				staff.setStaffEmail(rs.getString("STAFF_EMAIL"));
+				staff.setStaffPhoneNumber(rs.getString("STAFF_PHONE_NUMBER"));
+				staff.setStaffPassword(rs.getString("STAFF_PASSWORD"));
+				staff.setStaffPicture(rs.getString("STAFF_PICTURE"));
+				staff.setDescription(rs.getString("STAFF_DESCRIPTION"));
 				staff.setStaffRole(rs.getString("ROLE"));
-				staff.setAdminId(rs.getString("ADMINID"));
+				staff.setAdminId(rs.getString("ADMIN_ID"));
 				return staff;
-			} else {
-				// No result was found
-				System.out.println("No record found.");
 			}
-
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-
 		return null;
 	}
 
@@ -137,16 +70,22 @@ public class StaffDAO {
 
 	// Get staff by name
 	public Staff getStaffByName(String name) {
-		String sql = "SELECT * FROM STAFF WHERE NAME = ?";
+		String sql = "SELECT * FROM STAFFS WHERE STAFF_NAME = ?";
 		try (Connection conn = DBUtil.getConnection();
 				PreparedStatement stmt = conn.prepareStatement(sql)) {
 			stmt.setString(1, name);
 			ResultSet rs = stmt.executeQuery();
 			if (rs.next()) {
 				Staff staff = new Staff();
-				staff.setStaffId(rs.getString("STAFFID"));
-				staff.setStaffName(rs.getString("NAME"));
-				// set other fields if needed
+				staff.setStaffId(rs.getString("STAFF_ID"));
+				staff.setStaffName(rs.getString("STAFF_NAME"));
+				staff.setStaffEmail(rs.getString("STAFF_EMAIL"));
+				staff.setStaffPhoneNumber(rs.getString("STAFF_PHONE_NUMBER"));
+				staff.setStaffPassword(rs.getString("STAFF_PASSWORD"));
+				staff.setStaffPicture(rs.getString("STAFF_PICTURE"));
+				staff.setDescription(rs.getString("STAFF_DESCRIPTION"));
+				staff.setStaffRole(rs.getString("ROLE"));
+				staff.setAdminId(rs.getString("ADMIN_ID"));
 				return staff;
 			}
 		} catch (SQLException e) {
@@ -155,10 +94,9 @@ public class StaffDAO {
 		return null;
 	}
 
-
 	// Update staff info
 	public boolean updateStaff(Staff staff) {
-		String sql = "UPDATE STAFF SET NAME = ?, EMAIL = ?, PHONENUMBER = ?, PASSWORD = ?, PICTURE = ?, DESCRIPTION = ?, ROLE = ?, ADMINID = ? WHERE STAFFID = ?";
+		String sql = "UPDATE STAFFS SET STAFF_NAME = ?, STAFF_EMAIL = ?, STAFF_PHONE_NUMBER = ?, STAFF_PASSWORD = ?, STAFF_PICTURE = ?, STAFF_DESCRIPTION = ?, ROLE = ?, ADMIN_ID = ? WHERE STAFF_ID = ?";
 		try (Connection conn = DBUtil.getConnection();
 				PreparedStatement stmt = conn.prepareStatement(sql)) {
 			stmt.setString(1, staff.getStaffName());
@@ -170,10 +108,7 @@ public class StaffDAO {
 			stmt.setString(7, staff.getStaffRole());
 			stmt.setString(8, staff.getAdminId());
 			stmt.setString(9, staff.getStaffId());
-
-			int rowsAffected = stmt.executeUpdate();
-			return rowsAffected > 0;
-
+			return stmt.executeUpdate() > 0;
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return false;
@@ -183,50 +118,46 @@ public class StaffDAO {
 	// Get all barbers
 	public List<Staff> getAllBarbers() {
 		List<Staff> barbers = new ArrayList<>();
-		String sql = "SELECT * FROM STAFF WHERE ROLE = 'Barber'";
-
+		String sql = "SELECT * FROM STAFFS WHERE ROLE = 'Barber'";
 		try (Connection conn = DBUtil.getConnection();
 				PreparedStatement stmt = conn.prepareStatement(sql);
 				ResultSet rs = stmt.executeQuery()) {
-
 			while (rs.next()) {
 				Staff staff = new Staff();
-				staff.setStaffId(rs.getString("STAFFID"));
-				staff.setStaffName(rs.getString("NAME"));
-				staff.setStaffPhoneNumber(rs.getString("PHONENUMBER"));
-				staff.setDescription(rs.getString("DESCRIPTION"));
-				// Set other fields if needed
+				staff.setStaffId(rs.getString("STAFF_ID"));
+				staff.setStaffName(rs.getString("STAFF_NAME"));
+				staff.setStaffEmail(rs.getString("STAFF_EMAIL"));
+				staff.setStaffPhoneNumber(rs.getString("STAFF_PHONE_NUMBER"));
+				staff.setStaffPassword(rs.getString("STAFF_PASSWORD"));
+				staff.setStaffPicture(rs.getString("STAFF_PICTURE"));
+				staff.setDescription(rs.getString("STAFF_DESCRIPTION"));
+				staff.setStaffRole(rs.getString("ROLE"));
+				staff.setAdminId(rs.getString("ADMIN_ID"));
 				barbers.add(staff);
 			}
-
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-
 		return barbers;
 	}
 
-	// Check if any barber is available for a specific slot and date
+	// Check if any barber is available for a slot and date
 	public boolean isAnyBarberAvailable(String slot, String date) {
 		String sql = "SELECT COUNT(*) AS available " +
-				"FROM STAFF s " +
-				"WHERE s.ROLE = 'Barber' AND s.STAFFID NOT IN (" +
-				"  SELECT a.STAFFID FROM APPOINTMENTS a " +
-				"  WHERE a.APPOINTMENTDATE = ? AND a.APPOINTMENTTIME = ?" +
+				"FROM STAFFS s " +
+				"WHERE s.ROLE = 'Barber' AND s.STAFF_ID NOT IN (" +
+				"  SELECT a.STAFF_ID FROM APPOINTMENTS a " +
+				"  WHERE a.APPOINTMENT_DATE = ? AND a.APPOINTMENT_TIME = ?" +
 				")";
 		try (Connection conn = DBUtil.getConnection();
 				PreparedStatement stmt = conn.prepareStatement(sql)) {
-			// Convert ISO date to Oracle format before setting parameter
 			DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-			DateTimeFormatter oracleFormatter = DateTimeFormatter.ofPattern("dd-MMM-yy", Locale.ENGLISH);
 			LocalDate localDate = LocalDate.parse(date, inputFormatter);
-			String oracleDate = localDate.format(oracleFormatter).toUpperCase();
-			stmt.setString(1, oracleDate);
+			stmt.setDate(1, java.sql.Date.valueOf(localDate));
 			stmt.setString(2, slot);
 			ResultSet rs = stmt.executeQuery();
 			if (rs.next()) {
 				int available = rs.getInt("available");
-				System.out.println("Available barbers for " + date + " " + slot + ": " + available);
 				return available > 0;
 			}
 		} catch (SQLException e) {
@@ -238,26 +169,24 @@ public class StaffDAO {
 	// Get unavailable barbers for a specific slot and date
 	public List<String> getUnavailableBarbersForSlot(String slot, String date, String excludeAppointmentId) {
 		List<String> unavailable = new ArrayList<>();
-		String sql = "SELECT s.STAFFID FROM STAFF s " +
-				"JOIN APPOINTMENTS a ON s.STAFFID = a.STAFFID " +
-				"WHERE s.ROLE = 'Barber' AND a.APPOINTMENTDATE = ? AND a.APPOINTMENTTIME = ? ";
+		String sql = "SELECT s.STAFF_ID FROM STAFFS s " +
+				"JOIN APPOINTMENTS a ON s.STAFF_ID = a.STAFF_ID " +
+				"WHERE s.ROLE = 'Barber' AND a.APPOINTMENT_DATE = ? AND a.APPOINTMENT_TIME = ? ";
 		if (excludeAppointmentId != null) {
-			sql += "AND a.APPOINTMENTID <> ? ";
+			sql += "AND a.APPOINTMENT_ID <> ? ";
 		}
 		try (Connection conn = DBUtil.getConnection();
 				PreparedStatement stmt = conn.prepareStatement(sql)) {
 			DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-			DateTimeFormatter oracleFormatter = DateTimeFormatter.ofPattern("dd-MMM-yy", Locale.ENGLISH);
 			LocalDate localDate = LocalDate.parse(date, inputFormatter);
-			String oracleDate = localDate.format(oracleFormatter).toUpperCase();
-			stmt.setString(1, oracleDate);
+			stmt.setDate(1, java.sql.Date.valueOf(localDate));
 			stmt.setString(2, slot);
 			if (excludeAppointmentId != null) {
 				stmt.setString(3, excludeAppointmentId);
 			}
 			try (ResultSet rs = stmt.executeQuery()) {
 				while (rs.next()) {
-					unavailable.add(rs.getString("STAFFID"));
+					unavailable.add(rs.getString("STAFF_ID"));
 				}
 			}
 		} catch (SQLException e) {
@@ -266,21 +195,20 @@ public class StaffDAO {
 		return unavailable;
 	}
 
-	// Update the original method to call the new one with null
+	// Overload for convenience
 	public List<String> getUnavailableBarbersForSlot(String slot, String date) {
 		return getUnavailableBarbersForSlot(slot, date, null);
 	}
 
+	// Check if a specific barber is available
 	public boolean isBarberAvailable(String staffId, String date, String slot) {
-		String sql = "SELECT COUNT(*) FROM APPOINTMENTS WHERE STAFFID = ? AND APPOINTMENTDATE = ? AND APPOINTMENTTIME = ?";
+		String sql = "SELECT COUNT(*) FROM APPOINTMENTS WHERE STAFF_ID = ? AND APPOINTMENT_DATE = ? AND APPOINTMENT_TIME = ?";
 		try (Connection conn = DBUtil.getConnection();
 				PreparedStatement stmt = conn.prepareStatement(sql)) {
 			stmt.setString(1, staffId);
 			DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-			DateTimeFormatter oracleFormatter = DateTimeFormatter.ofPattern("dd-MMM-yy", Locale.ENGLISH);
 			LocalDate localDate = LocalDate.parse(date, inputFormatter);
-			String oracleDate = localDate.format(oracleFormatter).toUpperCase();
-			stmt.setString(2, oracleDate); // Use the same date format as stored in DB
+			stmt.setDate(2, java.sql.Date.valueOf(localDate));
 			stmt.setString(3, slot);
 			ResultSet rs = stmt.executeQuery();
 			if (rs.next()) {
@@ -291,7 +219,4 @@ public class StaffDAO {
 		}
 		return false;
 	}
-
-
-
 }
