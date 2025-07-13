@@ -137,13 +137,12 @@ if (price == null) {
 						</div>
 						<div class="mb-4">
 							<p class="font-semibold text-sm mb-2">Select Bank:</p>
-							<select
-								class="w-full px-3 py-2 border border-gray-300 rounded-md">
-								<option>Maybank</option>
-								<option>CIMB Bank</option>
-								<option>Public Bank</option>
-								<option>Hong Leong Bank</option>
-								<option>RHB Bank</option>
+							<select name="bankName" class="w-full px-3 py-2 border border-gray-300 rounded-md">
+							    <option>Maybank</option>
+							    <option>CIMB Bank</option>
+							    <option>Public Bank</option>
+							    <option>Hong Leong Bank</option>
+							    <option>RHB Bank</option>
 							</select>
 						</div>
 						<button id="confirmBankPayment"
@@ -198,14 +197,25 @@ if (price == null) {
                 
                 // Confirm bank payment button
                 document.getElementById('confirmBankPayment').addEventListener('click', function() {
+                    // Copy selected bank to main form
+                    var modalBankSelect = document.querySelector('#bankModal select[name="bankName"]');
+                    var mainForm = document.getElementById('paymentForm');
+                    var existingInput = mainForm.querySelector('input[name="bankName"]');
+                    if (existingInput) {
+                        existingInput.value = modalBankSelect.value;
+                    } else {
+                        var input = document.createElement('input');
+                        input.type = 'hidden';
+                        input.name = 'bankName';
+                        input.value = modalBankSelect.value;
+                        mainForm.appendChild(input);
+                    }
                     // Show a brief loading state in the button
                     this.innerHTML = 'Processing...';
                     this.disabled = true;
-                    
-                    // Wait 2 seconds to simulate processing
                     setTimeout(() => {
                         document.getElementById('bankModal').classList.add('hidden');
-                        document.getElementById('paymentForm').submit(); // Submit the form
+                        mainForm.submit(); // Submit the form
                     }, 2000);
                 });
 
