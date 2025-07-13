@@ -100,7 +100,7 @@ public class AuthController extends HttpServlet {
                         session.setAttribute("loginSuccess", "Login Successfully!");
                         response.sendRedirect("adminIndex");
                     } else if ("Barber".equalsIgnoreCase(staff.getStaffRole())) {
-                        response.sendRedirect("barberDashboard");
+                        response.sendRedirect("adminIndex");
                     } else {
                         session.setAttribute("loginError", "Login Failed!");
                         response.sendRedirect("adminLogin");
