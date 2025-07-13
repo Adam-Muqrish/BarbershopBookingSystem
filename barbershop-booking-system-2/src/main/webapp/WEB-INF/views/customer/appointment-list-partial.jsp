@@ -56,13 +56,13 @@ int totalPages = request.getAttribute("totalPages") != null ? (Integer) request.
 					class="w-full md:w-auto bg-blue-200 text-blue-800 text-sm px-3 py-1 rounded hover:bg-blue-300">View
 					Receipt</button>
 			</a>
-			<form action="markAsDone" method="post" style="display: inline;"
+			<%-- <form action="markAsDone" method="post" style="display: inline;"
 				class="w-full md:w-auto">
 				<input type="hidden" name="appointmentId"
 					value="<%=appt.getAppointmentId()%>" />
 				<button type="submit"
 					class="w-full md:w-auto bg-green-500 text-white text-sm px-3 py-1 rounded hover:bg-green-600">Done</button>
-			</form>
+			</form> --%>
 			<a
 				href="appointment-management?appointmentId=<%=appt.getAppointmentId()%>"
 				class="w-full md:w-auto">
