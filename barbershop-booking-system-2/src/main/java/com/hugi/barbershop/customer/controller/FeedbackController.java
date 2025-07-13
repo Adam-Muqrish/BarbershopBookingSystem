@@ -1,7 +1,7 @@
 package com.hugi.barbershop.customer.controller;
 
 import com.hugi.barbershop.customer.model.Feedback;
-import com.hugi.barbershop.common.dao.FeedbackDAO; // You need to create this DAO
+import com.hugi.barbershop.common.dao.FeedbackDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -12,117 +12,108 @@ import java.io.IOException;
 
 @WebServlet("/feedback")
 public class FeedbackController extends HttpServlet {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	public FeedbackController() {
-		super();
-	}
+    public FeedbackController() {
+        super();
+    }
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// Get appointmentId from URL parameter
-		String appointmentId = request.getParameter("appointmentId");
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String appointmentId = request.getParameter("appointmentId");
+        HttpSession session = request.getSession();
+        if (appointmentId != null) {
+            session.setAttribute("appointmentId", appointmentId);
+        } else {
+            appointmentId = (String) session.getAttribute("appointmentId");
+        }
 
-		HttpSession session = request.getSession();
-		if (appointmentId != null) {
-			session.setAttribute("appointmentId", appointmentId);
-		} else {
-			appointmentId = (String) session.getAttribute("appointmentId");
-		}
+        Feedback existingFeedback = null;
+        if (appointmentId != null) {
+            FeedbackDAO feedbackDAO = new FeedbackDAO();
+            existingFeedback = feedbackDAO.getFeedbackByAppointment(Integer.parseInt(appointmentId));
+        }
 
-		String custId = (String) session.getAttribute("custId");
+        request.setAttribute("existingFeedback", existingFeedback);
 
-		Feedback existingFeedback = null;
-		if (appointmentId != null && custId != null) {
-			FeedbackDAO feedbackDAO = new FeedbackDAO();
-			existingFeedback = feedbackDAO.getFeedbackByAppointmentAndCustomer(Integer.parseInt(appointmentId), custId);
-		}
+        String feedbackSuccess = (String) session.getAttribute("feedbackSuccess");
+        if (feedbackSuccess != null) {
+            request.setAttribute("feedbackSuccess", feedbackSuccess);
+            session.removeAttribute("feedbackSuccess");
+        }
 
-		request.setAttribute("existingFeedback", existingFeedback);
+        request.getRequestDispatcher("/WEB-INF/views/customer/feedback.jsp").forward(request, response);
+    }
 
-		String feedbackSuccess = (String) session.getAttribute("feedbackSuccess");
-		if (feedbackSuccess != null) {
-			request.setAttribute("feedbackSuccess", feedbackSuccess);
-			session.removeAttribute("feedbackSuccess");
-		}
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) 
+            throws ServletException, IOException {
+        String comments = request.getParameter("feedback");
+        String ratingStr = request.getParameter("rating");
+        String action = request.getParameter("action");
 
-		request.getRequestDispatcher("/WEB-INF/views/customer/feedback.jsp").forward(request, response);
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Session expired.");
+            return;
+        }
+        String appointmentIdStr = (String) session.getAttribute("appointmentId");
 
-	}
+        if (appointmentIdStr == null) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing required parameters.");
+            return;
+        }
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) 
-			throws ServletException, IOException {
-		String comments = request.getParameter("feedback");
-		String ratingStr = request.getParameter("rating");
-		String action = request.getParameter("action");
+        int appointmentId;
+        try {
+            appointmentId = Integer.parseInt(appointmentIdStr);
+        } catch (NumberFormatException e) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid appointment ID.");
+            return;
+        }
 
-		HttpSession session = request.getSession(false);
-		if (session == null) {
-			response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Session expired.");
-			return;
-		}
-		String custId = (String) session.getAttribute("custId");
-		String appointmentIdStr = (String) session.getAttribute("appointmentId");
+        FeedbackDAO feedbackDAO = new FeedbackDAO();
+        boolean isAjax = "XMLHttpRequest".equals(request.getHeader("X-Requested-With"));
 
-		if (custId == null || appointmentIdStr == null) {
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing required parameters.");
-			return;
-		}
+        if ("delete".equalsIgnoreCase(action)) {
+            feedbackDAO.deleteFeedback(appointmentId);
+            if (isAjax) {
+                response.setStatus(HttpServletResponse.SC_OK);
+            } else {
+                response.sendRedirect("feedback?appointmentId=" + appointmentId);
+            }
+            return;
+        }
 
-		int appointmentId;
-		try {
-			appointmentId = Integer.parseInt(appointmentIdStr);
-		} catch (NumberFormatException e) {
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid appointment ID.");
-			return;
-		}
+        if (ratingStr == null || ratingStr.trim().isEmpty() || comments == null || comments.trim().isEmpty()) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Rating and comments cannot be empty.");
+            return;
+        }
 
-		FeedbackDAO feedbackDAO = new FeedbackDAO();
+        int rating;
+        try {
+            rating = Integer.parseInt(ratingStr);
+        } catch (NumberFormatException e) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid rating.");
+            return;
+        }
 
-		boolean isAjax = "XMLHttpRequest".equals(request.getHeader("X-Requested-With"));
+        Feedback feedback = new Feedback();
+        feedback.setComments(comments);
+        feedback.setRating(rating);
+        feedback.setAppointmentId(appointmentId);
 
-		if ("delete".equalsIgnoreCase(action)) {
-			feedbackDAO.deleteFeedback(appointmentId, custId);
-			if (isAjax) {
-				response.setStatus(HttpServletResponse.SC_OK);
-			} else {
-				response.sendRedirect("feedback?appointmentId=" + appointmentId);
-			}
-			return;
-		}
+        Feedback existingFeedback = feedbackDAO.getFeedbackByAppointment(appointmentId);
+        if (existingFeedback != null) {
+            feedbackDAO.updateFeedback(feedback);
+        } else {
+            feedbackDAO.insertFeedback(feedback);
+        }
 
-		// Prevent null/empty rating or comments
-		if (ratingStr == null || ratingStr.trim().isEmpty() || comments == null || comments.trim().isEmpty()) {
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Rating and comments cannot be empty.");
-			return;
-		}
+        session.setAttribute("feedbackSuccess", "Your feedback has been submitted successfully.");
 
-		int rating;
-		try {
-			rating = Integer.parseInt(ratingStr);
-		} catch (NumberFormatException e) {
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid rating.");
-			return;
-		}
-
-		Feedback feedback = new Feedback();
-		feedback.setComments(comments);
-		feedback.setRating(rating);
-		feedback.setCustId(custId);
-		feedback.setAppointmentId(appointmentId);
-
-		Feedback existingFeedback = feedbackDAO.getFeedbackByAppointmentAndCustomer(appointmentId, custId);
-		if (existingFeedback != null) {
-			feedbackDAO.updateFeedback(feedback);
-		} else {
-			feedbackDAO.insertFeedback(feedback);
-		}
-
-		session.setAttribute("feedbackSuccess", "Your feedback has been submitted successfully.");
-		
-		if (isAjax) {
-		    response.setStatus(HttpServletResponse.SC_OK);
-		} else {
-		    response.sendRedirect("feedback?appointmentId=" + appointmentId);
-		}
-	}
+        if (isAjax) {
+            response.setStatus(HttpServletResponse.SC_OK);
+        } else {
+            response.sendRedirect("feedback?appointmentId=" + appointmentId);
+        }
+    }
 }

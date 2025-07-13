@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 
 import com.hugi.barbershop.common.dao.AppointmentDAO;
+import com.hugi.barbershop.common.dao.CustomerDAO;
 import com.hugi.barbershop.common.dao.PaymentDAO;
 import com.hugi.barbershop.customer.model.Appointment;
 import com.hugi.barbershop.customer.model.Payment;
@@ -19,11 +20,13 @@ public class PaymentController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private AppointmentDAO appointmentDAO;
 	private PaymentDAO paymentDAO;
+	private CustomerDAO customerDAO;
 
 	@Override
 	public void init() {
 		appointmentDAO = new AppointmentDAO();
 		paymentDAO = new PaymentDAO();
+		customerDAO = new CustomerDAO();
 	}
 
 	public PaymentController() {
@@ -60,6 +63,12 @@ public class PaymentController extends HttpServlet {
 
 		String custId = (String) session.getAttribute("custId");
 		String paymentMethod = request.getParameter("payment-method");
+	    String bankName = request.getParameter("bankName"); // Get selected bank
+	    String customerName = null;
+	    Object customerObj = session.getAttribute("customer");
+	    if (customerObj != null) {
+	        customerName = ((com.hugi.barbershop.customer.model.Customer) customerObj).getCustName();
+	    }
 		
 		// Retrieve booking details from session
 		String bookingFor = (String) session.getAttribute("bookingFor");
@@ -112,9 +121,14 @@ public class PaymentController extends HttpServlet {
 			paymentDAO.insertCashPayment(paymentId, price);
 			appointmentDAO.updatePaymentStatus(custId, bookingDate, selectedTime, "pending");
 		} else if ("online-banking".equals(paymentMethod)) {
-			paymentDAO.insertOnlinePayment(paymentId, "Toyyib Pay", "Customer Name");
+			// Use selected bank and customer name
+			paymentDAO.insertOnlinePayment(paymentId, bankName, customerName != null ? customerName : "Unknown");
 			appointmentDAO.updatePaymentStatus(custId, bookingDate, selectedTime, "completed");
 		}
+		
+		// After payment is successful and appointment is created
+		int loyaltyCount = appointmentDAO.countLoyaltyAppointmentsByCustomerId(custId);
+		customerDAO.updateLoyaltyPoints(custId, loyaltyCount);
 
 		// Save appointmentId in session for receipt
 		session.setAttribute("appointmentId", appointmentId);
