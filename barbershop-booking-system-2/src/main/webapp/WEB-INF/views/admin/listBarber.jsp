@@ -38,21 +38,23 @@
                                             </nav>
                                         </div>
                                         <div class="nk-block-head-content">
-                                            <ul class="d-flex">
-                                                <li>
-                                                    <a href="#" class="btn btn-md d-md-none btn-primary" data-bs-toggle="modal" data-bs-target="#addUserModal">
-                                                        <em class="icon ni ni-plus"></em>
-                                                        <span>Add</span>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="#" class="btn btn-primary d-none d-md-inline-flex" data-bs-toggle="modal" data-bs-target="#addUserModal">
-                                                        <em class="icon ni ni-plus"></em>
-                                                        <span>Register New Staff</span>
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </div>
+										    <c:if test="${sessionScope.staffRole == 'Admin'}">
+										        <ul class="d-flex">
+										            <li>
+										                <a href="#" class="btn btn-md d-md-none btn-primary" data-bs-toggle="modal" data-bs-target="#addUserModal">
+										                    <em class="icon ni ni-plus"></em>
+										                    <span>Add</span>
+										                </a>
+										            </li>
+										            <li>
+										                <a href="#" class="btn btn-primary d-none d-md-inline-flex" data-bs-toggle="modal" data-bs-target="#addUserModal">
+										                    <em class="icon ni ni-plus"></em>
+										                    <span>Register New Staff</span>
+										                </a>
+										            </li>
+										        </ul>
+										    </c:if>
+										</div>
                                     </div>
                                 </div>
 
@@ -64,6 +66,7 @@
                                                     <th><span class="overline-title">Name</span></th>
                                                     <th><span class="overline-title">Phone Number</span></th>
                                                     <th><span class="overline-title">Description</span></th>
+                                                    <!-- <th><span class="overline-title">Admin</span></th> -->
                                                     <th><span class="overline-title">Action</span></th>
                                                 </tr>
                                             </thead>
@@ -73,6 +76,7 @@
                                                         <td>${barber.staffName}</td>
                                                         <td>${barber.staffPhoneNumber}</td>
                                                         <td>${barber.description}</td>
+                                                        <%-- <td>${barber.adminName}</td> --%>
                                                         <td>
                                                             <div class="dropdown">
                                                                 <a href="#" class="btn btn-sm btn-icon btn-zoom me-n1" data-bs-toggle="dropdown">

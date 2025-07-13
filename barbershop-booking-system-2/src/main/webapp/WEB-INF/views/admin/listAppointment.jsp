@@ -64,10 +64,9 @@
                                                     <!-- <th class="tb-col tb-col-xl">
                                                         <span class="overline-title">Loyalty Point</span>
                                                     </th> -->
-                                                    <th class="tb-col tb-col-end">
-                                                        <span class="overline-title">Action</span>
-                                                    </th>
-                                                    
+                                                    <c:if test="${fn:toLowerCase(sessionScope.staffRole) == 'admin'}">
+										                <th class="tb-col tb-col-end"><span class="overline-title">Action</span></th>
+										            </c:if>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -80,40 +79,55 @@
 										                <td>
 														    <c:choose>
 														        <c:when test="${fn:toLowerCase(a.serviceStatus) == 'pending'}">
-														            <form action="UpdateServiceStatus" method="post" style="display:inline;">
-														                <input type="hidden" name="appointmentId" value="${a.appointmentId}" />
-														                <button type="submit" class="btn btn-warning btn-sm">
-														                    Pending
-														                </button>
-														            </form>
+														            <c:choose>
+														                <c:when test="${sessionScope.staffRole == 'Admin'}">
+														                    <!-- Admin boleh update -->
+														                    <form action="UpdateServiceStatus" method="post" style="display:inline;">
+														                        <input type="hidden" name="appointmentId" value="${a.appointmentId}" />
+														                        <button type="submit" class="btn btn-warning btn-sm">
+														                            Pending
+														                        </button>
+														                    </form>
+														                </c:when>
+														                <c:otherwise>
+														                    <!-- Barber tak boleh tekan -->
+														                    <button class="btn btn-warning btn-sm" disabled>
+														                        Pending
+														                    </button>
+														                </c:otherwise>
+														            </c:choose>
 														        </c:when>
+														
 														        <c:otherwise>
+														            <!-- Kalau status bukan Pending, tunjukkan sebagai Done (disabled) -->
 														            <button class="btn btn-success btn-sm" disabled>
-														                Done
+														                ${a.serviceStatus}
 														            </button>
 														        </c:otherwise>
 														    </c:choose>
 														</td>
 										                <%-- <td>${a.loyaltyPoint}</td> --%>
-										                <td class="tb-col tb-col-end">
-											                <div class="dropdown">
-											                    <a href="#" class="btn btn-sm btn-icon btn-zoom me-n1" data-bs-toggle="dropdown">
-											                        <em class="icon ni ni-more-v"></em>
-											                    </a>
-											                    <div class="dropdown-menu dropdown-menu-sm dropdown-menu-end">
-											                        <div class="dropdown-content py-1">
-											                            <ul class="link-list link-list-hover-bg-primary link-list-md">
-											                                <li>
-											                                    <a href="editAppointment?appointmentId=${a.appointmentId}">
-											                                        <em class="icon ni ni-eye"></em>
-											                                        <span>Edit Appointment</span>
-											                                    </a>
-											                                </li>
-											                            </ul>
-											                        </div>
-											                    </div>
-											                </div>
-											            </td>
+										                <c:if test="${fn:toLowerCase(sessionScope.staffRole) == 'admin'}">
+											                <td class="tb-col tb-col-end">
+												                <div class="dropdown">
+												                    <a href="#" class="btn btn-sm btn-icon btn-zoom me-n1" data-bs-toggle="dropdown">
+												                        <em class="icon ni ni-more-v"></em>
+												                    </a>
+												                    <div class="dropdown-menu dropdown-menu-sm dropdown-menu-end">
+												                        <div class="dropdown-content py-1">
+												                            <ul class="link-list link-list-hover-bg-primary link-list-md">
+												                                <li>
+												                                    <a href="editAppointment?appointmentId=${a.appointmentId}">
+												                                        <em class="icon ni ni-eye"></em>
+												                                        <span>Edit Appointment</span>
+												                                    </a>
+												                                </li>
+												                            </ul>
+												                        </div>
+												                    </div>
+												                </div>
+												            </td>
+											            </c:if>
 										            </tr>
 										        </c:forEach>
                                             </tbody>
