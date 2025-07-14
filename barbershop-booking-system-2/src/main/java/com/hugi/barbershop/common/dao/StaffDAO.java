@@ -287,6 +287,10 @@ public class StaffDAO {
 	        return false;
 	    }
 	}
-
-
+	
+	// Get barber name by staff ID
+	public String getBarberNameById(String staffId) {
+		Staff staff = getStaffById(staffId);
+		return (staff != null) ? staff.getStaffName() : null;
+	}
 }
