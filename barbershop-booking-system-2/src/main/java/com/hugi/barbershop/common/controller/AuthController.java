@@ -95,6 +95,8 @@ public class AuthController extends HttpServlet {
                     session.setAttribute("staff", staff);
                     session.setAttribute("staffId", staff.getStaffId());
                     session.setAttribute("staffRole", staff.getStaffRole());
+                    session.setAttribute("staffName", staff.getStaffName());
+
 
                     if ("Admin".equalsIgnoreCase(staff.getStaffRole())) {
                         session.setAttribute("loginSuccess", "Login Successfully!");
