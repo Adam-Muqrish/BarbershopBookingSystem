@@ -5,6 +5,9 @@ import com.hugi.barbershop.common.util.DBUtil;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.List;
+import java.util.ArrayList;
+
 
 public class FeedbackDAO {
     // Insert a new feedback (FEEDBACK_ID is auto-incremented)
@@ -75,5 +78,32 @@ public class FeedbackDAO {
             e.printStackTrace();
             return false;
         }
+    }
+    
+    //Get all feedback (staff)
+    public List<Feedback> getAllFeedback() {
+        List<Feedback> feedbackList = new ArrayList<>();
+        String sql = "SELECT f.*, c.CUST_NAME " +
+                "FROM FEEDBACKS f " +
+                "JOIN APPOINTMENTS a ON f.APPOINTMENT_ID = a.APPOINTMENT_ID " +
+                "JOIN CUSTOMERS c ON a.CUST_ID = c.CUST_ID " +
+                "ORDER BY f.FEEDBACK_ID DESC";
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+            
+            while (rs.next()) {
+                Feedback feedback = new Feedback();
+                feedback.setCustomerName(rs.getString("CUST_NAME")); 
+                feedback.setFeedbackId(rs.getString("FEEDBACK_ID"));
+                feedback.setComments(rs.getString("COMMENTS"));
+                feedback.setRating(rs.getInt("RATING"));
+                feedback.setAppointmentId(rs.getInt("APPOINTMENT_ID"));
+                feedbackList.add(feedback);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return feedbackList;
     }
 }

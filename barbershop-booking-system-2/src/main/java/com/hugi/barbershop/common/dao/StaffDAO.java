@@ -117,29 +117,43 @@ public class StaffDAO {
 
 	// Get all barbers
 	public List<Staff> getAllBarbers() {
-		List<Staff> barbers = new ArrayList<>();
-		String sql = "SELECT * FROM STAFFS WHERE ROLE = 'Barber'";
-		try (Connection conn = DBUtil.getConnection();
-				PreparedStatement stmt = conn.prepareStatement(sql);
-				ResultSet rs = stmt.executeQuery()) {
-			while (rs.next()) {
-				Staff staff = new Staff();
-				staff.setStaffId(rs.getString("STAFF_ID"));
-				staff.setStaffName(rs.getString("STAFF_NAME"));
-				staff.setStaffEmail(rs.getString("STAFF_EMAIL"));
-				staff.setStaffPhoneNumber(rs.getString("STAFF_PHONE_NUMBER"));
-				staff.setStaffPassword(rs.getString("STAFF_PASSWORD"));
-				staff.setStaffPicture(rs.getString("STAFF_PICTURE"));
-				staff.setDescription(rs.getString("STAFF_DESCRIPTION"));
-				staff.setStaffRole(rs.getString("ROLE"));
-				staff.setAdminId(rs.getString("ADMIN_ID"));
-				barbers.add(staff);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return barbers;
+	    List<Staff> barbers = new ArrayList<>();
+	    String sql = """
+	        SELECT s.*, a.STAFF_NAME AS ADMIN_NAME
+	        FROM STAFFS s
+	        LEFT JOIN STAFFS a ON s.ADMIN_ID = a.STAFF_ID
+	        WHERE s.ROLE = 'Barber'
+	    """;
+
+	    try (Connection conn = DBUtil.getConnection();
+	         PreparedStatement stmt = conn.prepareStatement(sql);
+	         ResultSet rs = stmt.executeQuery()) {
+
+	        while (rs.next()) {
+	            Staff staff = new Staff();
+	            staff.setStaffId(rs.getString("STAFF_ID"));
+	            staff.setStaffName(rs.getString("STAFF_NAME"));
+	            staff.setStaffEmail(rs.getString("STAFF_EMAIL"));
+	            staff.setStaffPhoneNumber(rs.getString("STAFF_PHONE_NUMBER"));
+	            staff.setStaffPassword(rs.getString("STAFF_PASSWORD"));
+	            staff.setStaffPicture(rs.getString("STAFF_PICTURE"));
+	            staff.setDescription(rs.getString("STAFF_DESCRIPTION"));
+	            staff.setStaffRole(rs.getString("ROLE"));
+	            staff.setAdminId(rs.getString("ADMIN_ID"));
+
+	            // SET NAMA ADMIN
+	            staff.setAdminName(rs.getString("ADMIN_NAME"));
+
+	            barbers.add(staff);
+	        }
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+
+	    return barbers;
 	}
+
 
 	// Check if any barber is available for a slot and date
 	public boolean isAnyBarberAvailable(String slot, String date) {
@@ -219,4 +233,60 @@ public class StaffDAO {
 		}
 		return false;
 	}
+	
+	// ✅ Check if email exists in STAFFS table
+	public boolean emailExists(String email) {
+		String sql = "SELECT 1 FROM STAFFS WHERE STAFF_EMAIL = ?";
+		try (Connection conn = DBUtil.getConnection();
+			 PreparedStatement stmt = conn.prepareStatement(sql)) {
+			stmt.setString(1, email);
+			ResultSet rs = stmt.executeQuery();
+			return rs.next(); // true kalau email wujud
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
+	// ✅ Insert new staff into STAFFS table
+	public boolean insertStaff(Staff staff) {
+		String sql = "INSERT INTO STAFFS (STAFF_NAME, STAFF_EMAIL, STAFF_PHONE_NUMBER, STAFF_PASSWORD, STAFF_PICTURE, STAFF_DESCRIPTION, ROLE, ADMIN_ID) " +
+					 "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+		try (Connection conn = DBUtil.getConnection();
+			 PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+			stmt.setString(1, staff.getStaffName());
+			stmt.setString(2, staff.getStaffEmail());
+			stmt.setString(3, staff.getStaffPhoneNumber());
+			stmt.setString(4, staff.getStaffPassword());
+			stmt.setString(5, staff.getStaffPicture());
+			stmt.setString(6, staff.getDescription());
+			stmt.setString(7, staff.getStaffRole());
+			stmt.setString(8, staff.getAdminId());
+
+			return stmt.executeUpdate() > 0;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
+	//update profile staff
+	public boolean updateProfileStaff(Staff staff) {
+	    String sql = "UPDATE STAFFS SET STAFF_NAME = ?, STAFF_EMAIL = ?, STAFF_PHONE_NUMBER = ?, STAFF_DESCRIPTION = ? WHERE STAFF_ID = ?";
+	    try (Connection conn = DBUtil.getConnection();
+	         PreparedStatement stmt = conn.prepareStatement(sql)) {
+	        stmt.setString(1, staff.getStaffName());
+	        stmt.setString(2, staff.getStaffEmail());
+	        stmt.setString(3, staff.getStaffPhoneNumber());
+	        stmt.setString(4, staff.getDescription());
+	        stmt.setString(5, staff.getStaffId());
+	        return stmt.executeUpdate() > 0;
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	        return false;
+	    }
+	}
+
+
 }

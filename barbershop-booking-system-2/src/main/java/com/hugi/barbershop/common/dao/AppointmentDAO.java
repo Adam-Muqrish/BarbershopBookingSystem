@@ -133,6 +133,40 @@ public class AppointmentDAO {
         }
         return appointments;
     }
+    
+    // Get all appointments (used by admin/staff view)
+    public List<Appointment> getAllAppointments() {
+        List<Appointment> appointments = new ArrayList<>();
+        String sql = "SELECT a.*, s.STAFF_NAME AS BARBERNAME, c.CUST_NAME AS CUSTOMERNAME " +
+                "FROM APPOINTMENTS a " +
+                "LEFT JOIN STAFFS s ON a.STAFF_ID = s.STAFF_ID " +
+                "LEFT JOIN CUSTOMERS c ON a.CUST_ID = c.CUST_ID " +
+                "ORDER BY a.APPOINTMENT_DATE DESC, a.APPOINTMENT_TIME DESC";
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                Appointment appointment = new Appointment();
+                appointment.setAppointmentBarber(rs.getString("BARBERNAME"));
+                appointment.setCustomerName(rs.getString("CUSTOMERNAME"));
+                appointment.setAppointmentId(rs.getString("APPOINTMENT_ID"));
+                appointment.setCustBookFor(rs.getString("CUST_BOOK_FOR"));
+                appointment.setAppointmentDate(rs.getDate("APPOINTMENT_DATE").toString());
+                appointment.setAppointmentTime(rs.getString("APPOINTMENT_TIME"));
+                appointment.setCustType(rs.getString("CUST_TYPE"));
+                appointment.setPaymentStatus(rs.getString("PAYMENT_STATUS"));
+                appointment.setServiceStatus(rs.getString("SERVICE_STATUS"));
+                appointment.setCustId(rs.getString("CUST_ID"));
+                appointment.setStaffId(rs.getString("STAFF_ID"));
+                appointment.setValueLoyalty(rs.getInt("VALUE_LOYALTY"));
+                appointment.setAppointmentBarber(rs.getString("BARBERNAME"));
+                appointments.add(appointment);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return appointments;
+    }
 
     // Count total done appointments for a customer
     public int countDoneAppointmentsByCustomerId(String custId) {
@@ -278,6 +312,36 @@ public class AppointmentDAO {
                 return rs.getInt(1);
             }
         } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+    
+    // ✅ Update service status to 'Done' by appointment ID
+    public boolean updateServiceStatusToDone(String appointmentId) {
+        String sql = "UPDATE APPOINTMENTS SET SERVICE_STATUS = 'Done' WHERE APPOINTMENT_ID = ?";
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, appointmentId);
+            return stmt.executeUpdate() > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    
+    //total appointments
+    public int getTotalAppointments() {
+        String sql = "SELECT COUNT(*) AS TOTAL FROM APPOINTMENTS";
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            if (rs.next()) {
+                return rs.getInt("TOTAL");
+            }
+        } catch (Exception e) {
+            System.out.println("Error counting total appointments:");
             e.printStackTrace();
         }
         return 0;
