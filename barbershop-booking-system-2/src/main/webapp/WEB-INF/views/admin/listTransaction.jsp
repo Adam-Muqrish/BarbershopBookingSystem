@@ -69,18 +69,16 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                            	<c:forEach var="tx" items="${transactionList}">
-												    <tr>
-												        <td>${tx.customerName}</td>
-												        <td>${tx.paymentDate}</td>
-												        <td>RM <fmt:formatNumber value="${tx.paymentAmount}" type="number" minFractionDigits="2" maxFractionDigits="2"/></td>
-												        <td>${tx.paymentMethod}</td>
-												        <%-- <td>
-												            <!-- contoh button -->
-												            <a href="transactionDetail?paymentId=${tx.paymentId}" class="btn btn-info btn-sm">View</a>
-												        </td> --%>
-												    </tr>
-												</c:forEach>
+                                                <c:forEach var="tx" items="${transactionList}">
+                                                    <tr>
+                                                        <td>${tx.customerName}</td>
+                                                        <td>${tx.formattedDate}</td>
+                                                        <td>RM 
+                                                            <fmt:formatNumber value="${tx.paymentAmount}" type="number" minFractionDigits="2" maxFractionDigits="2"/>
+                                                        </td>
+                                                        <td>${tx.paymentMethod}</td>
+                                                    </tr>
+                                                </c:forEach>
                                             </tbody>
                                         </table>
                                     </div><!-- .card -->

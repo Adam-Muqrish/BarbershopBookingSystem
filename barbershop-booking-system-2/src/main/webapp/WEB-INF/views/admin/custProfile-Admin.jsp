@@ -73,7 +73,7 @@
 																    </li>
 																    <li class="list-group-item d-flex">
 																        <span class="fw-medium" style="min-width: 130px;">Loyalty Points:</span>
-																        <span class="text">${customer.loyaltyPoints}</span>
+																        <span class="text">${customer.custLoyaltyPoints}</span>
 																    </li>
 																</ul>
                                                             </div><!-- .bio-block -->

@@ -66,7 +66,7 @@
                                                     <th><span class="overline-title">Name</span></th>
                                                     <th><span class="overline-title">Phone Number</span></th>
                                                     <th><span class="overline-title">Description</span></th>
-                                                    <!-- <th><span class="overline-title">Admin</span></th> -->
+                                                    <th><span class="overline-title">Admin In Charge</span></th>
                                                     <th><span class="overline-title">Action</span></th>
                                                 </tr>
                                             </thead>
@@ -76,7 +76,7 @@
                                                         <td>${barber.staffName}</td>
                                                         <td>${barber.staffPhoneNumber}</td>
                                                         <td>${barber.description}</td>
-                                                        <%-- <td>${barber.adminName}</td> --%>
+                                                        <td>${barber.adminName}</td>
                                                         <td>
                                                             <div class="dropdown">
                                                                 <a href="#" class="btn btn-sm btn-icon btn-zoom me-n1" data-bs-toggle="dropdown">
@@ -102,7 +102,6 @@
                                         </table>
                                     </div>
                                 </div>
-
                             </div> <!-- .nk-content-body -->
                         </div> <!-- .nk-content-inner -->
                     </div> <!-- .container -->

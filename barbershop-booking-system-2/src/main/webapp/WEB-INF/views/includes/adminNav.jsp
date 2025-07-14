@@ -17,7 +17,7 @@
 	<div class="nk-sidebar nk-sidebar-fixed is-theme" id="sidebar">
 		<div class="nk-sidebar-element nk-sidebar-head">
 			<div class="nk-sidebar-brand">
-				<a href="adminIndex.jsp" class="logo-link">
+				<a href="adminIndex" class="logo-link">
 					<div class="logo-wrap" style="width: 150px; height: 100px;">
 						<img class="logo-img logo-light"
 							src="./././resources/uploads/hugiBarber1.png" alt=""
@@ -46,7 +46,7 @@
 						<li class="nk-menu-item"><a href="listTransaction"
 							class="nk-menu-link"><span class="nk-menu-icon"><em
 									class="icon ni ni-cc-alt2"></em></span><span class="nk-menu-text">Transaction</span></a></li>
-						<li class="nk-menu-item has-sub"><a href="#"
+						<!-- <li class="nk-menu-item has-sub"><a href="#"
 							class="nk-menu-link nk-menu-toggle"><span
 								class="nk-menu-icon"><em class="icon ni ni-reports"></em></span><span
 								class="nk-menu-text">Sales Report</span></a>
@@ -63,13 +63,17 @@
 									href="/html/apps/invoice/invoice-preview.html"
 									class="nk-menu-link"><span class="nk-menu-text">Yearly
 											Report</span></a></li>
-							</ul></li>
+							</ul></li> -->
 						<li class="nk-menu-item"><a href="listFeedback"
 							class="nk-menu-link"><span class="nk-menu-icon"><em
-									class="icon ni ni-chat-circle"></em></span><span class="nk-menu-text">Feedback</span></a></li>
-						<li class="nk-menu-item"><a href="logout"
-							class="nk-menu-link"><span class="nk-menu-icon"><em
-									class="icon ni ni-user"></em></span><span class="nk-menu-text">Log Out</span></a></li>
+									class="icon ni ni-chat-circle"></em></span><span class="nk-menu-text">Feedback</span></a></li><br><br><br><br><br>
+						<!-- <li class="nk-menu-divider" style="border-top: 1px solid #999999; margin: 0;"></li>
+						<li class="nk-menu-item" style="margin-top: 4px;">
+						    <a href="logout" class="nk-menu-link">
+						        <span class="nk-menu-icon"><em class="icon ni ni-user"></em></span>
+						        <span class="nk-menu-text">Log Out</span>
+						    </a>
+						</li> -->
 					</ul>
 				</div>
 			</div>
