@@ -183,5 +183,24 @@ public class CustomerDAO {
             return false;
         }
     }
+    
+    public int getCustomerCount() {
+        String sql = "SELECT COUNT(*) AS TOTAL FROM CUSTOMERS";
+
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            if (rs.next()) {
+                return rs.getInt("TOTAL");
+            }
+
+        } catch (Exception e) {
+            System.out.println("Error counting customers:");
+            e.printStackTrace();
+        }
+
+        return 0;
+    }
 
 }
