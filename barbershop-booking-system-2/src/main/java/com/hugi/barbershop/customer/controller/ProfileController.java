@@ -50,7 +50,7 @@ public class ProfileController extends HttpServlet {
 			return;
 		}
 
-		int loyaltyPoints = appointmentDAO.getTotalLoyaltyPointsByCustomerId(custId);
+		int loyaltyPoints = appointmentDAO.countLoyaltyAppointmentsByCustomerId(custId);
 
 		// Set customer and loyalty points in request attributes
 		request.setAttribute("customer", customer);

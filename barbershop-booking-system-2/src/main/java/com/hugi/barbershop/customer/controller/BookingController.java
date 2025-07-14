@@ -8,6 +8,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
@@ -44,20 +47,15 @@ public class BookingController extends HttpServlet {
                 jsonBuilder.append(",");
             }
             firstSlot = false;
-
-            // Escape the key
             String escapedKey = entry.getKey()
                     .replace("\\", "\\\\")
                     .replace("\"", "\\\"");
-
             jsonBuilder.append("\"").append(escapedKey).append("\":[");
-
             List<String> barbers = entry.getValue();
             for (int i = 0; i < barbers.size(); i++) {
                 if (i > 0) {
                     jsonBuilder.append(",");
                 }
-                // Escape the barber names
                 String escapedName = barbers.get(i)
                         .replace("\\", "\\\\")
                         .replace("\"", "\\\"");
@@ -80,26 +78,20 @@ public class BookingController extends HttpServlet {
             return;
         }
 
-        // Get selected date from request or use today
         LocalDate today = LocalDate.now();
         String selectedDate = request.getParameter("date");
         if (selectedDate == null || selectedDate.isEmpty()) {
             selectedDate = today.format(DateTimeFormatter.ISO_DATE);
         }
-
-        // Validate selected date is not before today
         LocalDate parsedSelectedDate = LocalDate.parse(selectedDate);
         if (parsedSelectedDate.isBefore(today)) {
             selectedDate = today.format(DateTimeFormatter.ISO_DATE);
         }
-
         String selectedSlot = request.getParameter("slot");
 
-        // Fetch all barbers
         StaffDAO staffDAO = new StaffDAO();
         List<Staff> barbers = staffDAO.getAllBarbers();
 
-        // Define time slots
         String[] slots = {
                 "10:00 am", "10:30 am", "11:00 am", "11:30 am",
                 "12:00 pm", "12:30 pm", "1:00 pm", "1:30 pm",
@@ -109,21 +101,16 @@ public class BookingController extends HttpServlet {
                 "8:00 pm", "8:30 pm", "9:00 pm", "9:30 pm"
         };
 
-        // Create slot availability map for the selected date
         Map<String, Boolean> slotAvailability = new HashMap<>();
         Map<String, List<String>> unavailableBarbersBySlot = new HashMap<>();
 
         for (String slot : slots) {
-            // Get unavailable barbers for the selected date and slot
             List<String> unavailableBarbers = staffDAO.getUnavailableBarbersForSlot(slot, selectedDate);
             unavailableBarbersBySlot.put(slot, unavailableBarbers);
-
-            // A slot is available if at least one barber is available
             boolean available = unavailableBarbers.size() < barbers.size();
             slotAvailability.put(slot, available);
         }
 
-        // Check if it's an AJAX request
         boolean isAjax = "true".equals(request.getParameter("ajax"));
         if (isAjax) {
             response.setContentType("application/json");
@@ -135,10 +122,8 @@ public class BookingController extends HttpServlet {
             return;
         }
 
-        // Create JSON string using the helper method
         String unavailableBarbersBySlotJson = createSafeJson(unavailableBarbersBySlot);
 
-        // Set attributes for the JSP
         request.setAttribute("customer", customer);
         request.setAttribute("barbers", barbers);
         request.setAttribute("slotAvailability", slotAvailability);
@@ -154,7 +139,6 @@ public class BookingController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // Retrieve booking details from form
         HttpSession session = request.getSession();
         String custId = (String) session.getAttribute("custId");
         String bookingFor = request.getParameter("booking-for");
@@ -162,34 +146,23 @@ public class BookingController extends HttpServlet {
         String selectedTime = request.getParameter("slot");
         String category = request.getParameter("category");
         String selectedBarber = request.getParameter("barber");
-        
-        // Create a unique booking key
+
         String bookingKey = UUID.randomUUID().toString();
         session.setAttribute("bookingKey", bookingKey);
 
-        // Get staff ID from staff name
         StaffDAO staffDAO = new StaffDAO();
         String staffId = selectedBarber;
-        //Staff staff = staffDAO.getStaffById(staffId);
+        // Get barber name from staffId
+        String selectedBarberName = staffDAO.getBarberNameById(staffId);
 
-        // Determine price based on category
         double price = 0.0;
         switch (category.toLowerCase()) {
-            case "child":
-                price = 10.0;
-                break;
-            case "teen":
-                price = 15.0;
-                break;
-            case "adult":
-                price = 30.0;
-                break;
-            case "senior":
-                price = 20.0;
-                break;
+            case "child": price = 10.0; break;
+            case "teen": price = 15.0; break;
+            case "adult": price = 30.0; break;
+            case "senior": price = 20.0; break;
         }
 
-        // Validate booking date and barber availability
         LocalDate selectedDateObj = LocalDate.parse(bookingDate);
         if (selectedDateObj.isBefore(LocalDate.now())) {
             request.setAttribute("error", "You cannot book an appointment for a past date.");
@@ -203,19 +176,53 @@ public class BookingController extends HttpServlet {
             return;
         }
 
-        // Store booking details in session (do not save to DB yet)
-        session.setAttribute("bookingFor", bookingFor);
-        session.setAttribute("bookingDate", bookingDate);
-        session.setAttribute("selectedTime", selectedTime);
-        session.setAttribute("category", category);
-        session.setAttribute("selectedBarber", selectedBarber);
-        session.setAttribute("staffId", staffId);
-        session.setAttribute("price", price);
+        // Call Appointment microservice
+        try {
+            // Replace with your actual Appointment microservice URL
+        	URL url = new URL("http://localhost:8081/barbershop-customer-service/api/appointment");
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Content-Type", "application/json");
+            conn.setDoOutput(true);
 
-        // Remove any previous appointmentId (if any)
-        session.removeAttribute("appointmentId");
+            // Build JSON payload
+            String jsonInputString = String.format(
+                "{" +
+                "\"custId\":\"%s\"," +
+                "\"custBookFor\":\"%s\"," +
+                "\"appointmentDate\":\"%s\"," +
+                "\"appointmentTime\":\"%s\"," +
+                "\"custType\":\"%s\"," +
+                "\"staffId\":\"%s\"" +
+                "}",
+                custId, bookingFor, bookingDate, selectedTime, category, staffId
+            );
 
-        // Redirect to payment page
-        response.sendRedirect("payment?bookingKey=" + bookingKey);
+            try (OutputStream os = conn.getOutputStream()) {
+                byte[] input = jsonInputString.getBytes("utf-8");
+                os.write(input, 0, input.length);
+            }
+
+            int code = conn.getResponseCode();
+            if (code == 201) {
+                // Success: redirect to payment
+                session.setAttribute("bookingFor", bookingFor);
+                session.setAttribute("bookingDate", bookingDate);
+                session.setAttribute("selectedTime", selectedTime);
+                session.setAttribute("category", category);
+                session.setAttribute("selectedBarber", selectedBarberName); // Save barber name
+                session.setAttribute("staffId", staffId);
+                session.setAttribute("price", price);
+                session.removeAttribute("appointmentId");
+                response.sendRedirect("payment?bookingKey=" + bookingKey);
+            } else {
+                request.setAttribute("error", "Failed to book appointment. Please try again.");
+                request.getRequestDispatcher("/WEB-INF/views/customer/error.jsp").forward(request, response);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.setAttribute("error", "Error connecting to appointment service.");
+            request.getRequestDispatcher("/WEB-INF/views/customer/error.jsp").forward(request, response);
+        }
     }
 }

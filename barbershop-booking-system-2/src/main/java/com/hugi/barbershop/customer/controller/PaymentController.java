@@ -43,7 +43,20 @@ public class PaymentController extends HttpServlet {
 		if (bookingKey == null || !bookingKey.equals(sessionBookingKey)) {
 			response.sendRedirect("view-appointment");
 			return;
-		} 
+		}
+
+		// --- Discount logic: check if this booking is free ---
+		String custId = (String) session.getAttribute("custId");
+		boolean isFreeBooking = false;
+		if (custId != null) {
+			AppointmentDAO appointmentDAO = new AppointmentDAO();
+			int paidCount = appointmentDAO.countLoyaltyAppointmentsByCustomerId(custId); // completed and not cancelled
+			if ((paidCount + 1) % 3 == 0) {
+				isFreeBooking = true;
+			}
+		}
+		session.setAttribute("isFreeBooking", isFreeBooking);
+		request.setAttribute("isFreeBooking", isFreeBooking);
 
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/customer/payment.jsp");
 		dispatcher.forward(request, response);
@@ -80,13 +93,28 @@ public class PaymentController extends HttpServlet {
 		Double price = (Double) session.getAttribute("price");
 		if (price == null) price = 0.0;
 
+		 // --- Discount logic: check if this booking is free ---
+		boolean isFreeBooking = false;
+		if (custId != null) {
+			int paidCount = appointmentDAO.countLoyaltyAppointmentsByCustomerId(custId);
+			if ((paidCount + 1) % 3 == 0) {
+				isFreeBooking = true;
+			}
+		}
+		if (isFreeBooking) {
+			price = 0.0;
+			session.setAttribute("isFreeBooking", true);
+		} else {
+			session.setAttribute("isFreeBooking", false);
+		}
+
 		// Create and save appointment
 		Appointment appointment = new Appointment();
 		appointment.setCustBookFor(bookingFor);
 		appointment.setAppointmentDate(bookingDate);
 		appointment.setAppointmentTime(selectedTime);
 		appointment.setCustType(category);
-		appointment.setPaymentStatus("pending");
+		appointment.setPaymentStatus(isFreeBooking ? "completed" : "pending");
 		appointment.setServiceStatus("pending");
 		appointment.setCustId(custId);
 		appointment.setStaffId(staffId);
@@ -108,35 +136,57 @@ public class PaymentController extends HttpServlet {
 			return;
 		}
 		
-		Payment payment = paymentDAO.insertPayment(price, appointmentId);
-		if (payment == null) {
-			request.setAttribute("error", "Failed to process payment.");
-			request.getRequestDispatcher("/WEB-INF/views/customer/error.jsp").forward(request, response);
-			return;
-		}
-		String paymentId = payment.getPaymentId();
-
-		// Insert into inheritance table and update payment status
-		if ("cash".equals(paymentMethod)) {
-			paymentDAO.insertCashPayment(paymentId, price);
-			appointmentDAO.updatePaymentStatus(custId, bookingDate, selectedTime, "pending");
-		} else if ("online-banking".equals(paymentMethod)) {
-			// Use selected bank and customer name
-			paymentDAO.insertOnlinePayment(paymentId, bankName, customerName != null ? customerName : "Unknown");
+		Payment payment;
+		boolean shouldUpdateLoyalty = false;
+		if (isFreeBooking) {
+			payment = paymentDAO.insertPayment(0.0, appointmentId);
+			if (payment == null) {
+				request.setAttribute("error", "Failed to process payment.");
+				request.getRequestDispatcher("/WEB-INF/views/customer/error.jsp").forward(request, response);
+				return;
+			}
+			String paymentId = payment.getPaymentId();
+			// Mark as free payment
+			paymentDAO.insertCashPayment(paymentId, 0.0); // or a new method for free payment if needed
 			appointmentDAO.updatePaymentStatus(custId, bookingDate, selectedTime, "completed");
+			shouldUpdateLoyalty = true;
+			// Save info for receipt
+			session.setAttribute("paymentId", paymentId);
+			session.setAttribute("paymentMethod", "free");
+			session.setAttribute("paymentStatus", "completed");
+		} else {
+			payment = paymentDAO.insertPayment(price, appointmentId);
+			if (payment == null) {
+				request.setAttribute("error", "Failed to process payment.");
+				request.getRequestDispatcher("/WEB-INF/views/customer/error.jsp").forward(request, response);
+				return;
+			}
+			String paymentId = payment.getPaymentId();
+			// Insert into inheritance table and update payment status
+			if ("cash".equals(paymentMethod)) {
+				paymentDAO.insertCashPayment(paymentId, price);
+				appointmentDAO.updatePaymentStatus(custId, bookingDate, selectedTime, "completed");
+				shouldUpdateLoyalty = true;
+			} else if ("online-banking".equals(paymentMethod)) {
+				// Use selected bank and customer name
+				paymentDAO.insertOnlinePayment(paymentId, bankName, customerName != null ? customerName : "Unknown");
+				appointmentDAO.updatePaymentStatus(custId, bookingDate, selectedTime, "completed");
+				shouldUpdateLoyalty = true;
+			}
+			// Save info for receipt
+			session.setAttribute("paymentId", paymentId);
+			session.setAttribute("paymentMethod", paymentMethod);
+			session.setAttribute("paymentStatus", "online-banking".equals(paymentMethod) ? "completed" : "pending");
 		}
 		
-		// After payment is successful and appointment is created
-		int loyaltyCount = appointmentDAO.countLoyaltyAppointmentsByCustomerId(custId);
-		customerDAO.updateLoyaltyPoints(custId, loyaltyCount);
+		// Only update loyalty points if payment is completed
+		if (shouldUpdateLoyalty) {
+			int loyaltyCount = appointmentDAO.countLoyaltyAppointmentsByCustomerId(custId);
+			customerDAO.updateLoyaltyPoints(custId, loyaltyCount);
+		}
 
 		// Save appointmentId in session for receipt
 		session.setAttribute("appointmentId", appointmentId);
-
-		// Save payment info in session (optional, for receipt)
-		session.setAttribute("paymentId", paymentId);
-		session.setAttribute("paymentMethod", paymentMethod);
-		session.setAttribute("paymentStatus", "online-banking".equals(paymentMethod) ? "completed" : "pending");
 
 		response.sendRedirect("receipt?appointmentId=" + appointmentId + "&bookingKey=" + bookingKey);
 	}
