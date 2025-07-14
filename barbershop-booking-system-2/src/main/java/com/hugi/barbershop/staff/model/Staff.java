@@ -10,6 +10,7 @@ public class Staff {
     private String description;
     private String staffRole;
     private String adminId;
+    private String adminName;
 
     public String getStaffId() {
         return staffId;
@@ -81,5 +82,13 @@ public class Staff {
 
     public void setAdminId(String adminId) {
         this.adminId = adminId;
+    }
+    
+    public String getAdminName() {
+        return adminName;
+    }
+
+    public void setAdminName(String adminName) {
+        this.adminName = adminName;
     }
 }
