@@ -17,6 +17,9 @@ Double price = (Double) session.getAttribute("price");
 if (price == null) {
     price = 0.0;
 }
+// Check if this booking is free
+Boolean isFreeBooking = (Boolean) session.getAttribute("isFreeBooking");
+if (isFreeBooking == null) isFreeBooking = false;
 %>
 <%@ include file="/WEB-INF/views/includes/header.jsp"%>
 <body class="flex flex-col h-screen justify-between bg-yellow-100">
@@ -54,6 +57,16 @@ if (price == null) {
 				</p>
 			</div>
 
+            <% if (isFreeBooking) { %>
+            <!-- Free Booking Message -->
+            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-6 text-center">
+                <strong>Congratulations!</strong> This booking is <b>FREE</b> as part of our loyalty program. No payment is required.
+            </div>
+            <form action="payment" method="post">
+                <input type="hidden" name="bookingKey" value="<%= session.getAttribute("bookingKey") %>">
+                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 w-full">Confirm Free Booking</button>
+            </form>
+            <% } else { %>
 			<!-- Payment Information -->
 			<form action="payment" method="post" id="paymentForm">
 				<input type="hidden" name="bookingKey"
@@ -95,6 +108,7 @@ if (price == null) {
 					class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 w-full">
 					Pay Now</button>
 			</form>
+            <% } %>
 
 			<!-- Loading Modal for Cash Payment -->
 			<div id="loadingModal"
