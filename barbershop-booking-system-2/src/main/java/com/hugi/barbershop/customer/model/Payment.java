@@ -11,6 +11,7 @@ public class Payment {
 	private String customerName;
 	private String customerPicture;
 	private String customerEmail;
+	private String formattedDate;
 
 	// Getters and setters
 	public String getPaymentId() { return paymentId; }
@@ -49,6 +50,14 @@ public class Payment {
 	}
 	public String getCustomerEmail() {
 	    return customerEmail;
+	}
+	
+	public String getFormattedDate() {
+	    return formattedDate;
+	}
+
+	public void setFormattedDate(String formattedDate) {
+	    this.formattedDate = formattedDate;
 	}
 
 }
