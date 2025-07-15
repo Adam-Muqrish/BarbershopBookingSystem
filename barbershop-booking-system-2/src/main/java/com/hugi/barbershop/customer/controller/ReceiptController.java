@@ -68,8 +68,8 @@ public class ReceiptController extends HttpServlet {
 		}
 		request.setAttribute("payment", payment);
 
-		String staffId = appointment.getStaffId();
-		String barberName = appointmentDAO.getBarberNameById(staffId);
+		// Use barberId instead of staffId for the assigned barber
+		String barberName = appointmentDAO.getBarberNameById(appointment.getBarberId());
 		request.setAttribute("barberName", barberName);
 
 		if (barberName == null) {
