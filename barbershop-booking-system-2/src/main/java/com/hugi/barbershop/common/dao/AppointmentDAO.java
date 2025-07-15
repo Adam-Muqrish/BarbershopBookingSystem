@@ -21,7 +21,6 @@ public class AppointmentDAO {
                 Appointment appointment = new Appointment();
                 appointment.setAppointmentId(rs.getString("APPOINTMENT_ID"));
                 appointment.setCustId(rs.getString("CUST_ID"));
-                appointment.setStaffId(rs.getString("STAFF_ID"));
                 appointment.setAppointmentDate(rs.getDate("APPOINTMENT_DATE").toString());
                 appointment.setAppointmentTime(rs.getString("APPOINTMENT_TIME"));
                 appointment.setValueLoyalty(rs.getInt("VALUE_LOYALTY"));
@@ -29,6 +28,7 @@ public class AppointmentDAO {
                 appointment.setServiceStatus(rs.getString("SERVICE_STATUS"));
                 appointment.setCustBookFor(rs.getString("CUST_BOOK_FOR"));
                 appointment.setCustType(rs.getString("CUST_TYPE"));
+                appointment.setBarberId(rs.getInt("BARBER_ID"));
                 return appointment;
             }
         } catch (Exception e) {
@@ -39,7 +39,7 @@ public class AppointmentDAO {
 
     // Insert a new appointment (APPOINTMENT_ID is auto-incremented)
     public String insertAppointment(Appointment appointment) {
-        String sql = "INSERT INTO APPOINTMENTS (CUST_BOOK_FOR, APPOINTMENT_DATE, APPOINTMENT_TIME, CUST_TYPE, PAYMENT_STATUS, SERVICE_STATUS, CUST_ID, STAFF_ID, VALUE_LOYALTY) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO APPOINTMENTS (CUST_BOOK_FOR, APPOINTMENT_DATE, APPOINTMENT_TIME, CUST_TYPE, PAYMENT_STATUS, SERVICE_STATUS, CUST_ID, BARBER_ID, VALUE_LOYALTY) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (Connection conn = DBUtil.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, new String[] {"APPOINTMENT_ID"})) {
             stmt.setString(1, appointment.getCustBookFor());
@@ -49,7 +49,7 @@ public class AppointmentDAO {
             stmt.setString(5, appointment.getPaymentStatus());
             stmt.setString(6, appointment.getServiceStatus());
             stmt.setString(7, appointment.getCustId());
-            stmt.setString(8, appointment.getStaffId());
+            stmt.setInt(8, appointment.getBarberId());
             stmt.setInt(9, appointment.getValueLoyalty());
             int affectedRows = stmt.executeUpdate();
             if (affectedRows > 0) {
@@ -69,7 +69,7 @@ public class AppointmentDAO {
         List<Appointment> appointments = new ArrayList<>();
         String sql = "SELECT a.*, s.STAFF_NAME AS BARBERNAME " +
                 "FROM APPOINTMENTS a " +
-                "LEFT JOIN STAFFS s ON a.STAFF_ID = s.STAFF_ID " +
+                "LEFT JOIN STAFFS s ON a.STAFF_ID = s.BARBER_ID " +
                 "WHERE a.CUST_ID = ? " +
                 "AND (a.SERVICE_STATUS = 'Pending' OR a.SERVICE_STATUS = 'pending') " +
                 "ORDER BY a.APPOINTMENT_DATE DESC, a.APPOINTMENT_TIME DESC";
@@ -87,7 +87,7 @@ public class AppointmentDAO {
                 appointment.setPaymentStatus(rs.getString("PAYMENT_STATUS"));
                 appointment.setServiceStatus(rs.getString("SERVICE_STATUS"));
                 appointment.setCustId(rs.getString("CUST_ID"));
-                appointment.setStaffId(rs.getString("STAFF_ID"));
+                appointment.setBarberId(rs.getInt("BARBE_ID"));
                 appointment.setValueLoyalty(rs.getInt("VALUE_LOYALTY"));
                 appointment.setAppointmentBarber(rs.getString("BARBERNAME"));
                 appointments.add(appointment);
@@ -103,7 +103,7 @@ public class AppointmentDAO {
         List<Appointment> appointments = new ArrayList<>();
         String sql = "SELECT a.*, s.STAFF_NAME AS BARBERNAME " +
                 "FROM APPOINTMENTS a " +
-                "LEFT JOIN STAFFS s ON a.STAFF_ID = s.STAFF_ID " +
+                "LEFT JOIN STAFFS s ON s.STAFF_ID = a.BARBER_ID " +
                 "WHERE a.CUST_ID = ? AND (a.SERVICE_STATUS = 'Done' OR a.SERVICE_STATUS = 'Cancelled') " +
                 "ORDER BY a.APPOINTMENT_DATE DESC, a.APPOINTMENT_TIME DESC " +
                 "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
@@ -123,41 +123,7 @@ public class AppointmentDAO {
                 appointment.setPaymentStatus(rs.getString("PAYMENT_STATUS"));
                 appointment.setServiceStatus(rs.getString("SERVICE_STATUS"));
                 appointment.setCustId(rs.getString("CUST_ID"));
-                appointment.setStaffId(rs.getString("STAFF_ID"));
-                appointment.setValueLoyalty(rs.getInt("VALUE_LOYALTY"));
-                appointment.setAppointmentBarber(rs.getString("BARBERNAME"));
-                appointments.add(appointment);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return appointments;
-    }
-    
-    // Get all appointments (used by admin/staff view)
-    public List<Appointment> getAllAppointments() {
-        List<Appointment> appointments = new ArrayList<>();
-        String sql = "SELECT a.*, s.STAFF_NAME AS BARBERNAME, c.CUST_NAME AS CUSTOMERNAME " +
-                "FROM APPOINTMENTS a " +
-                "LEFT JOIN STAFFS s ON a.STAFF_ID = s.STAFF_ID " +
-                "LEFT JOIN CUSTOMERS c ON a.CUST_ID = c.CUST_ID " +
-                "ORDER BY a.APPOINTMENT_DATE DESC, a.APPOINTMENT_TIME DESC";
-        try (Connection conn = DBUtil.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
-            while (rs.next()) {
-                Appointment appointment = new Appointment();
-                appointment.setAppointmentBarber(rs.getString("BARBERNAME"));
-                appointment.setCustomerName(rs.getString("CUSTOMERNAME"));
-                appointment.setAppointmentId(rs.getString("APPOINTMENT_ID"));
-                appointment.setCustBookFor(rs.getString("CUST_BOOK_FOR"));
-                appointment.setAppointmentDate(rs.getDate("APPOINTMENT_DATE").toString());
-                appointment.setAppointmentTime(rs.getString("APPOINTMENT_TIME"));
-                appointment.setCustType(rs.getString("CUST_TYPE"));
-                appointment.setPaymentStatus(rs.getString("PAYMENT_STATUS"));
-                appointment.setServiceStatus(rs.getString("SERVICE_STATUS"));
-                appointment.setCustId(rs.getString("CUST_ID"));
-                appointment.setStaffId(rs.getString("STAFF_ID"));
+                appointment.setBarberId(rs.getInt("BARBER_ID"));
                 appointment.setValueLoyalty(rs.getInt("VALUE_LOYALTY"));
                 appointment.setAppointmentBarber(rs.getString("BARBERNAME"));
                 appointments.add(appointment);
@@ -217,7 +183,7 @@ public class AppointmentDAO {
                 appointment.setPaymentStatus(rs.getString("PAYMENT_STATUS"));
                 appointment.setServiceStatus(rs.getString("SERVICE_STATUS"));
                 appointment.setCustId(rs.getString("CUST_ID"));
-                appointment.setStaffId(rs.getString("STAFF_ID"));
+                appointment.setBarberId(rs.getInt("BARBER_ID"));
                 appointment.setValueLoyalty(rs.getInt("VALUE_LOYALTY"));
                 return appointment;
             }
@@ -228,11 +194,11 @@ public class AppointmentDAO {
     }
 
     // Get barber name by staff ID
-    public String getBarberNameById(String staffId) {
-        String sql = "SELECT STAFF_NAME FROM STAFFS WHERE STAFF_ID = ?";
+    public String getBarberNameById(int barberId) {
+        String sql = "SELECT STAFF_NAME FROM STAFFS s JOIN APPOINTMENTS a ON s.STAFF_ID = a.BARBER_ID WHERE s.STAFF_ID = ?";
         try (Connection conn = DBUtil.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, staffId);
+            stmt.setInt(1, barberId);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
                 return rs.getString("STAFF_NAME");
@@ -271,12 +237,12 @@ public class AppointmentDAO {
 
     // Update an existing appointment
     public boolean updateAppointment(Appointment appointment) {
-        String sql = "UPDATE APPOINTMENTS SET APPOINTMENT_DATE = ?, APPOINTMENT_TIME = ?, STAFF_ID = ? WHERE APPOINTMENT_ID = ?";
+        String sql = "UPDATE APPOINTMENTS SET APPOINTMENT_DATE = ?, APPOINTMENT_TIME = ?, BARBER_ID = ? WHERE APPOINTMENT_ID = ?";
         try (Connection conn = DBUtil.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setDate(1, java.sql.Date.valueOf(appointment.getAppointmentDate()));
             stmt.setString(2, appointment.getAppointmentTime());
-            stmt.setString(3, appointment.getStaffId());
+            stmt.setInt(3, appointment.getBarberId());
             stmt.setString(4, appointment.getAppointmentId());
             return stmt.executeUpdate() > 0;
         } catch (Exception e) {
@@ -316,35 +282,4 @@ public class AppointmentDAO {
         }
         return 0;
     }
-    
-    // ✅ Update service status to 'Done' by appointment ID
-    public boolean updateServiceStatusToDone(String appointmentId) {
-        String sql = "UPDATE APPOINTMENTS SET SERVICE_STATUS = 'Done' WHERE APPOINTMENT_ID = ?";
-        try (Connection conn = DBUtil.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, appointmentId);
-            return stmt.executeUpdate() > 0;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-    
-    //total appointments
-    public int getTotalAppointments() {
-        String sql = "SELECT COUNT(*) AS TOTAL FROM APPOINTMENTS";
-        try (Connection conn = DBUtil.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
-
-            if (rs.next()) {
-                return rs.getInt("TOTAL");
-            }
-        } catch (Exception e) {
-            System.out.println("Error counting total appointments:");
-            e.printStackTrace();
-        }
-        return 0;
-    }
-
 }

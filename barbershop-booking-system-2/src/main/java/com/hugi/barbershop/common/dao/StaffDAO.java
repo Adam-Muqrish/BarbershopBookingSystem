@@ -160,7 +160,7 @@ public class StaffDAO {
 		String sql = "SELECT COUNT(*) AS available " +
 				"FROM STAFFS s " +
 				"WHERE s.ROLE = 'Barber' AND s.STAFF_ID NOT IN (" +
-				"  SELECT a.STAFF_ID FROM APPOINTMENTS a " +
+				"  SELECT a.BARBER_ID FROM APPOINTMENTS a " +
 				"  WHERE a.APPOINTMENT_DATE = ? AND a.APPOINTMENT_TIME = ?" +
 				")";
 		try (Connection conn = DBUtil.getConnection();
@@ -184,7 +184,7 @@ public class StaffDAO {
 	public List<String> getUnavailableBarbersForSlot(String slot, String date, String excludeAppointmentId) {
 		List<String> unavailable = new ArrayList<>();
 		String sql = "SELECT s.STAFF_ID FROM STAFFS s " +
-				"JOIN APPOINTMENTS a ON s.STAFF_ID = a.STAFF_ID " +
+				"JOIN APPOINTMENTS a ON s.STAFF_ID = a.BARBER_ID " +
 				"WHERE s.ROLE = 'Barber' AND a.APPOINTMENT_DATE = ? AND a.APPOINTMENT_TIME = ? ";
 		if (excludeAppointmentId != null) {
 			sql += "AND a.APPOINTMENT_ID <> ? ";
@@ -216,7 +216,7 @@ public class StaffDAO {
 
 	// Check if a specific barber is available
 	public boolean isBarberAvailable(String staffId, String date, String slot) {
-		String sql = "SELECT COUNT(*) FROM APPOINTMENTS WHERE STAFF_ID = ? AND APPOINTMENT_DATE = ? AND APPOINTMENT_TIME = ?";
+		String sql = "SELECT COUNT(*) FROM APPOINTMENTS WHERE BARBER_ID = ? AND APPOINTMENT_DATE = ? AND APPOINTMENT_TIME = ?";
 		try (Connection conn = DBUtil.getConnection();
 				PreparedStatement stmt = conn.prepareStatement(sql)) {
 			stmt.setString(1, staffId);
