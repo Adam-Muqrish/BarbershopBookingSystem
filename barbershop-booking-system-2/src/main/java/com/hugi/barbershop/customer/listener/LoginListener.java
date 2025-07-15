@@ -25,6 +25,7 @@ public class LoginListener implements ServletContextListener {
 	/**
      * @see ServletContextListener#contextInitialized(ServletContextEvent)
      */
+    // This method is called when the web application is started
     public void contextInitialized(ServletContextEvent sce)  { 
          // TODO Auto-generated method stub
     	try {
