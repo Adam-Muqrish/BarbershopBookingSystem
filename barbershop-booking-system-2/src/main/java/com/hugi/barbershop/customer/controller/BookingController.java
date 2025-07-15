@@ -145,15 +145,14 @@ public class BookingController extends HttpServlet {
         String bookingDate = request.getParameter("date");
         String selectedTime = request.getParameter("slot");
         String category = request.getParameter("category");
-        String selectedBarber = request.getParameter("barber");
+        String barberId = request.getParameter("barber"); // renamed for clarity
 
         String bookingKey = UUID.randomUUID().toString();
         session.setAttribute("bookingKey", bookingKey);
 
         StaffDAO staffDAO = new StaffDAO();
-        String staffId = selectedBarber;
-        // Get barber name from staffId
-        String selectedBarberName = staffDAO.getBarberNameById(staffId);
+        // Use barberId for assigned barber
+        String selectedBarberName = staffDAO.getBarberNameById(barberId);
 
         double price = 0.0;
         switch (category.toLowerCase()) {
@@ -170,7 +169,7 @@ public class BookingController extends HttpServlet {
             return;
         }
 
-        if (!staffDAO.isBarberAvailable(staffId, bookingDate, selectedTime)) {
+        if (!staffDAO.isBarberAvailable(barberId, bookingDate, selectedTime)) {
             request.setAttribute("error", "Selected barber is already booked for this slot.");
             request.getRequestDispatcher("/WEB-INF/views/customer/error.jsp").forward(request, response);
             return;
@@ -179,13 +178,13 @@ public class BookingController extends HttpServlet {
         // Call Appointment microservice
         try {
             // Replace with your actual Appointment microservice URL
-        	URL url = new URL("http://localhost:8081/barbershop-customer-service/api/appointment");
+            URL url = new URL("http://localhost:8081/barbershop-customer-service/api/appointment");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("POST");
             conn.setRequestProperty("Content-Type", "application/json");
             conn.setDoOutput(true);
 
-            // Build JSON payload
+            // Build JSON payload (use barberId instead of staffId)
             String jsonInputString = String.format(
                 "{" +
                 "\"custId\":\"%s\"," +
@@ -193,9 +192,9 @@ public class BookingController extends HttpServlet {
                 "\"appointmentDate\":\"%s\"," +
                 "\"appointmentTime\":\"%s\"," +
                 "\"custType\":\"%s\"," +
-                "\"staffId\":\"%s\"" +
+                "\"barberId\":\"%s\"" +
                 "}",
-                custId, bookingFor, bookingDate, selectedTime, category, staffId
+                custId, bookingFor, bookingDate, selectedTime, category, barberId
             );
 
             try (OutputStream os = conn.getOutputStream()) {
@@ -211,7 +210,7 @@ public class BookingController extends HttpServlet {
                 session.setAttribute("selectedTime", selectedTime);
                 session.setAttribute("category", category);
                 session.setAttribute("selectedBarber", selectedBarberName); // Save barber name
-                session.setAttribute("staffId", staffId);
+                session.setAttribute("barberId", barberId);
                 session.setAttribute("price", price);
                 session.removeAttribute("appointmentId");
                 response.sendRedirect("payment?bookingKey=" + bookingKey);

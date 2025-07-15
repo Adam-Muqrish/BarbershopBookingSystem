@@ -1,6 +1,12 @@
 package com.hugi.barbershop.customer.model;
 
-public class Appointment {
+import java.io.Serializable;
+
+public class Appointment implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String appointmentId;
 	private String custBookFor;
 	private String appointmentDate;
@@ -13,6 +19,7 @@ public class Appointment {
 	private int valueLoyalty;
 	private String appointmentBarber;
 	private String customerName;
+	private int barberId;
 	
 	public String getAppointmentId() {
 		return appointmentId;
@@ -87,5 +94,11 @@ public class Appointment {
 
 	public void setCustomerName(String customerName) {
 	    this.customerName = customerName;
+	}
+	public int getBarberId() {
+		return barberId;
+	}
+	public void setBarberId(int barberId) {
+		this.barberId = barberId;
 	}
 }

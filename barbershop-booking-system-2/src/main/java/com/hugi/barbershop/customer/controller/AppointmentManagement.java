@@ -106,7 +106,7 @@ public class AppointmentManagement extends HttpServlet {
 	    // Update appointment fields
 	    appointment.setAppointmentDate(date);
 	    appointment.setAppointmentTime(slot);
-	    appointment.setStaffId(barber);
+	    appointment.setBarberId(Integer.parseInt(barber));
 
 	    boolean updated = appointmentDAO.updateAppointment(appointment);
 	    if (updated) {
