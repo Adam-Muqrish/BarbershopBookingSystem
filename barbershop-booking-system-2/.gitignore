@@ -1,14 +1,14 @@
-# Ignore class files
 *.class
 
-# Ignore Eclipse/IDEA config
+# IDE config
 .classpath
 .project
 .settings/
 .idea/
 *.iml
 
-# Ignore build output
-/bin/
-/build/
-/target/
+# Output folders anywhere in the repo
+**/build/
+**/bin/
+**/target/
+/.codetogether.ignore

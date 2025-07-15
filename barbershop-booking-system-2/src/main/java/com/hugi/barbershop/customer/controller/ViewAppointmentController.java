@@ -82,10 +82,12 @@ public class ViewAppointmentController extends HttpServlet {
             allAppointments = new ArrayList<>();
         }
 
-        // Filter out cancelled appointments
+        // Filter out appointments: only paymentStatus == "completed" and serviceStatus == "pending"
         List<Appointment> filteredAppointments = new ArrayList<>();
         for (Appointment appt : allAppointments) {
-            if (appt.getServiceStatus() == null || !appt.getServiceStatus().equalsIgnoreCase("cancelled")) {
+            boolean paymentCompleted = "completed".equalsIgnoreCase(appt.getPaymentStatus());
+            boolean servicePending = "pending".equalsIgnoreCase(appt.getServiceStatus());
+            if (paymentCompleted && servicePending) {
                 filteredAppointments.add(appt);
             }
         }

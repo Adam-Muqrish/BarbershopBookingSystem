@@ -68,13 +68,23 @@ public class AppointmentHistoryController extends HttpServlet {
 		}
 		conn.disconnect();
 
-		// Pagination logic
-		int totalAppointments = allAppointments.size();
+		// Filter appointments: payment_status == "Completed" && (service_status == "Done" || service_status == "Cancelled")
+		List<Map<String, Object>> filteredAppointments = new ArrayList<>();
+		for (Map<String, Object> map : allAppointments) {
+			String paymentStatus = (String) map.get("paymentStatus");
+			String serviceStatus = (String) map.get("serviceStatus");
+			if ("completed".equalsIgnoreCase(paymentStatus) && ("Done".equalsIgnoreCase(serviceStatus) || "Cancelled".equalsIgnoreCase(serviceStatus))) {
+				filteredAppointments.add(map);
+			}
+		}
+
+		// Pagination logic (now on filteredAppointments)
+		int totalAppointments = filteredAppointments.size();
 		int totalPages = (int) Math.ceil((double) totalAppointments / pageSize);
 		int offset = (page - 1) * pageSize;
 		List<Map<String, Object>> pagedAppointments = new ArrayList<>();
 		for (int i = offset; i < Math.min(offset + pageSize, totalAppointments); i++) {
-			pagedAppointments.add(allAppointments.get(i));
+			pagedAppointments.add(filteredAppointments.get(i));
 		}
 
 		// Convert to List<Appointment>
@@ -87,9 +97,14 @@ public class AppointmentHistoryController extends HttpServlet {
 			appt.setAppointmentTime((String) map.get("appointmentTime"));
 			appt.setCustType((String) map.get("custType"));
 			appt.setCustId((String) map.get("customerId"));
-			appt.setBarberId((Integer) map.get("barberId"));
+			Object barberIdObj = map.get("barberId");
+			if (barberIdObj != null) {
+			    int barberId = ((Double) barberIdObj).intValue();
+			    appt.setBarberId(barberId);
+			}
 			appt.setAppointmentBarber((String) map.get("appointmentBarber"));
 			appt.setServiceStatus((String) map.get("serviceStatus"));
+			appt.setPaymentStatus((String) map.get("paymentStatus"));
 			// Optionally set other fields if available in the map
 			doneAppointments.add(appt);
 		}
