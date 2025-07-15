@@ -365,7 +365,8 @@ public class AppointmentDAO {
             LEFT JOIN PAYMENTS p ON a.APPOINTMENT_ID = p.APPOINTMENT_ID
             LEFT JOIN CASHES cs ON p.PAYMENT_ID = cs.PAYMENT_ID
             LEFT JOIN ONLINE_PAYMENTS op ON p.PAYMENT_ID = op.PAYMENT_ID
-            ORDER BY a.APPOINTMENT_DATE DESC, a.APPOINTMENT_TIME DESC
+            ORDER BY a.APPOINTMENT_ID DESC
+			FETCH FIRST 15 ROWS ONLY
             """;
         try (Connection conn = DBUtil.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql);
@@ -392,5 +393,22 @@ public class AppointmentDAO {
             e.printStackTrace();
         }
         return appointments;
+    }
+    
+    // masukkan staff_id lepas update appointment
+    public boolean updateAppointmentByAdmin(Appointment appointment, String staffId) {
+        String sql = "UPDATE APPOINTMENTS SET APPOINTMENT_DATE = ?, APPOINTMENT_TIME = ?, BARBER_ID = ?, STAFF_ID = ? WHERE APPOINTMENT_ID = ?";
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setDate(1, java.sql.Date.valueOf(appointment.getAppointmentDate()));
+            stmt.setString(2, appointment.getAppointmentTime());
+            stmt.setInt(3, appointment.getBarberId());
+            stmt.setString(4, staffId); // simpan staff_id admin
+            stmt.setString(5, appointment.getAppointmentId());
+            return stmt.executeUpdate() > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }
