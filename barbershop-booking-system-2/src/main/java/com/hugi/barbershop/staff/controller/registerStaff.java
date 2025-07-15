@@ -1,106 +1,101 @@
 package com.hugi.barbershop.staff.controller;
 
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.*;
 import java.io.IOException;
-import java.util.UUID;
 
 import com.hugi.barbershop.common.dao.StaffDAO;
 import com.hugi.barbershop.staff.model.Staff;
 
-/**
- * Servlet implementation class registerStaff
- */
 @WebServlet("/registerStaff")
+@MultipartConfig
 public class registerStaff extends HttpServlet {
-	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
+    private static final long serialVersionUID = 1L;
+
     public registerStaff() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
-	}
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	    String email = request.getParameter("email");
-	    String password = request.getParameter("password");
-	    String confirmPassword = request.getParameter("confirmPassword");
-	    String role = request.getParameter("role");
+        // Get form input
+        String email = request.getParameter("email");
+        String password = request.getParameter("password");
+        String confirmPassword = request.getParameter("confirmPassword");
+        String role = request.getParameter("role");
 
-	    if (email == null || password == null || confirmPassword == null || role == null ||
-	        email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty() || role.isEmpty()) {
-	        request.setAttribute("error", "Please fill in all fields.");
-	        request.getRequestDispatcher("/WEB-INF/views/admin/listBarber.jsp").forward(request, response);
-	        return;
-	    }
-	    
-	    if (!password.equals(confirmPassword)) {
-	        request.getSession().setAttribute("registerFailed", true); // ✅ Guna session bukan request
-	        request.getSession().setAttribute("errorMessage", "Passwords do not match."); // Tambah mesej
-	        response.sendRedirect("listBarber"); // ✅ Redirect supaya session attribute lekat
-	        return;
-	    }
-	    
-	    // ✅ Check email exists
-	    StaffDAO staffDAO = new StaffDAO();
-	    if (staffDAO.emailExists(email)) {
-	        request.getSession().setAttribute("registerFailed", true);
-	        request.getSession().setAttribute("errorMessage", "Email already registered.");
-	        response.sendRedirect("listBarber");
-	        return;
-	    }
+        // ✅ Picture upload handling
+		/*
+		 * Part picturePart = request.getPart("picture"); String fileName =
+		 * picturePart.getSubmittedFileName();
+		 * 
+		 * // ✅ Path untuk simpan gambar dalam resources/uploads/avatar String
+		 * uploadPath = getServletContext().getRealPath("/") +
+		 * "resources/uploads/avatar"; File uploadDir = new File(uploadPath); if
+		 * (!uploadDir.exists()) uploadDir.mkdirs();
+		 * 
+		 * if (fileName != null && !fileName.isEmpty()) { picturePart.write(uploadPath +
+		 * File.separator + fileName); } else { fileName = "default.jpg"; }
+		 */
 
-	    Staff staff = new Staff();
-	    staff.setStaffId("SF" + UUID.randomUUID().toString().substring(0, 6));
-	    staff.setStaffEmail(email);
-	    staff.setStaffPassword(password);
-	    staff.setStaffRole(role);
+        // ✅ Validation
+        if (email == null || password == null || confirmPassword == null || role == null ||
+                email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty() || role.isEmpty()) {
+            request.getSession().setAttribute("registerFailed", true);
+            request.getSession().setAttribute("errorMessage", "Please fill in all required fields.");
+            response.sendRedirect("listBarber");
+            return;
+        }
 
-	    // Set other fields as default/empty
-	    staff.setStaffName("");
-	    staff.setStaffPhoneNumber("");
-	    staff.setDescription("");
-	    staff.setStaffPicture(null);
+        if (!password.equals(confirmPassword)) {
+            request.getSession().setAttribute("registerFailed", true);
+            request.getSession().setAttribute("errorMessage", "Passwords do not match.");
+            response.sendRedirect("listBarber");
+            return;
+        }
 
-	    // Set adminId from session (if admin is logged in)
-	    HttpSession session = request.getSession(false);
-	    if (session != null) {
-	        Staff currentAdmin = (Staff) session.getAttribute("loggedInStaff");
-	        if (currentAdmin != null && "Admin".equalsIgnoreCase(currentAdmin.getStaffRole())) {
-	            staff.setAdminId(currentAdmin.getStaffId());
-	        } else {
-	            staff.setAdminId(null);
-	        }
-	    } else {
-	        staff.setAdminId(null);
-	    }
+        StaffDAO staffDAO = new StaffDAO();
+        if (staffDAO.emailExists(email)) {
+            request.getSession().setAttribute("registerFailed", true);
+            request.getSession().setAttribute("errorMessage", "Email already registered.");
+            response.sendRedirect("listBarber");
+            return;
+        }
 
-	    
-	    boolean success = staffDAO.insertStaff(staff);
+        // ✅ Create staff object
+        Staff staff = new Staff();
+        staff.setStaffEmail(email);
+        staff.setStaffPassword(password);
+        staff.setStaffRole(role);
 
-	    if (success) {
-	        request.getSession().setAttribute("registerSuccess", true);
-	        response.sendRedirect("listBarber");
-	    } else {
-	        request.getSession().setAttribute("registerFailed", true);
-	        response.sendRedirect("listBarber");
-	    }
-	}
+        // ✅ Admin ID setup
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            Staff currentAdmin = (Staff) session.getAttribute("loggedInStaff");
+            if (currentAdmin != null && "Admin".equalsIgnoreCase(currentAdmin.getStaffRole())) {
+                staff.setAdminId(currentAdmin.getStaffId());
+            } else {
+                staff.setAdminId(null);
+            }
+        } else {
+            staff.setAdminId(null);
+        }
+
+        String generatedStaffId = staffDAO.insertStaff(staff);
+        if (generatedStaffId != null) {
+            request.getSession().setAttribute("registerSuccess", "New Staff Registered!");
+        } else {
+            request.getSession().setAttribute("registerFailed", true);
+            request.getSession().setAttribute("errorMessage", "Failed to register staff.");
+        }
+
+        response.sendRedirect("listBarber");
+    }
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.getWriter().append("Served at: ").append(request.getContextPath());
+    }
 }
