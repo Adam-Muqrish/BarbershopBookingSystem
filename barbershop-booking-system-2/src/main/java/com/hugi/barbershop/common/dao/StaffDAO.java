@@ -69,30 +69,30 @@ public class StaffDAO {
 	}
 
 	// Get staff by name
-	public Staff getStaffByName(String name) {
-		String sql = "SELECT * FROM STAFFS WHERE STAFF_NAME = ?";
-		try (Connection conn = DBUtil.getConnection();
-				PreparedStatement stmt = conn.prepareStatement(sql)) {
-			stmt.setString(1, name);
-			ResultSet rs = stmt.executeQuery();
-			if (rs.next()) {
-				Staff staff = new Staff();
-				staff.setStaffId(rs.getString("STAFF_ID"));
-				staff.setStaffName(rs.getString("STAFF_NAME"));
-				staff.setStaffEmail(rs.getString("STAFF_EMAIL"));
-				staff.setStaffPhoneNumber(rs.getString("STAFF_PHONE_NUMBER"));
-				staff.setStaffPassword(rs.getString("STAFF_PASSWORD"));
-				staff.setStaffPicture(rs.getString("STAFF_PICTURE"));
-				staff.setDescription(rs.getString("STAFF_DESCRIPTION"));
-				staff.setStaffRole(rs.getString("ROLE"));
-				staff.setAdminId(rs.getString("ADMIN_ID"));
-				return staff;
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
+//	public Staff getStaffByName(String name) {
+//		String sql = "SELECT * FROM STAFFS WHERE STAFF_NAME = ?";
+//		try (Connection conn = DBUtil.getConnection();
+//				PreparedStatement stmt = conn.prepareStatement(sql)) {
+//			stmt.setString(1, name);
+//			ResultSet rs = stmt.executeQuery();
+//			if (rs.next()) {
+//				Staff staff = new Staff();
+//				staff.setStaffId(rs.getString("STAFF_ID"));
+//				staff.setStaffName(rs.getString("STAFF_NAME"));
+//				staff.setStaffEmail(rs.getString("STAFF_EMAIL"));
+//				staff.setStaffPhoneNumber(rs.getString("STAFF_PHONE_NUMBER"));
+//				staff.setStaffPassword(rs.getString("STAFF_PASSWORD"));
+//				staff.setStaffPicture(rs.getString("STAFF_PICTURE"));
+//				staff.setDescription(rs.getString("STAFF_DESCRIPTION"));
+//				staff.setStaffRole(rs.getString("ROLE"));
+//				staff.setAdminId(rs.getString("ADMIN_ID"));
+//				return staff;
+//			}
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}
+//		return null;
+//	}
 
 	// Update staff info
 	public boolean updateStaff(Staff staff) {
@@ -181,6 +181,7 @@ public class StaffDAO {
 	}
 
 	// Get unavailable barbers for a specific slot and date
+	// excludeappointmentId is for not include this appointment in the check
 	public List<String> getUnavailableBarbersForSlot(String slot, String date, String excludeAppointmentId) {
 		List<String> unavailable = new ArrayList<>();
 		String sql = "SELECT s.STAFF_ID FROM STAFFS s " +
@@ -234,7 +235,13 @@ public class StaffDAO {
 		return false;
 	}
 	
-	// ✅ Check if email exists in STAFFS table
+	// Get barber name by staff ID 
+	public String getBarberNameById(String staffId) {
+		Staff staff = getStaffById(staffId);
+		return (staff != null) ? staff.getStaffName() : null;
+	}
+	
+	// ✅ Check if email exists in STAFFS table - alip
 	public boolean emailExists(String email) {
 		String sql = "SELECT 1 FROM STAFFS WHERE STAFF_EMAIL = ?";
 		try (Connection conn = DBUtil.getConnection();
@@ -248,7 +255,7 @@ public class StaffDAO {
 		return false;
 	}
 	
-	// ✅ Insert new staff into STAFFS table (auto-increment STAFF_ID)
+	// ✅ Insert new staff into STAFFS table (auto-increment STAFF_ID) - alip
 	public String insertStaff(Staff staff) {
 	    String sql = "INSERT INTO STAFFS (STAFF_NAME, STAFF_EMAIL, STAFF_PHONE_NUMBER, STAFF_PASSWORD, STAFF_PICTURE, STAFF_DESCRIPTION, ROLE, ADMIN_ID) " +
 	                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
@@ -284,9 +291,7 @@ public class StaffDAO {
 	    return null;
 	}
 
-
-	
-	//update profile staff
+	//update profile staff - alip
 	public boolean updateProfileStaff(Staff staff) {
 	    String sql = "UPDATE STAFFS SET STAFF_NAME = ?, STAFF_EMAIL = ?, STAFF_PHONE_NUMBER = ?, STAFF_DESCRIPTION = ?, STAFF_PICTURE = ? WHERE STAFF_ID = ?";
 	    try (Connection conn = DBUtil.getConnection();
@@ -302,11 +307,5 @@ public class StaffDAO {
 	        e.printStackTrace();
 	        return false;
 	    }
-	}
-	
-	// Get barber name by staff ID
-	public String getBarberNameById(String staffId) {
-		Staff staff = getStaffById(staffId);
-		return (staff != null) ? staff.getStaffName() : null;
 	}
 }
