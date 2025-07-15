@@ -87,7 +87,7 @@ public class AppointmentHistoryController extends HttpServlet {
 			appt.setAppointmentTime((String) map.get("appointmentTime"));
 			appt.setCustType((String) map.get("custType"));
 			appt.setCustId((String) map.get("customerId"));
-			appt.setStaffId((String) map.get("staffId"));
+			appt.setBarberId((Integer) map.get("barberId"));
 			appt.setAppointmentBarber((String) map.get("appointmentBarber"));
 			appt.setServiceStatus((String) map.get("serviceStatus"));
 			// Optionally set other fields if available in the map

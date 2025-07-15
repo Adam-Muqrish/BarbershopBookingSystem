@@ -282,4 +282,9 @@ public class AppointmentDAO {
         }
         return 0;
     }
+
+	public List<Appointment> getAllAppointments() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
