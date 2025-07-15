@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import jakarta.servlet.http.HttpSession;
 
 import com.hugi.barbershop.common.dao.AppointmentDAO;
 import com.hugi.barbershop.customer.model.Appointment;
@@ -46,12 +47,17 @@ public class editAppointment extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String appointmentId = request.getParameter("appointmentId");
+    	HttpSession session = request.getSession();
+    	String adminId = (String) session.getAttribute("staffId"); // admin login punya staff id
+    	String barberId = request.getParameter("staffId"); // barber yang dipilih oleh customer
+    	
+    	String appointmentId = request.getParameter("appointmentId");
         String date = request.getParameter("appointmentDate");
         String time = request.getParameter("appointmentTime");
         String staffId = request.getParameter("staffId");
         String custType = request.getParameter("custType");
         String custBookFor = request.getParameter("custBookFor");
+        
 
         Appointment appointment = new Appointment();
         appointment.setAppointmentId(appointmentId);
@@ -60,9 +66,10 @@ public class editAppointment extends HttpServlet {
         appointment.setStaffId(staffId);
         appointment.setCustType(custType);
         appointment.setCustBookFor(custBookFor);
-
+        appointment.setBarberId(Integer.parseInt(barberId));
+        
         AppointmentDAO dao = new AppointmentDAO();
-        boolean updated = dao.updateAppointment(appointment);
+        boolean updated = dao.updateAppointmentByAdmin(appointment, adminId);// ✅ guna method byAdmin()
 
         if (updated) {
             response.sendRedirect("listAppointment?success=updated");
