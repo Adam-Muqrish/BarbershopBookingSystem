@@ -1,9 +1,9 @@
 <%@ page import="com.hugi.barbershop.customer.model.Customer"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@ taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql" %>
-<%@ taglib prefix="x" uri="http://java.sun.com/jsp/jstl/xml" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql"%>
+<%@ taglib prefix="x" uri="http://java.sun.com/jsp/jstl/xml"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ page import="com.hugi.barbershop.customer.model.Customer"%>
@@ -11,7 +11,8 @@
 <body class="flex flex-col h-screen justify-between bg-yellow-100">
 	<%@ include file="/WEB-INF/views/includes/nav.jsp"%>
 	<main class="flex flex-col items-center mx-3 my-4 flex-grow">
-		<div class="bg-white rounded-lg shadow-lg p-6 w-full">
+		<div
+			class="bg-white rounded-lg shadow-lg p-6 w-full max-w-5xl mx-auto">
 			<h1 class="text-3xl font-bold mb-6">Update Appointment</h1>
 			<form action="appointment-management" method="post">
 				<input type="hidden" name="appointmentId"
@@ -40,15 +41,15 @@
 						class="w-full border rounded px-3 py-2 shadow focus:outline-none focus:ring-2 focus:ring-yellow-400 mb-2"
 						value="${appointment.appointmentTime}" readonly />
 					<div class="grid grid-cols-1 gap-1">
-						<c:set var="slots"
+						<c:set var="timeSlots"
 							value="${fn:split('10:00 am,10:30 am,11:00 am,11:30 am,12:00 pm,12:30 pm,1:00 pm,1:30 pm,2:00 pm,2:30 pm,3:00 pm,3:30 pm,4:00 pm,4:30 pm,5:00 pm,5:30 pm,6:00 pm,6:30 pm,7:00 pm,7:30 pm,8:00 pm,8:30 pm,9:00 pm,9:30 pm', ',')}" />
 						<div class="grid grid-cols-6 gap-1">
-							<c:forEach var="slot" items="${slots}">
-								<label> <input type="radio" name="slot" value="${slot}"
-									class="mr-1"
-									<c:if test="${not empty unavailableBarbersBySlot[slot] && fn:length(unavailableBarbersBySlot[slot]) eq fn:length(barbers)}">disabled</c:if>
-									<c:if test="${appointment.appointmentTime eq slot}">checked</c:if> />
-									${slot}
+							<c:forEach var="slotItem" items="${timeSlots}">
+								<label> <input type="radio" name="slot"
+									value="${slotItem}" class="mr-1"
+									<c:if test="${not empty unavailableBarbersBySlot[slotItem] && fn:length(unavailableBarbersBySlot[slotItem]) eq fn:length(barbers)}">disabled</c:if>
+									<c:if test="${appointment.appointmentTime eq slotItem}">checked</c:if> />
+									${slotItem}
 								</label>
 							</c:forEach>
 						</div>
@@ -85,6 +86,30 @@
 				</div>
 			</form>
 		</div>
+		<!-- Success Modal -->
+		<div id="successModal"
+			style="display: none; position: fixed; z-index: 50; left: 0; top: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.3); align-items: center; justify-content: center;">
+			<div
+				style="background: white; padding: 2rem; border-radius: 0.5rem; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); text-align: center;">
+				<h2 class="text-2xl font-bold mb-4">Success!</h2>
+				<p>Your appointment has been updated.</p>
+				<button
+				    id="successModalOk"
+					onclick="document.getElementById('successModal').style.display='none';"
+					class="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">OK</button>
+			</div>
+		</div>
+		<c:if test="${success}">
+			<script>
+		    window.addEventListener('DOMContentLoaded', function() {
+		      document.getElementById('successModal').style.display = 'flex';
+		      // Or redirect on OK button
+		      document.getElementById('successModalOk').onclick = function() {
+		        window.location.href = 'view-appointment';
+		      };
+		    });
+		  </script>
+		</c:if>
 	</main>
 	<script type="text/javascript">
 	// Initialize unavailable barbers data

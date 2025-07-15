@@ -62,9 +62,9 @@ public class AppointmentManagement extends HttpServlet {
 				"8:00 pm", "8:30 pm", "9:00 pm", "9:30 pm"
 		};
 		Map<String, List<String>> unavailableBarbersBySlot = new HashMap<>();
-		for (String slot : slots) {
-		    List<String> unavailableBarbers = staffDAO.getUnavailableBarbersForSlot(slot, selectedDate, appointmentId);
-		    unavailableBarbersBySlot.put(slot, unavailableBarbers);
+		for (String slotItem : slots) {
+			List<String> unavailableBarbers = staffDAO.getUnavailableBarbersForSlot(slotItem, selectedDate, appointmentId);
+			unavailableBarbersBySlot.put(slotItem, unavailableBarbers);
 		}
 
 		// Create JSON for unavailable barbers
@@ -103,18 +103,20 @@ public class AppointmentManagement extends HttpServlet {
 			return;
 		}
 
-		// Update appointment fields
-		appointment.setAppointmentDate(date);
-		appointment.setAppointmentTime(slot);
-		appointment.setStaffId(barber);
+	    // Update appointment fields
+	    appointment.setAppointmentDate(date);
+	    appointment.setAppointmentTime(slot);
+	    appointment.setStaffId(barber);
 
-		boolean updated = appointmentDAO.updateAppointment(appointment);
-		if (updated) {
-			// Redirect or show success message
-			response.sendRedirect("view-appointment");
-		} else {
-			request.setAttribute("error", "Failed to update appointment.");
-			doGet(request, response);
-		}
+	    boolean updated = appointmentDAO.updateAppointment(appointment);
+	    if (updated) {
+	        request.getSession().setAttribute("appointmentUpdated", true);
+	        request.setAttribute("success", true);
+	        doGet(request, response);
+	    } else {
+	        request.setAttribute("error", "Failed to update appointment.");
+	        doGet(request, response);
+	    }
+
 	}
 }
