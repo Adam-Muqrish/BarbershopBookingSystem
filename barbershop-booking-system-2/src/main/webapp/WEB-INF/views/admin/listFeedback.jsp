@@ -9,6 +9,8 @@
     <title>Hugi Barbershop System</title>
     <link rel="shortcut icon" href="/uploads/hugiBarber.jpg">
     <link rel="stylesheet" href="/resources/assetsAdmin/css/style.css?v1.1.2">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
 </head>
 <!-- jQuery (optional jika Bootstrap v5 tak perlu) -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -83,7 +85,11 @@
 										            <tr>
 										                <td>${fb.customerName}</td>
 										                <td>${fb.comments}</td>
-										                <td>${fb.rating}</td>
+										                <td>
+														    <c:forEach begin="1" end="5" var="i">
+														        <i class="${i <= fb.rating ? 'fas fa-star text-warning' : 'far fa-star text-warning'}"></i>
+														    </c:forEach>
+														</td>
 										                <%-- <td class="tb-col tb-col-end">
 											                <div class="dropdown">
 											                    <a href="#" class="btn btn-sm btn-icon btn-zoom me-n1" data-bs-toggle="dropdown">

@@ -69,7 +69,9 @@
                                                                         <div class="form-group">
                                                                             <label class="form-label">Select Date</label>
                                                                             <div class="form-control-wrap">
-                                                                                <input type="date" name="appointmentDate" class="form-control" value="${appointment.appointmentDate}">
+                                                                                <input type="date" name="appointmentDate" class="form-control"
+																                   value="${appointment.appointmentDate}"
+																                   min="<%= java.time.LocalDate.now() %>">
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -78,7 +80,7 @@
                                                                         <div class="form-group">
                                                                             <label class="form-label">Booking Time</label>
                                                                             <div class="form-control-wrap">
-																				<select name="appointmentTime" class="form-control">
+																				<select name="appointmentTime" class="form-control" disabled style="background-color: #ffffff; color: #000;">
 																				    <c:forEach var="time" items="${fn:split(timeSlots, ',')}">
 																					    <option value="${fn:trim(time)}" ${fn:trim(appointment.appointmentTime) == fn:trim(time) ? 'selected' : ''}>
 																					        ${fn:trim(time)}
@@ -93,12 +95,7 @@
                                                                         <div class="form-group">
                                                                             <label class="form-label">Customer Category</label>
                                                                             <div class="form-control-wrap">
-                                                                                <select name="custType" class="form-control">
-                                                                                    <option value="Child" ${appointment.custType eq 'Child' ? 'selected' : ''}>Child</option>
-                                                                                    <option value="Teen" ${appointment.custType eq 'Teen' ? 'selected' : ''}>Teen</option>
-                                                                                    <option value="Adult" ${appointment.custType eq 'Adult' ? 'selected' : ''}>Adult</option>
-                                                                                    <option value="Senior" ${appointment.custType eq 'Senior' ? 'selected' : ''}>Senior</option>
-                                                                                </select>
+                                                                                <input type="text" name="custType" class="form-control" value="${appointment.custType}" readonly>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -107,7 +104,7 @@
                                                                         <div class="form-group">
                                                                             <label class="form-label">Select Barber</label>
                                                                             <div class="form-control-wrap">
-                                                                                <select name="staffId" class="form-control">
+                                                                                <select name="staffId" class="form-control" disabled style="background-color: #ffffff; color: #000;">
 																				    <c:forEach var="barber" items="${barberList}">
 																				        <option value="${barber.staffId}" ${appointment.barberId == barber.staffId ? 'selected' : ''}>
 																				            ${barber.staffName}

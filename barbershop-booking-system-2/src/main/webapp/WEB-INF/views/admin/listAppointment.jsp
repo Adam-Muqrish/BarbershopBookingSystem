@@ -126,11 +126,19 @@
 													                </c:when>
 													
 													                <c:when test="${fn:toLowerCase(a.paymentStatus) == 'done' || fn:toLowerCase(a.paymentStatus) == 'completed'}">
-													                    <form action="UpdateServiceStatus" method="post" class="confirm-update-service">
-													                        <input type="hidden" name="appointmentId" value="${a.appointmentId}" />
-													                        <button type="button" class="btn btn-warning btn-sm btn-service">Pending</button>
-													                    </form>
-													                </c:when>
+																	    <c:choose>
+																	        <c:when test="${fn:toLowerCase(sessionScope.staffRole) == 'admin'}">
+																	            <form action="UpdateServiceStatus" method="post" class="confirm-update-service">
+																	                <input type="hidden" name="appointmentId" value="${a.appointmentId}" />
+																	                <button type="button" class="btn btn-warning btn-sm btn-service">Pending</button>
+																	            </form>
+																	        </c:when>
+																	
+																	        <c:otherwise>
+																	            <button class="btn btn-warning btn-sm" disabled>Pending</button>
+																	        </c:otherwise>
+																	    </c:choose>
+																	</c:when>
 													            </c:choose>
 													        </c:when>
 													    </c:choose>
