@@ -5,6 +5,8 @@ import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 import java.io.IOException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 import com.hugi.barbershop.common.dao.StaffDAO;
 import com.hugi.barbershop.staff.model.Staff;
@@ -64,14 +66,19 @@ public class registerStaff extends HttpServlet {
             response.sendRedirect("listBarber");
             return;
         }
+        
+        //Hash password
+        String hashedPassword = hashPassword(password);
 
-        // ✅ Create staff object
+        //  Create staff object
         Staff staff = new Staff();
         staff.setStaffEmail(email);
-        staff.setStaffPassword(password);
+        staff.setStaffPassword(hashedPassword);
         staff.setStaffRole(role);
+        
+        
 
-        // ✅ Admin ID setup
+        //  Admin ID setup
         HttpSession session = request.getSession(false);
         if (session != null) {
             Staff currentAdmin = (Staff) session.getAttribute("loggedInStaff");
@@ -93,7 +100,25 @@ public class registerStaff extends HttpServlet {
         }
 
         response.sendRedirect("listBarber");
+        
+        
     }
+    
+    //  Hash password MD5
+    private String hashPassword(String password) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            byte[] hashBytes = md.digest(password.getBytes());
+            StringBuilder sb = new StringBuilder();
+            for (byte b : hashBytes) {
+                sb.append(String.format("%02x", b));
+            }
+            return sb.toString();
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.getWriter().append("Served at: ").append(request.getContextPath());
