@@ -352,30 +352,41 @@ public class AppointmentDAO {
     // Get all appointments (used by admin/staff view) - alip
     public List<Appointment> getAllAppointments() {
         List<Appointment> appointments = new ArrayList<>();
-        String sql = "SELECT a.*, s.STAFF_NAME AS BARBERNAME, c.CUST_NAME AS CUSTOMERNAME " +
-                "FROM APPOINTMENTS a " +
-                "LEFT JOIN STAFFS s ON a.STAFF_ID = s.STAFF_ID " +
-                "LEFT JOIN CUSTOMERS c ON a.CUST_ID = c.CUST_ID " +
-                "ORDER BY a.APPOINTMENT_DATE DESC, a.APPOINTMENT_TIME DESC";
+        String sql = """
+            SELECT a.*, s.STAFF_NAME AS BARBERNAME, c.CUST_NAME AS CUSTOMERNAME,
+                   CASE 
+                       WHEN cs.PAYMENT_ID IS NOT NULL THEN 'Cash'
+                       WHEN op.PAYMENT_ID IS NOT NULL THEN 'Online Banking'
+                       ELSE 'Unknown'
+                   END AS PAYMENT_METHOD
+            FROM APPOINTMENTS a
+            LEFT JOIN STAFFS s ON a.STAFF_ID = s.STAFF_ID
+            LEFT JOIN CUSTOMERS c ON a.CUST_ID = c.CUST_ID
+            LEFT JOIN PAYMENTS p ON a.APPOINTMENT_ID = p.APPOINTMENT_ID
+            LEFT JOIN CASHES cs ON p.PAYMENT_ID = cs.PAYMENT_ID
+            LEFT JOIN ONLINE_PAYMENTS op ON p.PAYMENT_ID = op.PAYMENT_ID
+            ORDER BY a.APPOINTMENT_DATE DESC, a.APPOINTMENT_TIME DESC
+            """;
         try (Connection conn = DBUtil.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
+
             while (rs.next()) {
-                Appointment appointment = new Appointment();
-                appointment.setAppointmentBarber(rs.getString("BARBERNAME"));
-                appointment.setCustomerName(rs.getString("CUSTOMERNAME"));
-                appointment.setAppointmentId(rs.getString("APPOINTMENT_ID"));
-                appointment.setCustBookFor(rs.getString("CUST_BOOK_FOR"));
-                appointment.setAppointmentDate(rs.getDate("APPOINTMENT_DATE").toString());
-                appointment.setAppointmentTime(rs.getString("APPOINTMENT_TIME"));
-                appointment.setCustType(rs.getString("CUST_TYPE"));
-                appointment.setPaymentStatus(rs.getString("PAYMENT_STATUS"));
-                appointment.setServiceStatus(rs.getString("SERVICE_STATUS"));
-                appointment.setCustId(rs.getString("CUST_ID"));
-                appointment.setStaffId(rs.getString("STAFF_ID"));
-                appointment.setValueLoyalty(rs.getInt("VALUE_LOYALTY"));
-                appointment.setAppointmentBarber(rs.getString("BARBERNAME"));
-                appointments.add(appointment);
+                Appointment a = new Appointment();
+                a.setAppointmentBarber(rs.getString("BARBERNAME"));
+                a.setCustomerName(rs.getString("CUSTOMERNAME"));
+                a.setAppointmentId(rs.getString("APPOINTMENT_ID"));
+                a.setCustBookFor(rs.getString("CUST_BOOK_FOR"));
+                a.setAppointmentDate(rs.getDate("APPOINTMENT_DATE").toString());
+                a.setAppointmentTime(rs.getString("APPOINTMENT_TIME"));
+                a.setCustType(rs.getString("CUST_TYPE"));
+                a.setPaymentStatus(rs.getString("PAYMENT_STATUS"));
+                a.setServiceStatus(rs.getString("SERVICE_STATUS"));
+                a.setCustId(rs.getString("CUST_ID"));
+                a.setStaffId(rs.getString("STAFF_ID"));
+                a.setValueLoyalty(rs.getInt("VALUE_LOYALTY"));
+                a.setPaymentMethod(rs.getString("PAYMENT_METHOD")); // ✅ PENTING
+                appointments.add(a);
             }
         } catch (Exception e) {
             e.printStackTrace();
