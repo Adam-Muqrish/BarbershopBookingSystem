@@ -5,7 +5,7 @@
 <%@ include file="/WEB-INF/views/includes/header.jsp"%>
 
 <body class="flex flex-col h-screen justify-between bg-yellow-100">
-	<%@ include file="/WEB-INF/views/includes/nav.jsp"%>
+	<%@ include file="/WEB-INF/views/includes/nav.jsp"%>y
 
 	<%
         if (customer == null) {

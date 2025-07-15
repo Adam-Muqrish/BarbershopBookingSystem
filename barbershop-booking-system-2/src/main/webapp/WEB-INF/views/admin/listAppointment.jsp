@@ -69,6 +69,9 @@
                                                         <span class="overline-title">Customer Type</span>
                                                     </th>
                                                     <th class="tb-col tb-col-xl">
+													    <span class="overline-title">Payment Status</span>
+													</th>
+                                                    <th class="tb-col tb-col-xl">
                                                         <span class="overline-title">Service Status</span>
                                                     </th>
                                                     <!-- <th class="tb-col tb-col-xl">
@@ -88,31 +91,48 @@
 										                <td>${a.custType}</td> 
 										                <td>
 														    <c:choose>
-														        <c:when test="${fn:toLowerCase(a.serviceStatus) == 'pending'}">
-														            <c:choose>
-														                <c:when test="${sessionScope.staffRole == 'Admin'}">
-														                    <!-- Admin boleh update -->
-														                    <form action="UpdateServiceStatus" method="post" class="confirm-update-status" style="display:inline;">
-																			    <input type="hidden" name="appointmentId" value="${a.appointmentId}" />
-																			    <button type="button" class="btn btn-warning btn-sm btn-pending">
-																			        Pending
-																			    </button>
-																			</form>
-														                </c:when>
-														                <c:otherwise>
-														                    <!-- Barber tak boleh tekan -->
-														                    <button class="btn btn-warning btn-sm" disabled>
-														                        Pending
-														                    </button>
-														                </c:otherwise>
-														            </c:choose>
+														        <c:when test="${fn:toLowerCase(a.paymentStatus) == 'pending' && fn:toLowerCase(sessionScope.staffRole) == 'admin'}">
+														            <form action="UpdatePaymentStatus" method="post" class="confirm-update-payment" style="display:inline;">
+														                <input type="hidden" name="appointmentId" value="${a.appointmentId}" />
+														                <button type="button" class="btn btn-warning btn-sm btn-payment">Pending</button>
+														            </form>
+														        </c:when>
+														        <c:when test="${fn:toLowerCase(a.paymentStatus) == 'paid' || fn:toLowerCase(a.paymentStatus) == 'done'}">
+														            <span class="badge text-bg-success">${a.paymentStatus}</span>
+														        </c:when>
+														        <c:otherwise>
+														            <span class="badge bg-warning">${a.paymentStatus}</span>
+														        </c:otherwise>
+														    </c:choose>
+														</td>
+										                <td>
+														    <c:choose>
+														        <%-- Service Dah Done --%>
+														        <c:when test="${fn:toLowerCase(a.serviceStatus) == 'done'}">
+														            <button class="btn btn-success btn-sm" disabled>${a.serviceStatus}</button>
 														        </c:when>
 														
+														        <%-- Service Pending --%>
 														        <c:otherwise>
-														            <!-- Kalau status bukan Pending, tunjukkan sebagai Done (disabled) -->
-														            <button class="btn btn-success btn-sm" disabled>
-														                ${a.serviceStatus}
-														            </button>
+														            <c:choose>
+														                <%-- Payment Pending --%>
+														                <c:when test="${fn:toLowerCase(a.paymentStatus) == 'pending'}">
+														                    <button class="btn btn-warning btn-sm" disabled>Pending</button>
+														                </c:when>
+														
+														                <%-- Payment Done --%>
+														                <c:when test="${fn:toLowerCase(a.paymentStatus) == 'done'}">
+														                    <form action="UpdateServiceStatus" method="post" class="confirm-update-status" style="display:inline;">
+														                        <input type="hidden" name="appointmentId" value="${a.appointmentId}" />
+														                        <button type="submit" class="btn btn-warning btn-sm">Pending</button>
+														                    </form>
+														                </c:when>
+														
+														                <%-- Tambah ELSE bila paymentStatus pelik --%>
+														                <c:otherwise>
+														                    <span class="badge bg-secondary">${a.serviceStatus}</span>
+														                </c:otherwise>
+														            </c:choose>
 														        </c:otherwise>
 														    </c:choose>
 														</td>
@@ -161,23 +181,23 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
     
     <script>
-    $(document).ready(function(){
-        $(".btn-pending").click(function(){
-            Swal.fire({
-                title: 'Are you sure?',
-                text: "Are you sure to make a change?",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, change it!'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $(this).closest("form").submit();
-                }
-            });
+    $(".btn-payment").click(function(e){
+        e.preventDefault();
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "Mark payment as Completed?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, confirm it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $(this).closest("form").submit();
+            }
         });
     });
+
 </script>
     
 </body>

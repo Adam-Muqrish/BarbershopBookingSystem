@@ -152,7 +152,7 @@ public class PaymentDAO {
 	}
 
 	// Helper: get payment method
-	private String getPaymentMethod(String paymentId) {
+	public String getPaymentMethod(String paymentId) {
 		if (isCashPayment(paymentId)) {
 			return "Cash";
 		} else if (isOnlinePayment(paymentId)) {

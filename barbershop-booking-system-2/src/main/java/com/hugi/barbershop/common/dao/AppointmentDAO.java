@@ -282,6 +282,65 @@ public class AppointmentDAO {
         }
         return 0;
     }
+    
+    // ✅ Update service status to 'Done' by appointment ID
+    public boolean updateServiceStatusToDone(String appointmentId) {
+        String sql = "UPDATE APPOINTMENTS SET SERVICE_STATUS = 'Done' WHERE APPOINTMENT_ID = ?";
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, appointmentId);
+            return stmt.executeUpdate() > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    
+    //total appointments
+    public int getTotalAppointments() {
+        String sql = "SELECT COUNT(*) AS TOTAL FROM APPOINTMENTS";
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            if (rs.next()) {
+                return rs.getInt("TOTAL");
+            }
+        } catch (Exception e) {
+            System.out.println("Error counting total appointments:");
+            e.printStackTrace();
+        }
+        return 0;
+    }
+    
+    public String getPaymentIdByAppointmentId(String appointmentId) {
+        String sql = "SELECT PAYMENT_ID FROM APPOINTMENTS WHERE APPOINTMENT_ID = ?";
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, appointmentId);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getString("PAYMENT_ID");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public boolean updatePaymentStatus(String appointmentId, String paymentStatus) {
+        String sql = "UPDATE APPOINTMENTS SET PAYMENT_STATUS = ? WHERE APPOINTMENT_ID = ?";
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, paymentStatus);
+            stmt.setString(2, appointmentId);
+            return stmt.executeUpdate() > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
 
 	public List<Appointment> getAllAppointments() {
 		// TODO Auto-generated method stub
