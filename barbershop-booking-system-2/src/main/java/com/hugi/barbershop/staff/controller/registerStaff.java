@@ -5,8 +5,6 @@ import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 import java.io.IOException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 
 import com.hugi.barbershop.common.dao.StaffDAO;
 import com.hugi.barbershop.staff.model.Staff;
@@ -67,13 +65,11 @@ public class registerStaff extends HttpServlet {
             return;
         }
         
-        //Hash password
-        String hashedPassword = hashPassword(password);
 
         //  Create staff object
         Staff staff = new Staff();
         staff.setStaffEmail(email);
-        staff.setStaffPassword(hashedPassword);
+        staff.setStaffPassword(password);
         staff.setStaffRole(role);
         
         
@@ -102,21 +98,6 @@ public class registerStaff extends HttpServlet {
         response.sendRedirect("listBarber");
         
         
-    }
-    
-    //  Hash password MD5
-    private String hashPassword(String password) {
-        try {
-            MessageDigest md = MessageDigest.getInstance("MD5");
-            byte[] hashBytes = md.digest(password.getBytes());
-            StringBuilder sb = new StringBuilder();
-            for (byte b : hashBytes) {
-                sb.append(String.format("%02x", b));
-            }
-            return sb.toString();
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
-        }
     }
     
 
