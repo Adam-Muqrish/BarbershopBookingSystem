@@ -25,7 +25,7 @@ public class UpdatePaymentStatus extends HttpServlet {
         AppointmentDAO appointmentDAO = new AppointmentDAO();
 
         // Admin tekan button → terus update ke 'Completed'
-        String paymentStatus = "Completed";
+        String paymentStatus = "completed";
 
         boolean updated = appointmentDAO.updatePaymentStatus(appointmentId, paymentStatus);
 
