@@ -248,39 +248,55 @@ public class StaffDAO {
 		return false;
 	}
 	
-	// ✅ Insert new staff into STAFFS table
-	public boolean insertStaff(Staff staff) {
-		String sql = "INSERT INTO STAFFS (STAFF_NAME, STAFF_EMAIL, STAFF_PHONE_NUMBER, STAFF_PASSWORD, STAFF_PICTURE, STAFF_DESCRIPTION, ROLE, ADMIN_ID) " +
-					 "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-		try (Connection conn = DBUtil.getConnection();
-			 PreparedStatement stmt = conn.prepareStatement(sql)) {
+	// ✅ Insert new staff into STAFFS table (auto-increment STAFF_ID)
+	public String insertStaff(Staff staff) {
+	    String sql = "INSERT INTO STAFFS (STAFF_NAME, STAFF_EMAIL, STAFF_PHONE_NUMBER, STAFF_PASSWORD, STAFF_PICTURE, STAFF_DESCRIPTION, ROLE, ADMIN_ID) " +
+	                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+	    try (Connection conn = DBUtil.getConnection();
+	         PreparedStatement stmt = conn.prepareStatement(sql, new String[] {"STAFF_ID"})) {
 
-			stmt.setString(1, staff.getStaffName());
-			stmt.setString(2, staff.getStaffEmail());
-			stmt.setString(3, staff.getStaffPhoneNumber());
-			stmt.setString(4, staff.getStaffPassword());
-			stmt.setString(5, staff.getStaffPicture());
-			stmt.setString(6, staff.getDescription());
-			stmt.setString(7, staff.getStaffRole());
-			stmt.setString(8, staff.getAdminId());
+	        stmt.setString(1, staff.getStaffName());
+	        stmt.setString(2, staff.getStaffEmail());
+	        stmt.setString(3, staff.getStaffPhoneNumber());
+	        stmt.setString(4, staff.getStaffPassword());
+	        stmt.setString(5, staff.getStaffPicture());
+	        stmt.setString(6, staff.getDescription());
+	        stmt.setString(7, staff.getStaffRole());
 
-			return stmt.executeUpdate() > 0;
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return false;
+	        // ADMIN_ID
+	        if (staff.getAdminId() != null && !staff.getAdminId().isEmpty()) {
+	            stmt.setLong(8, Long.parseLong(staff.getAdminId()));
+	        } else {
+	            stmt.setNull(8, java.sql.Types.NUMERIC);
+	        }
+
+	        int rowsAffected = stmt.executeUpdate();
+	        if (rowsAffected > 0) {
+	            ResultSet rs = stmt.getGeneratedKeys();
+	            if (rs.next()) {
+	                return rs.getString(1); // ✅ return STAFF_ID yang baru
+	            }
+	        }
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    return null;
 	}
+
+
 	
 	//update profile staff
 	public boolean updateProfileStaff(Staff staff) {
-	    String sql = "UPDATE STAFFS SET STAFF_NAME = ?, STAFF_EMAIL = ?, STAFF_PHONE_NUMBER = ?, STAFF_DESCRIPTION = ? WHERE STAFF_ID = ?";
+	    String sql = "UPDATE STAFFS SET STAFF_NAME = ?, STAFF_EMAIL = ?, STAFF_PHONE_NUMBER = ?, STAFF_DESCRIPTION = ?, STAFF_PICTURE = ? WHERE STAFF_ID = ?";
 	    try (Connection conn = DBUtil.getConnection();
 	         PreparedStatement stmt = conn.prepareStatement(sql)) {
 	        stmt.setString(1, staff.getStaffName());
 	        stmt.setString(2, staff.getStaffEmail());
 	        stmt.setString(3, staff.getStaffPhoneNumber());
 	        stmt.setString(4, staff.getDescription());
-	        stmt.setString(5, staff.getStaffId());
+	        stmt.setString(5, staff.getStaffPicture());
+	        stmt.setString(6, staff.getStaffId());
 	        return stmt.executeUpdate() > 0;
 	    } catch (SQLException e) {
 	        e.printStackTrace();
