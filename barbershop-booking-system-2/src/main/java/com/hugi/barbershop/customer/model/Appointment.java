@@ -20,6 +20,7 @@ public class Appointment implements Serializable {
 	private String appointmentBarber;
 	private String customerName;
 	private int barberId;
+	private String paymentMethod;
 	
 	public String getAppointmentId() {
 		return appointmentId;
@@ -100,5 +101,13 @@ public class Appointment implements Serializable {
 	}
 	public void setBarberId(int barberId) {
 		this.barberId = barberId;
+	}
+	
+	public String getPaymentMethod() {
+	    return paymentMethod;
+	}
+
+	public void setPaymentMethod(String paymentMethod) {
+	    this.paymentMethod = paymentMethod;
 	}
 }
