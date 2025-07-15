@@ -9,16 +9,26 @@
     <title>Hugi Barbershop System</title>
     <link rel="shortcut icon" href="/uploads/hugiBarber.jpg">
     <link rel="stylesheet" href="/resources/assetsAdmin/css/style.css?v1.1.2">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
 </head>
 <!-- jQuery (optional jika Bootstrap v5 tak perlu) -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <!-- Bootstrap Bundle JS (termasuk Popper.js) -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
+<style>
+    .nk-wrap {
+      padding-top: 60px; /* Changed from 0px !important */
+    }
+    .first-row {
+        margin-top: 30px; /* Added space below header */
+    }
+</style>
 <body class="nk-body" data-sidebar-collapse="lg" data-navbar-collapse="lg">
     <div class="nk-app-root">
         <div class="nk-main">
+			<%@ include file="/WEB-INF/views/includes/adminHeader.jsp"%>
             <%@ include file="/WEB-INF/views/includes/adminNav.jsp" %>
 
             <div class="nk-wrap">
@@ -82,12 +92,12 @@
 														            <c:choose>
 														                <c:when test="${sessionScope.staffRole == 'Admin'}">
 														                    <!-- Admin boleh update -->
-														                    <form action="UpdateServiceStatus" method="post" style="display:inline;">
-														                        <input type="hidden" name="appointmentId" value="${a.appointmentId}" />
-														                        <button type="submit" class="btn btn-warning btn-sm">
-														                            Pending
-														                        </button>
-														                    </form>
+														                    <form action="UpdateServiceStatus" method="post" class="confirm-update-status" style="display:inline;">
+																			    <input type="hidden" name="appointmentId" value="${a.appointmentId}" />
+																			    <button type="button" class="btn btn-warning btn-sm btn-pending">
+																			        Pending
+																			    </button>
+																			</form>
 														                </c:when>
 														                <c:otherwise>
 														                    <!-- Barber tak boleh tekan -->
@@ -108,26 +118,30 @@
 														</td>
 										                <%-- <td>${a.loyaltyPoint}</td> --%>
 										                <c:if test="${fn:toLowerCase(sessionScope.staffRole) == 'admin'}">
-											                <td class="tb-col tb-col-end">
-												                <div class="dropdown">
-												                    <a href="#" class="btn btn-sm btn-icon btn-zoom me-n1" data-bs-toggle="dropdown">
-												                        <em class="icon ni ni-more-v"></em>
-												                    </a>
-												                    <div class="dropdown-menu dropdown-menu-sm dropdown-menu-end">
-												                        <div class="dropdown-content py-1">
-												                            <ul class="link-list link-list-hover-bg-primary link-list-md">
-												                                <li>
-												                                    <a href="editAppointment?appointmentId=${a.appointmentId}">
-												                                        <em class="icon ni ni-eye"></em>
-												                                        <span>Edit Appointment</span>
-												                                    </a>
-												                                </li>
-												                            </ul>
-												                        </div>
-												                    </div>
-												                </div>
-												            </td>
-											            </c:if>
+														    <td class="tb-col tb-col-end">
+														        <div class="dropdown">
+														            <a href="#" class="btn btn-sm btn-icon btn-zoom me-n1 ${fn:toLowerCase(a.serviceStatus) == 'done' ? 'disabled' : ''}" 
+														               data-bs-toggle="dropdown" 
+														               <c:if test="${fn:toLowerCase(a.serviceStatus) == 'done'}"> onclick="return false;" </c:if> >
+														                <em class="icon ni ni-more-v"></em>
+														            </a>
+														            <c:if test="${fn:toLowerCase(a.serviceStatus) != 'done'}">
+														                <div class="dropdown-menu dropdown-menu-sm dropdown-menu-end">
+														                    <div class="dropdown-content py-1">
+														                        <ul class="link-list link-list-hover-bg-primary link-list-md">
+														                            <li>
+														                                <a href="editAppointment?appointmentId=${a.appointmentId}">
+														                                    <em class="icon ni ni-eye"></em>
+														                                    <span>Edit Appointment</span>
+														                                </a>
+														                            </li>
+														                        </ul>
+														                    </div>
+														                </div>
+														            </c:if>
+														        </div>
+														    </td>
+														</c:if>
 										            </tr>
 										        </c:forEach>
                                             </tbody>
@@ -141,5 +155,30 @@
             </div> <!-- .nk-wrap -->
         </div> <!-- .nk-main -->
     </div> <!-- .nk-app-root -->
+    <script src="/resources/jsAdmin/bundle.js"></script>
+    <script src="/resources/jsAdmin/scripts.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
+    
+    <script>
+    $(document).ready(function(){
+        $(".btn-pending").click(function(){
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "Are you sure to make a change?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, change it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $(this).closest("form").submit();
+                }
+            });
+        });
+    });
+</script>
+    
 </body>
 </html>

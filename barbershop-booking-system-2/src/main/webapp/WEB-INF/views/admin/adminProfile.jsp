@@ -10,11 +10,46 @@
     <link rel="stylesheet" href="/resources/assetsAdmin/css/style.css?v1.1.2">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        .nk-wrap {
+          padding-top: 60px;
+        }
+        .first-row {
+            margin-top: 30px;
+        }
+        .profile-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            width: 100%;
+        }
+        .profile-info {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        .profile-image {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #fff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 15px;
+        }
+        .centered-image {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+    </style>
 </head>
 
 <body class="nk-body" data-sidebar-collapse="lg" data-navbar-collapse="lg">
 <div class="nk-app-root">
     <div class="nk-main">
+        <%@ include file="/WEB-INF/views/includes/adminHeader.jsp"%>
         <%@ include file="/WEB-INF/views/includes/adminNav.jsp" %>
 
         <div class="nk-wrap">
@@ -22,35 +57,18 @@
                 <div class="container">
                     <div class="nk-content-inner">
                         <div class="nk-content-body">
-                            <div class="nk-block-head">
-                                <div class="nk-block-head-between flex-wrap gap g-2 align-items-start">
-                                    <div class="nk-block-head-content">
-                                        <div class="d-flex flex-column flex-md-row align-items-md-center">
-                                            <div class="media media-huge media-circle">
-                                                <img src="/resources/uploads/avatar/a.jpg" class="img-thumbnail" alt="Profile Picture">
-                                            </div>
-                                            <div class="mt-3 mt-md-0 ms-md-3">
-                                                <h3 class="title mb-1">${staff.staffName}</h3>
-                                                <span class="small">
-                                                    ${staff.staffRole == 'Admin' ? 'Administrator' : staff.staffRole}
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="gap-col">
-                                        <ul class="d-flex gap g-2">
-                                            <li class="d-none d-md-block">
-                                                <a href="editProfileAdmin" class="btn btn-soft btn-primary">
-                                                    <em class="icon ni ni-edit"></em><span>Edit Profile</span>
-                                                </a>
-                                            </li>
-                                            <li class="d-md-none">
-                                                <a href="./html/user-manage/user-edit.html" class="btn btn-soft btn-primary btn-icon">
-                                                    <em class="icon ni ni-edit"></em>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
+                            <div class="centered-image">
+							    <img src="<%=request.getContextPath()%>/resources/uploads/avatar/${staff.staffPicture}" class="profile-image" alt="Profile Picture">
+							</div>
+                            
+                            <div class="profile-header">
+                                <div class="profile-info">
+                                    <h3 class="title mb-1"> ${staff.staffRole == 'Admin' ? 'Administrator' : staff.staffRole}</h3>
+                                </div>
+                                <div>
+                                    <a href="editProfileAdmin" class="btn btn-soft btn-primary">
+                                        <em class="icon ni ni-edit"></em><span>Edit Profile</span>
+                                    </a>
                                 </div>
                             </div>
 
@@ -112,6 +130,11 @@
         });
     </script>
 </c:if>
+
+<script src="/resources/jsAdmin/bundle.js"></script>
+    <script src="/resources/jsAdmin/scripts.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
 
 </body>
 </html>

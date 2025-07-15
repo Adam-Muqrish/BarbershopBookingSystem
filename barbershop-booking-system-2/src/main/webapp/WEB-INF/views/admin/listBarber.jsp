@@ -14,10 +14,18 @@
 <!-- jQuery & Bootstrap Bundle -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
+<style>
+    .nk-wrap {
+      padding-top: 60px; /* Changed from 0px !important */
+    }
+    .first-row {
+        margin-top: 30px; /* Added space below header */
+    }
+</style>
 <body class="nk-body" data-sidebar-collapse="lg" data-navbar-collapse="lg">
     <div class="nk-app-root">
         <div class="nk-main">
+			<%@ include file="/WEB-INF/views/includes/adminHeader.jsp"%>
             <%@ include file="/WEB-INF/views/includes/adminNav.jsp" %>
 
             <div class="nk-wrap">
@@ -120,44 +128,51 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="registerStaff" method="post">
+                    <form action="registerStaff" method="post" enctype="multipart/form-data">
                         <div class="row g-3">
-                            <div class="col-lg-12">
-                                <div class="form-group">
-                                    <label class="form-label">Email Address</label>
-                                    <div class="form-control-wrap">
-                                        <input type="email" name="email" class="form-control" placeholder="Email address" required>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label class="form-label">Password</label>
-                                    <div class="form-control-wrap">
-                                        <input type="password" name="password" class="form-control" placeholder="Password" required>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label class="form-label">Confirm Password</label>
-                                    <div class="form-control-wrap">
-                                        <input type="password" name="confirmPassword" class="form-control" placeholder="Confirm Password" required>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-12">
-                                <div class="form-group">
-                                    <label class="form-label">Role</label>
-                                    <div class="form-control-wrap">
-                                        <select name="role" class="js-select" data-search="true" data-sort="false">
-										    <option value="">Select a role</option>
-										    <option value="Admin">Administrator</option>
-										    <option value="Barber">Barber</option>
-										</select>
-                                    </div>
-                                </div>
-                            </div>
+                            <!-- Email -->
+					        <div class="col-lg-12">
+					            <div class="form-group">
+					                <label class="form-label">Email Address</label>
+					                <div class="form-control-wrap">
+					                    <input type="email" name="email" class="form-control" placeholder="Email address" required>
+					                </div>
+					            </div>
+					        </div>
+					
+					        <!-- Password -->
+					        <div class="col-lg-6">
+					            <div class="form-group">
+					                <label class="form-label">Password</label>
+					                <div class="form-control-wrap">
+					                    <input type="password" name="password" class="form-control" placeholder="Password" required>
+					                </div>
+					            </div>
+					        </div>
+					
+					        <!-- Confirm Password -->
+					        <div class="col-lg-6">
+					            <div class="form-group">
+					                <label class="form-label">Confirm Password</label>
+					                <div class="form-control-wrap">
+					                    <input type="password" name="confirmPassword" class="form-control" placeholder="Confirm Password" required>
+					                </div>
+					            </div>
+					        </div>
+					
+					        <!-- Role -->
+					        <div class="col-lg-12">
+					            <div class="form-group">
+					                <label class="form-label">Role</label>
+					                <div class="form-control-wrap">
+					                    <select name="role" class="js-select" data-search="true" data-sort="false" required>
+					                        <option value="">Select a role</option>
+					                        <option value="Admin">Administrator</option>
+					                        <option value="Barber">Barber</option>
+					                    </select>
+					                </div>
+					            </div>
+					        </div>
                             <div class="col-lg-12">
                                 <div class="d-flex gap g-2">
                                     <div class="gap-col">
@@ -175,51 +190,43 @@
         </div>
     </div> <!-- .modal -->
 
-	<!-- Popup Mesej berjaya Register Barber -->
-	<c:if test="${registerSuccess}">
-		<script>
-			alert("Register Successfully");
-		</script>
-	</c:if>
-	<c:if test="${registerFailed}">
-		<script>
-			alert("Register Failed");
-		</script>
-	</c:if>
+	<!-- SweetAlert2 Library -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-	<!-- Popup Mesej password tak sama -->
-	<c:if test="${not empty sessionScope.registerSuccess}">
-		<script>
-			alert("Register Successfully!");
-		</script>
-		<c:remove var="registerSuccess" scope="session" />
-	</c:if>
+<!-- SweetAlert2: Success -->
+<c:if test="${not empty sessionScope.registerSuccess}">
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: 'Success',
+            text: '${sessionScope.registerSuccess}',
+            showConfirmButton: false,
+            timer: 2500
+        });
+    </script>
+    <c:remove var="registerSuccess" scope="session"/>
+</c:if>
 
-	<c:if test="${not empty sessionScope.registerFailed}">
-		<script>
-			alert("${sessionScope.errorMessage != null ? sessionScope.errorMessage : 'Register Failed!'}");
-		</script>
-		<c:remove var="registerFailed" scope="session" />
-		<c:remove var="errorMessage" scope="session" />
-	</c:if>
+<!-- SweetAlert2: Failed -->
+<c:if test="${not empty sessionScope.registerFailed}">
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Failed',
+            text: '${sessionScope.errorMessage != null ? sessionScope.errorMessage : "Register Failed!"}',
+            showConfirmButton: false,
+            timer: 2500
+        });
+    </script>
+    <c:remove var="registerFailed" scope="session"/>
+    <c:remove var="errorMessage" scope="session"/>
+</c:if>
 
-	<!-- Popup Mesej email dah wujud -->
-	<%
-	Boolean failed = (Boolean) session.getAttribute("registerFailed");
-	String errorMessage = (String) session.getAttribute("errorMessage");
 
-	if (failed != null && failed) {
-	%>
-	<script>
-        alert("<%=errorMessage != null ? errorMessage : "Register failed"%>
-		");
-	</script>
-	<%
-	session.removeAttribute("registerFailed");
-	session.removeAttribute("errorMessage");
-	}
-	%>
-
+<script src="/resources/jsAdmin/bundle.js"></script>
+    <script src="/resources/jsAdmin/scripts.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
 
 </body>
 </html>

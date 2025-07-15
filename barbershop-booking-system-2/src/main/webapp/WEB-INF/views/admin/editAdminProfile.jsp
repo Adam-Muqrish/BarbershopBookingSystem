@@ -8,10 +8,18 @@
     <link rel="shortcut icon" href="/uploads/hugiBarber.jpg">
     <link rel="stylesheet" href="/resources/assetsAdmin/css/style.css?v1.1.2">
 </head>
-
+<style>
+    .nk-wrap {
+      padding-top: 60px; /* Changed from 0px !important */
+    }
+    .first-row {
+        margin-top: 30px; /* Added space below header */
+    }
+</style>
 <body>
 <div class="nk-app-root">
     <div class="nk-main">
+		<%@ include file="/WEB-INF/views/includes/adminHeader.jsp"%>
         <%@ include file="/WEB-INF/views/includes/adminNav.jsp" %>
 
         <div class="nk-wrap">
@@ -25,7 +33,7 @@
                             </div>
 
                             <div class="nk-block">
-                                <form action="editProfileAdmin" method="post">
+                                <form action="editProfileAdmin" method="post" enctype="multipart/form-data">
                                     <input type="hidden" name="staffId" value="${staff.staffId}">
 
                                     <div class="form-group">
@@ -42,6 +50,11 @@
                                         <label>Phone Number</label>
                                         <input type="text" name="staffPhoneNumber" value="${staff.staffPhoneNumber}" required class="form-control">
                                     </div>
+                                    
+                                    <div class="form-group">
+									    <label>Profile Picture</label>
+									    <input type="file" name="staffPicture" accept="image/*" class="form-control">
+									</div>
 
                                     <div class="form-group">
                                         <label>Description</label>
@@ -60,5 +73,11 @@
         </div>
     </div>
 </div>
+
+<script src="/resources/jsAdmin/bundle.js"></script>
+    <script src="/resources/jsAdmin/scripts.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
+    
 </body>
 </html>

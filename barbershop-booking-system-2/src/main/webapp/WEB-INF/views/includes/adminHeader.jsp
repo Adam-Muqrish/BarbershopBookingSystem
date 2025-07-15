@@ -14,14 +14,17 @@
 	<!-- adminHeader.jsp -->
 	<div class="nk-header nk-header-fixed" style="position: fixed; top: 0; left: 0; width: 100%; z-index: 1000; background: white;">
     <div class="container-fluid px-0">
-        <div class="nk-header-wrap d-flex justify-content-end align-items-center" >
+        <div class="nk-header-wrap d-flex justify-content-between align-items-center">
 
+			<div style="padding-left: 300px;">
+		        <span style="font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif; font-weight: 600; font-size: 22px; color: #222; letter-spacing: 2px; text-transform: uppercase;">Hugi Barbershop</span>
+		    </div>
             <!-- Avatar + Dropdown -->
             <ul class="nk-quick-nav d-flex align-items-center mb-0">
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown" style="display: flex; align-items: center; gap: 10px;">
                         <div class="media media-md media-circle">
-                            <img src="/resources/uploads/avatar/a.jpg" alt="User Avatar" 
+                            <img src="<%=request.getContextPath()%>/resources/uploads/avatar/${staff.staffPicture}" alt="User Avatar" 
                                  class="img-thumbnail" 
                                  style="border-radius: 50%; width: 40px; height: 40px; object-fit: cover; border: 2px solid #fff;">
                         </div>
@@ -30,7 +33,7 @@
                         <div class="dropdown-content py-3 border-bottom border-light">
                             <div class="media-group d-flex align-items-center">
                                 <div class="media media-xl media-middle media-circle me-3">
-                                    <img src="/resources/uploads/avatar/a.jpg" alt="" 
+                                    <img src="<%=request.getContextPath()%>/resources/uploads/avatar/${staff.staffPicture}" alt="" 
                                          class="img-thumbnail" 
                                          style="border-radius: 50%; width: 50px; height: 50px; object-fit: cover;">
                                 </div>

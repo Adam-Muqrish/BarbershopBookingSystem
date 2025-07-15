@@ -12,10 +12,18 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <c:set var="timeSlots" value="10:00 am,10:30 am,11:00 am,11:30 am,12:00 pm,12:30 pm,1:00 pm,1:30 pm,2:00 pm,2:30 pm,3:00 pm,3:30 pm,4:00 pm,4:30 pm,5:00 pm,5:30 pm,6:00 pm,6:30 pm,7:00 pm,7:30 pm,8:00 pm,8:30 pm,9:00 pm,9:30 pm" />
-
+<style>
+    .nk-wrap {
+      padding-top: 60px; /* Changed from 0px !important */
+    }
+    .first-row {
+        margin-top: 30px; /* Added space below header */
+    }
+</style>
 <body class="nk-body" data-sidebar-collapse="lg" data-navbar-collapse="lg">
     <div class="nk-app-root">
         <div class="nk-main">
+			<%@ include file="/WEB-INF/views/includes/adminHeader.jsp"%>
             <%@ include file="/WEB-INF/views/includes/adminNav.jsp" %>
 
             <div class="nk-wrap">
@@ -135,5 +143,9 @@
             </div> <!-- .nk-wrap -->
         </div> <!-- .nk-main -->
     </div> <!-- .nk-app-root -->
+    <script src="/resources/jsAdmin/bundle.js"></script>
+    <script src="/resources/jsAdmin/scripts.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
 </body>
 </html>

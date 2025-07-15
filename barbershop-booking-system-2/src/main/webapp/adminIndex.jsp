@@ -49,98 +49,88 @@
                                 <div class="row g-gs first-row">
                                     <!-- Card 1 -->
                                     <div class="col-xl-4">
-                                        <div class="card h-100">
-                                            <div class="card-body d-flex flex-column justify-content-between">
-                                                <div>
-                                                    <div class="card-title">
-                                                        <h4 class="title mb-1">Total Hugi's Barbershop    Sales</h4>
-                                                    </div>
-                                                    <div class="my-3">
-                                                        <div class="amount h2 fw-bold text-primary">
-														    RM <fmt:formatNumber value="${totalSales}" type="number" minFractionDigits="2" maxFractionDigits="2"/>
-														</div>
-                                                    </div>
-                                                    <a href="listTransaction" class="btn btn-sm btn-primary">View Sales</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
+									    <div class="card h-100">
+									        <div class="card-body d-flex flex-column justify-content-center text-center">
+									            <div class="card-title mb-3">
+									                <h4 class="title mb-1">Total Hugi's Barbershop Sales</h4>
+									            </div>
+									            <div class="my-3">
+									                <i class="fas fa-coins fa-3x mb-3 text-primary"></i>
+									                <div class="amount h2 fw-bold text-primary">
+									                    RM <fmt:formatNumber value="${totalSales}" type="number" minFractionDigits="2" maxFractionDigits="2"/>
+									                </div>
+									            </div>
+									        </div>
+									    </div>
+									</div>
                                     <!-- Card 2 -->
                                     <div class="col-xl-4">
-                                        <div class="card h-100">
-                                            <div class="card-body d-flex flex-column justify-content-between">
-                                                <div>
-                                                    <div class="card-title">
-                                                        <h4 class="title mb-1">Total Hugi's Barbershop Customer</h4>
-                                                    </div>
-                                                    <div class="my-3">
-                                                        <div class="amount h2 fw-bold text-primary">
-									                        ${customerCount} People
-									                    </div>
-                                                    </div>
-                                                    <a href="listCustomer" class="btn btn-sm btn-primary">View Customer</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
+									    <div class="card h-100">
+									        <div class="card-body d-flex flex-column justify-content-center text-center">
+									            <div class="card-title mb-3">
+									                <h4 class="title mb-1">Total Hugi's Barbershop Customer</h4>
+									            </div>
+									            <div class="my-3">
+									                <i class="fas fa-users fa-3x mb-3 text-primary"></i>
+									                <div class="amount h2 fw-bold text-primary">
+									                    ${customerCount} People
+									                </div>
+									            </div>
+									        </div>
+									    </div>
+									</div>
                                     <!-- Card 3 -->
                                     <div class="col-xl-4">
-                                        <div class="card h-100">
-                                            <div class="card-body d-flex flex-column justify-content-between">
-                                                <div>
-                                                    <div class="card-title">
-                                                        <h4 class="title mb-1">Total Hugi's Barbershop Appointment</h4>
-                                                    </div>
-                                                    <div class="my-3">
-                                                        <div class="amount h2 fw-bold text-primary">${totalAppointments}  Appointments</div>
-                                                    </div>
-                                                    <a href="listAppointment" class="btn btn-sm btn-primary">View Appointment</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
+									    <div class="card h-100">
+									        <div class="card-body d-flex flex-column justify-content-center text-center">
+									            <div class="card-title mb-3">
+									                <h4 class="title mb-1">Total Hugi's Barbershop Appointment</h4>
+									            </div>
+									            <div class="my-3">
+									                <i class="fas fa-calendar-check fa-3x mb-3 text-primary"></i>
+									                <div class="amount h2 fw-bold text-primary">${totalAppointments} Appointments</div>
+									            </div>
+									        </div>
+									    </div>
+									</div>
                                     <!-- Table -->
                                     <div class="col-xxl-6">
-                                        <div class="card h-100">
-                                            <div class="card-body flex-grow-0 py-2">
-                                                <div class="card-title-group">
-                                                    <div class="card-title">
-                                                        <h4 class="title">List Of Customer</h4>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="table-responsive">
-                                                <table class="table table-middle mb-0">
-                                                    <thead class="table-light table-head-sm">
-                                                        <tr>
-                                                            <th>Name</th>
-                                                            <th>Email</th>
-                                                            <th>Phone Number</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-													    <c:choose>
-													        <c:when test="${not empty customerList}">
-													            <c:forEach var="cust" items="${customerList}">
-													                <tr>
-													                    <td>${cust.custName}</td>
-													                    <td>${cust.custEmail}</td>
-													                    <td>${cust.custPhoneNumber}</td>
-													                </tr>
-													            </c:forEach>
-													        </c:when>
-													        <c:otherwise>
-													            <tr><td colspan="3">No customers found.</td></tr>
-													        </c:otherwise>
-													    </c:choose>
-													</tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
+									    <div class="card h-100">
+									        <div class="card-body flex-grow-0 py-3">
+									            <div class="d-flex align-items-center mb-3">
+									                <i class="fas fa-users fa-lg text-primary me-3"></i>
+									                <h4 class="title mb-0">List of Customers</h4>
+									            </div>
+									            <div class="table-responsive">
+									                <table class="table table-hover table-striped table-bordered mb-0 rounded-3 overflow-hidden">
+									                    <thead class="table-light table-head-sm">
+									                        <tr>
+									                            <th>Name</th>
+									                            <th>Email</th>
+									                            <th>Phone Number</th>
+									                        </tr>
+									                    </thead>
+									                    <tbody>
+									                        <c:choose>
+									                            <c:when test="${not empty customerList}">
+									                                <c:forEach var="cust" items="${customerList}">
+									                                    <tr>
+									                                        <td>${cust.custName}</td>
+									                                        <td>${cust.custEmail}</td>
+									                                        <td>${cust.custPhoneNumber}</td>
+									                                    </tr>
+									                                </c:forEach>
+									                            </c:when>
+									                            <c:otherwise>
+									                                <tr><td colspan="3" class="text-center">No customers found.</td></tr>
+									                            </c:otherwise>
+									                        </c:choose>
+									                    </tbody>
+									                </table>
+									            </div>
+									        </div>
+									    </div>
+									</div>
                                     <!-- Sales Chart Card -->
 									<div class="col-12">
 									    <div class="card h-100">
@@ -160,28 +150,43 @@
     </div> <!-- .nk-app-root -->
 
 	<!-- JavaScript Section -->
-	<%
-	if (request.getAttribute("loginError") != null) {
-	%>
-	<script>
-    alert("<%=request.getAttribute("loginError")%>
-		");
-	</script>
-	<%
-	}
-	%>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-	<%
-	String loginSuccess = (String) session.getAttribute("loginSuccess");
-	if (loginSuccess != null) {
-	%>
-	<script>
-    alert("<%=loginSuccess%>");
+<% if (request.getAttribute("successMessage") != null) { %>
+<script>
+Swal.fire({
+    icon: 'success',
+    title: 'Success!',
+    text: '<%= request.getAttribute("successMessage") %>'
+});
 </script>
-	<%
-	session.removeAttribute("loginSuccess"); // padam supaya popup tak ulang
-	}
-	%>
+<% } else if (request.getAttribute("error") != null) { %>
+<script>
+Swal.fire({
+    icon: 'error',
+    title: 'Oops...',
+    text: '<%= request.getAttribute("error") %>'
+});
+</script>
+<% } else if (session.getAttribute("loginError") != null) { %>
+<script>
+Swal.fire({
+    icon: 'error',
+    title: 'Login Failed',
+    text: '<%= session.getAttribute("loginError") %>'
+});
+<% session.removeAttribute("loginError"); %>
+</script>
+<% } else if (session.getAttribute("loginSuccess") != null) { %>
+<script>
+Swal.fire({
+    icon: 'success',
+    title: 'Login Successful!',
+    text: '<%= session.getAttribute("loginSuccess") %>'
+});
+<% session.removeAttribute("loginSuccess"); %>
+</script>
+<% } %>
 	
 	<%
     Map<String, Double> salesByDay = (Map<String, Double>) request.getAttribute("salesByDay");

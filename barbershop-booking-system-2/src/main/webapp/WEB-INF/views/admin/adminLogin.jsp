@@ -9,6 +9,10 @@
 <link rel="stylesheet"
 	href="./resources/assetsAdmin/css/style.css?v1.1.2">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+<meta http-equiv="Pragma" content="no-cache" />
+<meta http-equiv="Expires" content="0" />
+
 </head>
 <body class="nk-body" data-sidebar-collapse="lg"
 	data-navbar-collapse="lg">
@@ -41,7 +45,7 @@
 									<div class="card-body">
 										<div class="nk-block-head">
 											<div class="nk-block-head-content">
-												<h3 class="nk-block-title mb-1">Login to Barber Account</h3>
+												<h3 class="nk-block-title mb-1">Login to Staff Account</h3>
 												<p class="small">Please sign-in to your account and
 													start the adventure.</p>
 											</div>
@@ -136,6 +140,13 @@
 		<!-- .nk-main -->
 	</div>
 	<!-- .nk-app-root -->
+
+	<script>
+	    history.pushState(null, document.title, location.href);
+	    window.addEventListener('popstate', function () {
+	        window.location.href = "adminLogin";
+	    });
+	</script>
 
 
 </body>

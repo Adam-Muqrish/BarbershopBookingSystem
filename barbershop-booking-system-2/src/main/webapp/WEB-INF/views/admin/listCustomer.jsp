@@ -14,9 +14,18 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </head>
+<style>
+    .nk-wrap {
+      padding-top: 60px; /* Changed from 0px !important */
+    }
+    .first-row {
+        margin-top: 30px; /* Added space below header */
+    }
+</style>
 <body class="nk-body" data-sidebar-collapse="lg" data-navbar-collapse="lg">
     <div class="nk-app-root">
         <div class="nk-main">
+			<%@ include file="/WEB-INF/views/includes/adminHeader.jsp"%>
             <%@ include file="/WEB-INF/views/includes/adminNav.jsp" %>
 
             <div class="nk-wrap">
@@ -113,5 +122,10 @@
 
     <!-- Custom Table Script -->
     <script src="./assets/js/data-tables/data-tables.js"></script>
+    
+    <script src="/resources/jsAdmin/bundle.js"></script>
+    <script src="/resources/jsAdmin/scripts.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
 </body>
 </html>
