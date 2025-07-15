@@ -179,6 +179,33 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
     
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+	<c:if test="${param.success eq 'updated'}">
+	    <script>
+	        Swal.fire({
+	            icon: 'success',
+	            title: 'Success!',
+	            text: 'Appointment updated successfully.',
+	            showConfirmButton: false,
+	            timer: 1500
+	        });
+	    </script>
+	</c:if>
+	
+	<c:if test="${param.error eq 'updatefail'}">
+	    <script>
+	        Swal.fire({
+	            icon: 'error',
+	            title: 'Failed!',
+	            text: 'Failed to update appointment.',
+	            showConfirmButton: false,
+	            timer: 2000
+	        });
+	    </script>
+	</c:if>
+    
+    
     <script>
 $(".btn-payment").click(function(e){
     e.preventDefault();
