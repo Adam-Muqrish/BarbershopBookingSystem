@@ -12,7 +12,7 @@ public class Payment {
 	private String customerPicture;
 	private String customerEmail;
 	private String formattedDate;
-
+	
 	// Getters and setters
 	public String getPaymentId() { return paymentId; }
 	public void setPaymentId(String paymentId) { this.paymentId = paymentId; }
