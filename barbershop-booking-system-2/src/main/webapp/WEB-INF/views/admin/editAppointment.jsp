@@ -109,7 +109,7 @@
                                                                             <div class="form-control-wrap">
                                                                                 <select name="staffId" class="form-control">
 																				    <c:forEach var="barber" items="${barberList}">
-																				        <option value="${barber.staffId}" ${appointment.staffId == barber.staffId ? 'selected' : ''}>
+																				        <option value="${barber.staffId}" ${appointment.barberId == barber.staffId ? 'selected' : ''}>
 																				            ${barber.staffName}
 																				        </option>
 																				    </c:forEach>
