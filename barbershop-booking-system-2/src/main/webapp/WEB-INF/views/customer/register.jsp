@@ -153,11 +153,11 @@ response.setDateHeader("Expires", 0);
                         <button id="toggle-login" class="bg-white text-black py-2 px-10 rounded-full hover:bg-gray-100 transition-colors">
                             Login
                         </button>
-                        <button id="toggle-register" 
-							class="text-white py-2 px-6 rounded-full hover:bg-gray-800 transition-colors mt-4 hidden" style="background-color: !#101820;">
-							Register
+                        <!-- Replace this button (remove 'hidden' class) -->
+						<button id="toggle-register"
+						    class="bg-white text-black py-2 px-10 rounded-full hover:bg-gray-100 transition-colors">
+						    Register
 						</button>
-
                     </div>
                 </div>
             </div>
@@ -211,34 +211,35 @@ response.setDateHeader("Expires", 0);
 			    showModal(false, "<%=request.getAttribute("error").toString().replace("\"", "\\\"")%>");
 			<% } %>
 
-            // Sliding panel logic
-            function showLogin() {
-                slidingPanel.classList.add('left');
-                registerFormContainer.classList.remove('active');
-                registerFormContainer.classList.add('inactive');
-                loginFormContainer.classList.remove('inactive');
-                loginFormContainer.classList.add('active');
-                toggleLoginBtn.style.display = 'none';
-                toggleRegisterBtn.style.display = '';
-            }
-            function showRegister() {
-                slidingPanel.classList.remove('left');
-                loginFormContainer.classList.remove('active');
-                loginFormContainer.classList.add('inactive');
-                registerFormContainer.classList.remove('inactive');
-                registerFormContainer.classList.add('active');
-                toggleLoginBtn.style.display = '';
-                toggleRegisterBtn.style.display = 'none';
-            }
-            // Init state
-            slidingPanel.classList.remove('left');
-            registerFormContainer.classList.add('active');
-            loginFormContainer.classList.add('inactive');
-            toggleLoginBtn.style.display = '';
-            toggleRegisterBtn.style.display = 'none';
+			// Sliding panel logic
+			function showLogin() {
+			    slidingPanel.classList.add('left');
+			    registerFormContainer.classList.remove('active');
+			    registerFormContainer.classList.add('inactive');
+			    loginFormContainer.classList.remove('inactive');
+			    loginFormContainer.classList.add('active');
+			    toggleLoginBtn.style.display = 'none';
+			    toggleRegisterBtn.style.display = '';
+			}
+			function showRegister() {
+			    slidingPanel.classList.remove('left');
+			    loginFormContainer.classList.remove('active');
+			    loginFormContainer.classList.add('inactive');
+			    registerFormContainer.classList.remove('inactive');
+			    registerFormContainer.classList.add('active');
+			    toggleLoginBtn.style.display = '';
+			    toggleRegisterBtn.style.display = 'none';
+			}
+			// Init state
+			slidingPanel.classList.remove('left');
+			registerFormContainer.classList.add('active');
+			loginFormContainer.classList.add('inactive');
+			toggleLoginBtn.style.display = '';
+			toggleRegisterBtn.style.display = 'none';
 
-            toggleLoginBtn.addEventListener('click', showLogin);
-            toggleRegisterBtn.addEventListener('click', showRegister);
+
+			toggleLoginBtn.addEventListener('click', showLogin);
+			toggleRegisterBtn.addEventListener('click', showRegister);
 
             // Allow clicking overlay to close early
             modalOverlay.addEventListener('click', function(e) {

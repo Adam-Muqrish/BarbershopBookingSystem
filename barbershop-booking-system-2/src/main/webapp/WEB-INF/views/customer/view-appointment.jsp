@@ -39,7 +39,7 @@ window.addEventListener('DOMContentLoaded', function() {
 <body class="flex flex-col h-screen justify-between bg-yellow-100">
     <%@ include file="/WEB-INF/views/includes/nav.jsp"%>
     <main class="flex flex-col items-center mx-3 my-4 flex-grow justify-center">
-        <div class="bg-white rounded-lg shadow-lg p-6 w-full">
+        <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-5xl mx-auto">
             <h1 class="text-2xl font-bold mb-6">Your Current Appointments:</h1>
             <!-- Modal HTML moved here -->
             <div id="cancelModal"

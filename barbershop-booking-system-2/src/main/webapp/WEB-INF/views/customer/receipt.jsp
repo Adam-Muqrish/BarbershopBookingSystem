@@ -38,7 +38,7 @@ if ("appointment-history".equals(source)) {
 <body class="flex flex-col h-screen justify-between bg-yellow-100">
 	<%@ include file="/WEB-INF/views/includes/nav.jsp"%>
 	<main class="flex flex-col items-center mx-3 my-4 flex-grow">
-		<div class="bg-white rounded-lg shadow-lg p-6 w-full">
+		<div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-5xl mx-auto">
 			<h1 class="text-2xl font-bold text-center mb-2">Receipt</h1>
 			<p class="text-center text-lg mb-6">Thank you for your payment!</p>
 
