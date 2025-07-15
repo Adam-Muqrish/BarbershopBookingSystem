@@ -80,7 +80,7 @@
                                                                         <div class="form-group">
                                                                             <label class="form-label">Booking Time</label>
                                                                             <div class="form-control-wrap">
-																				<select name="appointmentTime" class="form-control" disabled style="background-color: #ffffff; color: #000;">
+																				<select name="appointmentTime" class="form-control"  style="background-color: #ffffff; color: #000;">
 																				    <c:forEach var="time" items="${fn:split(timeSlots, ',')}">
 																					    <option value="${fn:trim(time)}" ${fn:trim(appointment.appointmentTime) == fn:trim(time) ? 'selected' : ''}>
 																					        ${fn:trim(time)}
@@ -104,7 +104,7 @@
                                                                         <div class="form-group">
                                                                             <label class="form-label">Select Barber</label>
                                                                             <div class="form-control-wrap">
-                                                                                <select name="staffId" class="form-control" disabled style="background-color: #ffffff; color: #000;">
+                                                                                <select name="staffId" class="form-control" style="background-color: #ffffff; color: #000;">
 																				    <c:forEach var="barber" items="${barberList}">
 																				        <option value="${barber.staffId}" ${appointment.barberId == barber.staffId ? 'selected' : ''}>
 																				            ${barber.staffName}

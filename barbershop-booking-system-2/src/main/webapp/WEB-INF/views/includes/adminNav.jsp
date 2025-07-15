@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -43,9 +44,11 @@
 							class="nk-menu-link"><span class="nk-menu-icon"><em
 									class="icon ni ni-calendar-booking"></em></span><span
 								class="nk-menu-text">Appointment</span></a></li>
+						<c:if test="${sessionScope.staffRole == 'Admin'}">
 						<li class="nk-menu-item"><a href="listTransaction"
 							class="nk-menu-link"><span class="nk-menu-icon"><em
 									class="icon ni ni-cc-alt2"></em></span><span class="nk-menu-text">Transaction</span></a></li>
+						</c:if>
 						<!-- <li class="nk-menu-item has-sub"><a href="#"
 							class="nk-menu-link nk-menu-toggle"><span
 								class="nk-menu-icon"><em class="icon ni ni-reports"></em></span><span
