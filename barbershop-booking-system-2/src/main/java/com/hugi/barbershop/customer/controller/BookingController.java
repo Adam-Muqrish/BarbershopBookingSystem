@@ -17,6 +17,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.HashSet;
+import java.util.ArrayList;
 
 import com.hugi.barbershop.customer.model.Customer;
 import com.hugi.barbershop.staff.model.Staff;
@@ -69,6 +71,7 @@ public class BookingController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    	// Check if customer is logged in
         String custId = (String) request.getSession().getAttribute("custId");
         Customer customer = customerDAO.getCustomerById(custId);
 
@@ -78,6 +81,7 @@ public class BookingController extends HttpServlet {
             return;
         }
 
+        // Validate and parse the selected date
         LocalDate today = LocalDate.now();
         String selectedDate = request.getParameter("date");
         if (selectedDate == null || selectedDate.isEmpty()) {
@@ -87,8 +91,9 @@ public class BookingController extends HttpServlet {
         if (parsedSelectedDate.isBefore(today)) {
             selectedDate = today.format(DateTimeFormatter.ISO_DATE);
         }
+        
+        // Get the selected slot from request parameters
         String selectedSlot = request.getParameter("slot");
-
         StaffDAO staffDAO = new StaffDAO();
         List<Staff> barbers = staffDAO.getAllBarbers();
 
@@ -101,16 +106,23 @@ public class BookingController extends HttpServlet {
                 "8:00 pm", "8:30 pm", "9:00 pm", "9:30 pm"
         };
 
+        // If no slot is selected, default to the first available slot
         Map<String, Boolean> slotAvailability = new HashMap<>();
         Map<String, List<String>> unavailableBarbersBySlot = new HashMap<>();
 
+        // Check if selected slot is valid
         for (String slot : slots) {
-            List<String> unavailableBarbers = staffDAO.getUnavailableBarbersForSlot(slot, selectedDate);
-            unavailableBarbersBySlot.put(slot, unavailableBarbers);
-            boolean available = unavailableBarbers.size() < barbers.size();
-            slotAvailability.put(slot, available);
+        	// Trim whitespace from slot
+            String trimmedSlot = slot.trim();
+            List<String> unavailableBarbers = staffDAO.getUnavailableBarbersForSlot(trimmedSlot, selectedDate);
+            // Deduplicate barber IDs
+            List<String> uniqueUnavailableBarbers = new ArrayList<>(new HashSet<>(unavailableBarbers));
+            unavailableBarbersBySlot.put(trimmedSlot, uniqueUnavailableBarbers);
+            boolean available = uniqueUnavailableBarbers.size() < barbers.size();
+            slotAvailability.put(trimmedSlot, available);
         }
 
+        // If no slot is selected, find the first available slot
         boolean isAjax = "true".equals(request.getParameter("ajax"));
         if (isAjax) {
             response.setContentType("application/json");
@@ -122,6 +134,7 @@ public class BookingController extends HttpServlet {
             return;
         }
 
+        // If no slot is selected, find the first available slot
         String unavailableBarbersBySlotJson = createSafeJson(unavailableBarbersBySlot);
 
         request.setAttribute("customer", customer);

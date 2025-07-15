@@ -42,7 +42,7 @@
 							<c:forEach var="slot" items="${slots}">
 								<label> <input type="radio" name="slot" value="${slot}"
 									class="mr-1"
-									<c:if test="${not empty unavailableBarbersBySlot[slot] && fn:length(unavailableBarbersBySlot[slot]) eq fn:length(barbers)}">disabled</c:if> />
+									<c:if test="${not empty unavailableBarbersBySlot[fn:trim(slot)] && fn:length(unavailableBarbersBySlot[fn:trim(slot)]) eq fn:length(barbers)}">disabled</c:if> />
 									${slot}
 								</label>
 							</c:forEach>

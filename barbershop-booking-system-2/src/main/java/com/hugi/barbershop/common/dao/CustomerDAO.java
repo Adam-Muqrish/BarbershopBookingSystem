@@ -115,7 +115,7 @@ public class CustomerDAO {
 		}
 	}
 
-	// Get all customers
+	// Get all customers - alip
 	public List<Customer> getAllCustomers() {
 		List<Customer> customers = new ArrayList<>();
 		String sql = "SELECT * FROM CUSTOMERS";

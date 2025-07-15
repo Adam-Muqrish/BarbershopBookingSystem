@@ -93,28 +93,28 @@ public class PaymentDAO {
 	}
 
 	// Fetch payment by ID
-	public Payment getPaymentById(String paymentId) {
-		String sql = "SELECT * FROM PAYMENTS WHERE PAYMENT_ID = ?";
-		try (Connection conn = DBUtil.getConnection();
-				PreparedStatement stmt = conn.prepareStatement(sql)) {
-			stmt.setInt(1, Integer.parseInt(paymentId));
-			try (ResultSet rs = stmt.executeQuery()) {
-				if (rs.next()) {
-					Payment payment = new Payment();
-					payment.setPaymentId(String.valueOf(rs.getInt("PAYMENT_ID")));
-					payment.setPaymentDate(rs.getDate("PAYMENT_DATE").toLocalDate());
-					payment.setPaymentAmount(rs.getDouble("PAYMENT_AMOUNT"));
-					payment.setAppointmentId(String.valueOf(rs.getInt("APPOINTMENT_ID")));
-					payment.setPaymentMethod(getPaymentMethod(paymentId));
-					return payment;
-				}
-			}
-		} catch (Exception e) {
-			System.out.println("Error fetching payment by ID:");
-			e.printStackTrace();
-		}
-		return null;
-	}
+//	public Payment getPaymentById(String paymentId) {
+//		String sql = "SELECT * FROM PAYMENTS WHERE PAYMENT_ID = ?";
+//		try (Connection conn = DBUtil.getConnection();
+//				PreparedStatement stmt = conn.prepareStatement(sql)) {
+//			stmt.setInt(1, Integer.parseInt(paymentId));
+//			try (ResultSet rs = stmt.executeQuery()) {
+//				if (rs.next()) {
+//					Payment payment = new Payment();
+//					payment.setPaymentId(String.valueOf(rs.getInt("PAYMENT_ID")));
+//					payment.setPaymentDate(rs.getDate("PAYMENT_DATE").toLocalDate());
+//					payment.setPaymentAmount(rs.getDouble("PAYMENT_AMOUNT"));
+//					payment.setAppointmentId(String.valueOf(rs.getInt("APPOINTMENT_ID")));
+//					payment.setPaymentMethod(getPaymentMethod(paymentId));
+//					return payment;
+//				}
+//			}
+//		} catch (Exception e) {
+//			System.out.println("Error fetching payment by ID:");
+//			e.printStackTrace();
+//		}
+//		return null;
+//	}
 
 	// Fetch payment by appointment ID
 	public Payment getPaymentByAppointmentId(String appointmentId) {
@@ -167,6 +167,7 @@ public class PaymentDAO {
 		}
 	}
 
+	// Check if payment is cash or online
 	private boolean isCashPayment(String paymentId) {
 		String sql = "SELECT 1 FROM CASHES WHERE PAYMENT_ID = ?";
 		try (Connection conn = DBUtil.getConnection();
@@ -182,6 +183,7 @@ public class PaymentDAO {
 		}
 	}
 
+	// Check if payment is online banking
 	private boolean isOnlinePayment(String paymentId) {
 		String sql = "SELECT 1 FROM ONLINE_PAYMENTS WHERE PAYMENT_ID = ?";
 		try (Connection conn = DBUtil.getConnection();
