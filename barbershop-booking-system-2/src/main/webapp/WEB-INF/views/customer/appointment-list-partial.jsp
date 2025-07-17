@@ -46,6 +46,14 @@ int totalPages = request.getAttribute("totalPages") != null ? (Integer) request.
 			<p>
 				<strong>Barber:</strong>
 				<%=appt.getAppointmentBarber()%></p>
+			<p>
+				<strong>Status:</strong>
+				<%=appt.getPaymentStatus()%>
+			</p>
+			<p>
+				<strong>Payment Type:</strong>
+				<%=appt.getPaymentMethod()%>
+			</p>
 		</div>
 		<div
 			class="flex flex-col md:flex-row flex-wrap gap-2 mt-4 w-full justify-end">

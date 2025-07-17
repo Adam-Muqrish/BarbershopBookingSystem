@@ -79,7 +79,9 @@
 							class="w-full border rounded px-3 py-2 pr-10 shadow appearance-none focus:outline-none focus:ring-2 focus:ring-yellow-400">
 							<option selected disabled>-- Select Barber --</option>
 							<c:forEach var="barber" items="${barbers}">
-								<option value="${barber.staffId}">${barber.staffName}</option>
+								<c:if test="${barber ne null and not empty barber.staffId and not empty barber.staffName}">
+									<option value="${barber.staffId}">${barber.staffName}</option>
+								</c:if>
 							</c:forEach>
 						</select> <span
 							class="pointer-events-none absolute right-3 top-2.5 text-gray-400">

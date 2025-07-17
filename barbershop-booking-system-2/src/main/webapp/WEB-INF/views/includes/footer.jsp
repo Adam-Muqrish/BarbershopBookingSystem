@@ -58,7 +58,7 @@
 			<h1 class="text-lg font-semibold">More Information</h1>
 			<ul class="mt-2 space-y-1 text-sm">
 				<li><a href="booking">Booking</a></li>
-				<li><a href="feedback">Feedback</a></li>
+				<!-- <li><a href="feedback">Feedback</a></li> -->
 				<li><a href="index#aboutUs">About Us</a></li>
 				<li><a href="register">Login</a></li>
 				<li><a href="register">Register</a></li>

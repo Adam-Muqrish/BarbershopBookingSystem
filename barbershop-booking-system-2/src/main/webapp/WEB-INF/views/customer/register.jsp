@@ -30,16 +30,16 @@ response.setDateHeader("Expires", 0);
             opacity: 1; z-index: 2; pointer-events: auto;
         }
         .sliding-panel {
-            position: absolute; top: 0; left: 50%;
+            position: absolute; top: 0; left: 0;
             width: 50%; height: 100%; transition: left 0.5s cubic-bezier(0.23, 1, 0.32, 1), border-radius 0.5s;
             z-index: 5; display: flex; flex-direction: column; align-items: center; justify-content: center;
-            background-color: #9ca3af; padding: 2rem;
-            border-top-right-radius: 1rem; border-bottom-right-radius: 1rem;
-        }
-        .sliding-panel.left {
-            left: 0;
-            border-top-right-radius: 0; border-bottom-right-radius: 0;
+            background-color: #101820; padding: 2rem;
             border-top-left-radius: 1rem; border-bottom-left-radius: 1rem;
+        }
+        .sliding-panel.right {
+            left: 50%;
+            border-top-left-radius: 0; border-bottom-left-radius: 0;
+            border-top-right-radius: 1rem; border-bottom-right-radius: 1rem;
         }
         .modal-overlay {
             position: fixed; inset: 0; background: rgba(0, 0, 0, 0.35);
@@ -87,38 +87,8 @@ response.setDateHeader("Expires", 0);
     <main class="flex flex-col items-center mx-3 my-4 flex-grow justify-center">
         <div class="form-container bg-white rounded-2xl shadow-xl w-full max-w-3xl mx-4 md:mx-auto overflow-hidden" style="height: 600px;">
             <div class="flex w-full h-full relative">
-                <!-- Register Form -->
-                <div id="register-form-container" class="panel active bg-gray-100 p-8 rounded-l-2xl flex flex-col justify-center transition-opacity duration-500">
-                    <h2 class="text-2xl font-bold mb-6">Register</h2>
-                    <form id="register-form" class="space-y-4" action="auth" method="post" autocomplete="off">
-                        <input type="hidden" name="action" value="register">
-                        <div>
-                            <label class="block text-gray-700 mb-1">Name</label>
-                            <input type="text" name="name" class="w-full p-2 border border-gray-300 rounded" required>
-                        </div>
-                        <div>
-                            <label class="block text-gray-700 mb-1">Email</label>
-                            <input type="email" name="email" class="w-full p-2 border border-gray-300 rounded" required>
-                        </div>
-                        <div>
-                            <label class="block text-gray-700 mb-1">Phone Number</label>
-                            <input type="tel" name="phone" class="w-full p-2 border border-gray-300 rounded" required>
-                        </div>
-                        <div>
-                            <label class="block text-gray-700 mb-1">Password</label>
-                            <input type="password" name="password" class="w-full p-2 border border-gray-300 rounded" required>
-                        </div>
-                        <div>
-                            <label class="block text-gray-700 mb-1">Confirm Password</label>
-                            <input type="password" name="confirmPassword" class="w-full p-2 border border-gray-300 rounded" required>
-                        </div>
-                        <button type="submit" class="bg-black text-white py-2 px-6 rounded-full hover:bg-gray-800 transition-colors">
-                            Register
-                        </button>
-                    </form>
-                </div>
                 <!-- Login Form -->
-                <div id="login-form-container" class="panel inactive bg-gray-100 p-8 rounded-r-2xl flex flex-col justify-center absolute top-0 right-0 h-full transition-opacity duration-500">
+                <div id="login-form-container" class="panel active bg-gray-100 p-8 rounded-l-2xl flex flex-col justify-center transition-opacity duration-500">
                     <h2 class="text-2xl font-bold mb-6">Login</h2>
                     <form id="login-form" class="space-y-4" action="auth" method="post" autocomplete="off">
                         <input type="hidden" name="action" value="login">
@@ -142,22 +112,51 @@ response.setDateHeader("Expires", 0);
                         </button>
                     </form>
                 </div>
+                <!-- Register Form -->
+                <div id="register-form-container" class="panel inactive bg-gray-100 p-8 rounded-r-2xl flex flex-col justify-center absolute top-0 right-0 h-full transition-opacity duration-500">
+                    <h2 class="text-2xl font-bold mb-6">Register</h2>
+                    <form id="register-form" class="space-y-4" action="auth" method="post" autocomplete="off">
+                        <input type="hidden" name="action" value="register">
+                        <div>
+                            <label class="block text-gray-700 mb-1">Name</label>
+                            <input type="text" name="name" class="w-full p-2 border border-gray-300 rounded" required>
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 mb-1">Email</label>
+                            <input type="email" name="email" class="w-full p-2 border border-gray-300 rounded" required>
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 mb-1">Phone Number</label>
+                            <input type="tel" name="phone" class="w-full p-2 border border-gray-300 rounded" required pattern="[0-9]{10,15}" title="Please enter a valid phone number (digits only)">
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 mb-1">Password</label>
+                            <input type="password" name="password" class="w-full p-2 border border-gray-300 rounded" required>
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 mb-1">Confirm Password</label>
+                            <input type="password" name="confirmPassword" class="w-full p-2 border border-gray-300 rounded" required>
+                        </div>
+                        <button type="submit" class="bg-black text-white py-2 px-6 rounded-full hover:bg-gray-800 transition-colors">
+                            Register
+                        </button>
+                    </form>
+                </div>
                 <!-- Sliding Panel -->
-                <div id="sliding-panel" class="sliding-panel right transition-all duration-500"  style="background-color: #101820;">
+                <div id="sliding-panel" class="sliding-panel right transition-all duration-500">
                     <div class="flex-1 flex flex-col items-center justify-center">
-                        <div class="mb-12">
+                        <div class="mb-10">
                             <h1 class="text-2xl font-bold mb-1 text-center text-white">HUGI BARBERSHOP</h1>
                             <div class="border-t-2 border-white mb-4"></div>
                             <p class="text-lg text-center text-white">Customer Account</p>
                         </div>
-                        <button id="toggle-login" class="bg-white text-black py-2 px-10 rounded-full hover:bg-gray-100 transition-colors">
+                        <p class="text-md text-center text-white mb-4">If you don't have any account, kindly register first.</p>
+                        <button id="toggle-register" class="bg-white text-black py-2 px-10 rounded-full hover:bg-gray-100 transition-colors">
+                            Register
+                        </button>
+                        <button id="toggle-login"  class="bg-white text-black py-2 px-10 rounded-full hover:bg-gray-100 transition-colors">
                             Login
                         </button>
-                        <!-- Replace this button (remove 'hidden' class) -->
-						<button id="toggle-register"
-						    class="bg-white text-black py-2 px-10 rounded-full hover:bg-gray-100 transition-colors">
-						    Register
-						</button>
                     </div>
                 </div>
             </div>
@@ -165,6 +164,19 @@ response.setDateHeader("Expires", 0);
     </main>
     <%-- <%@ include file="/WEB-INF/views/includes/footer.jsp" %> --%>
     <script>
+    	// Form validation for register form
+	    document.getElementById('register-form').addEventListener('submit', function(e) {
+	        const pwd = this.password.value;
+	        const confirmPwd = this.confirmPassword.value;
+	        if (pwd !== confirmPwd) {
+	            e.preventDefault();
+	            alert('Passwords do not match.');
+	        }
+	    });
+    	// Form validation for phone number input
+	    document.querySelector('input[name="phone"]').addEventListener('input', function(e) {
+	        this.value = this.value.replace(/\D/g, '');
+	    });
         document.addEventListener('DOMContentLoaded', function() {
             const slidingPanel = document.getElementById('sliding-panel');
             const registerFormContainer = document.getElementById('register-form-container');
@@ -204,42 +216,43 @@ response.setDateHeader("Expires", 0);
 
             // Show modal if there is a success or error message
             <% if (justLoggedIn) { %>
-			    showModal(true, "Login successful! Redirecting...", "index");
-			<% } else if (request.getAttribute("successMessage") != null) { %>
-			    showModal(true, "<%=request.getAttribute("successMessage").toString().replace("\"", "\\\"")%>");
-			<% } else if (request.getAttribute("error") != null) { %>
-			    showModal(false, "<%=request.getAttribute("error").toString().replace("\"", "\\\"")%>");
-			<% } %>
+                showModal(true, "Login successful! Redirecting...", "index");
+            <% } else if (request.getAttribute("successMessage") != null) { %>
+                showModal(true, "<%=request.getAttribute("successMessage").toString().replace("\"", "\\\"")%>");
+            <% } else if (request.getAttribute("error") != null) { %>
+                showModal(false, "<%=request.getAttribute("error").toString().replace("\"", "\\\"")%>");
+            <% } %>
 
-			// Sliding panel logic
-			function showLogin() {
-			    slidingPanel.classList.add('left');
-			    registerFormContainer.classList.remove('active');
-			    registerFormContainer.classList.add('inactive');
-			    loginFormContainer.classList.remove('inactive');
-			    loginFormContainer.classList.add('active');
-			    toggleLoginBtn.style.display = 'none';
-			    toggleRegisterBtn.style.display = '';
-			}
-			function showRegister() {
-			    slidingPanel.classList.remove('left');
-			    loginFormContainer.classList.remove('active');
-			    loginFormContainer.classList.add('inactive');
-			    registerFormContainer.classList.remove('inactive');
-			    registerFormContainer.classList.add('active');
-			    toggleLoginBtn.style.display = '';
-			    toggleRegisterBtn.style.display = 'none';
-			}
-			// Init state
-			slidingPanel.classList.remove('left');
-			registerFormContainer.classList.add('active');
-			loginFormContainer.classList.add('inactive');
-			toggleLoginBtn.style.display = '';
-			toggleRegisterBtn.style.display = 'none';
+            // Sliding panel logic
+            function showRegister() {
+                slidingPanel.classList.remove('right');
+                loginFormContainer.classList.remove('active');
+                loginFormContainer.classList.add('inactive');
+                registerFormContainer.classList.remove('inactive');
+                registerFormContainer.classList.add('active');
+                toggleRegisterBtn.style.display = 'none';
+                toggleLoginBtn.style.display = '';
+            }
+            
+            function showLogin() {
+                slidingPanel.classList.add('right');
+                registerFormContainer.classList.remove('active');
+                registerFormContainer.classList.add('inactive');
+                loginFormContainer.classList.remove('inactive');
+                loginFormContainer.classList.add('active');
+                toggleRegisterBtn.style.display = '';
+                toggleLoginBtn.style.display = 'none';
+            }
+            
+            // Init state - show login form first
+            slidingPanel.classList.add('right');
+            loginFormContainer.classList.add('active');
+            registerFormContainer.classList.add('inactive');
+            toggleRegisterBtn.style.display = '';
+            toggleLoginBtn.style.display = 'none';
 
-
-			toggleLoginBtn.addEventListener('click', showLogin);
-			toggleRegisterBtn.addEventListener('click', showRegister);
+            toggleRegisterBtn.addEventListener('click', showRegister);
+            toggleLoginBtn.addEventListener('click', showLogin);
 
             // Allow clicking overlay to close early
             modalOverlay.addEventListener('click', function(e) {
@@ -248,7 +261,7 @@ response.setDateHeader("Expires", 0);
                 }
             });
             
-         	// Place this at the bottom of your JSP, inside <script>
+            // Place this at the bottom of your JSP, inside <script>
             window.addEventListener('pageshow', function(event) {
                 if (event.persisted) {
                     // If page is loaded from bfcache, reload from server.
@@ -258,4 +271,4 @@ response.setDateHeader("Expires", 0);
         });
     </script>
 </body>
-</html>
+</html>			
