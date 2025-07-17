@@ -28,6 +28,7 @@ public class StaffDAO {
 				staff.setDescription(rs.getString("STAFF_DESCRIPTION"));
 				staff.setStaffRole(rs.getString("ROLE"));
 				staff.setAdminId(rs.getString("ADMIN_ID"));
+				
 				return staff;
 			}
 		} catch (SQLException e) {
