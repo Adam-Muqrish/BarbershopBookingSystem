@@ -17,15 +17,21 @@ import com.google.gson.reflect.TypeToken;
 import com.hugi.barbershop.customer.model.Appointment;
 import com.hugi.barbershop.customer.model.Customer;
 import com.hugi.barbershop.common.dao.CustomerDAO;
+import com.hugi.barbershop.common.dao.PaymentDAO;
+import com.hugi.barbershop.common.dao.AppointmentDAO;
 
 @WebServlet("/view-appointment")
 public class ViewAppointmentController extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private CustomerDAO customerDAO;
+    private PaymentDAO paymentDAO;
+    private AppointmentDAO appointmentDAO;
 
     @Override
     public void init() {
         customerDAO = new CustomerDAO();
+        paymentDAO = new PaymentDAO();
+        appointmentDAO = new AppointmentDAO();
     }
 
     public ViewAppointmentController() {
@@ -82,12 +88,38 @@ public class ViewAppointmentController extends HttpServlet {
             allAppointments = new ArrayList<>();
         }
 
-        // Filter out appointments: only paymentStatus == "completed" and serviceStatus == "pending"
+        // Filter out appointments: paymentStatus == "completed" and serviceStatus != "Cancelled" and serviceStatus != "Done"
         List<Appointment> filteredAppointments = new ArrayList<>();
         for (Appointment appt : allAppointments) {
-            boolean paymentCompleted = "completed".equalsIgnoreCase(appt.getPaymentStatus());
-            boolean servicePending = "pending".equalsIgnoreCase(appt.getServiceStatus());
-            if (paymentCompleted && servicePending) {
+            boolean paymentCompletedOrPending = "completed".equalsIgnoreCase(appt.getPaymentStatus()) || "pending".equalsIgnoreCase(appt.getPaymentStatus());
+            boolean serviceNotCancelled = !"Cancelled".equalsIgnoreCase(appt.getServiceStatus());
+            boolean serviceNotDone = !"Done".equalsIgnoreCase(appt.getServiceStatus());
+            if (paymentCompletedOrPending && serviceNotCancelled && serviceNotDone) {
+                // Set payment method for each appointment
+                String paymentMethod = null;
+                try {
+                    com.hugi.barbershop.customer.model.Payment payment = paymentDAO.getPaymentByAppointmentId(appt.getAppointmentId());
+                    if (payment != null) {
+                        paymentMethod = payment.getPaymentMethod();
+                    }
+                } catch (Exception ex) {
+                    paymentMethod = null;
+                }
+                if (paymentMethod == null || paymentMethod.equalsIgnoreCase("unknown")) {
+                    paymentMethod = "Unknown";
+                }
+                appt.setPaymentMethod(paymentMethod);
+                // Set barber name for each appointment
+                String barberName = null;
+                try {
+                    barberName = appointmentDAO.getBarberNameById(appt.getBarberId());
+                } catch (Exception ex) {
+                    barberName = null;
+                }
+                if (barberName == null || barberName.isEmpty()) {
+                    barberName = "Unknown";
+                }
+                appt.setAppointmentBarber(barberName);
                 filteredAppointments.add(appt);
             }
         }

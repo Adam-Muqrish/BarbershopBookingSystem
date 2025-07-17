@@ -142,7 +142,7 @@ public class PaymentController extends HttpServlet {
 			}
 			String paymentId = payment.getPaymentId();
 			paymentDAO.insertCashPayment(paymentId, 0.0);
-			appointmentDAO.updatePaymentStatus(custId, bookingDate, selectedTime, "completed");
+			appointmentDAO.updatePaymentStatus(appointmentId, "completed");
 			shouldUpdateLoyalty = true;
 			session.setAttribute("paymentId", paymentId);
 			session.setAttribute("paymentMethod", "free");
@@ -157,11 +157,11 @@ public class PaymentController extends HttpServlet {
 			String paymentId = payment.getPaymentId();
 			if ("cash".equals(paymentMethod)) {
 				paymentDAO.insertCashPayment(paymentId, price);
-				appointmentDAO.updatePaymentStatus(custId, bookingDate, selectedTime, "pending");
+				appointmentDAO.updatePaymentStatus(appointmentId, "pending");
 				shouldUpdateLoyalty = true;
 			} else if ("online-banking".equals(paymentMethod)) {
 				paymentDAO.insertOnlinePayment(paymentId, bankName, customerName != null ? customerName : "Unknown");
-				appointmentDAO.updatePaymentStatus(custId, bookingDate, selectedTime, "completed");
+				appointmentDAO.updatePaymentStatus(appointmentId, "completed");
 				shouldUpdateLoyalty = true;
 			}
 			session.setAttribute("paymentId", paymentId);

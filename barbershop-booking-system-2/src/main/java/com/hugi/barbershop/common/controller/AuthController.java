@@ -76,21 +76,22 @@ public class AuthController extends HttpServlet {
     }
 
     private void handleCustomerLogin(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        CustomerDAO customerDAO = new CustomerDAO();
-        String email = request.getParameter("email");
-        String password = request.getParameter("password");
-        Customer customer = customerDAO.getCustomerByEmail(email);
+    	CustomerDAO customerDAO = new CustomerDAO();
+    	String email = request.getParameter("email");
+    	String password = request.getParameter("password");
+    	Customer customer = customerDAO.getCustomerByEmail(email);
 
-        if (customer != null && customerDAO.verifyPassword(customer, password)) {
-            HttpSession session = request.getSession();
-            session.setAttribute("customer", customer);
-            session.setAttribute("custId", customer.getCustId());
-            request.setAttribute("justLoggedIn", true);
-            response.sendRedirect("index");
-        } else {
-            request.setAttribute("error", "Invalid email or password");
-            request.getRequestDispatcher("/WEB-INF/views/customer/register.jsp").forward(request, response);
-        }
+    	if (customer != null && customerDAO.verifyPassword(customer, password)) {
+    		HttpSession session = request.getSession();
+    		session.setAttribute("customer", customer);
+    		session.setAttribute("custId", customer.getCustId());
+    		request.setAttribute("justLoggedIn", true);
+    		request.getRequestDispatcher("/WEB-INF/views/customer/register.jsp").forward(request, response);
+    	}
+    	else {
+    		request.setAttribute("error", "Invalid email or password");
+    		request.getRequestDispatcher("/WEB-INF/views/customer/register.jsp").forward(request, response);
+    	}
     }
 
     private void handleCustomerRegister(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -99,6 +100,13 @@ public class AuthController extends HttpServlet {
         String custEmail = request.getParameter("email");
         String custPassword = request.getParameter("password");
         String custPhoneNumber = request.getParameter("phone");
+        String confirmPassword = request.getParameter("confirmPassword");
+
+        if (!custPassword.equals(confirmPassword)) {
+            request.setAttribute("error", "Passwords do not match.");
+            request.getRequestDispatcher("/WEB-INF/views/customer/register.jsp").forward(request, response);
+            return;
+        }
 
         if (customerDAO.emailExists(custEmail)) {
             request.setAttribute("error", "Email already registered.");

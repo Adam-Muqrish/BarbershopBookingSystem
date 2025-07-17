@@ -191,7 +191,7 @@ public class BookingController extends HttpServlet {
         // Call Appointment microservice
         try {
             // Replace with your actual Appointment microservice URL
-            URL url = new URL("http://192.168.0.66:8081/barbershop-customer-service/api/appointment");
+            URL url = new URL("http://localhost:8081/barbershop-customer-service/api/appointment");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("POST");
             conn.setRequestProperty("Content-Type", "application/json");
