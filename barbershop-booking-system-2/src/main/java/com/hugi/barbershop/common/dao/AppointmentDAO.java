@@ -411,4 +411,47 @@ public class AppointmentDAO {
             return false;
         }
     }
+    
+ // Get all appointments by Barber ID
+    public List<Appointment> getAllAppointmentByBarberId(int barberId) {
+        List<Appointment> appointments = new ArrayList<>();
+        String sql = """
+            SELECT a.*, c.CUST_NAME, c.CUST_PICTURE
+            FROM APPOINTMENTS a
+            JOIN CUSTOMERS c ON a.CUST_ID = c.CUST_ID
+            WHERE a.BARBER_ID = ?
+            ORDER BY a.APPOINTMENT_DATE DESC
+        """;
+
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, barberId);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Appointment appointment = new Appointment();
+                appointment.setAppointmentId(rs.getString("APPOINTMENT_ID"));
+                appointment.setCustId(rs.getString("CUST_ID"));
+                appointment.setCustomerName(rs.getString("CUST_NAME"));
+                appointment.setCustPicture(rs.getString("CUST_PICTURE"));
+                appointment.setAppointmentDate(rs.getDate("APPOINTMENT_DATE").toString());
+                appointment.setAppointmentTime(rs.getString("APPOINTMENT_TIME"));
+                appointment.setValueLoyalty(rs.getInt("VALUE_LOYALTY"));
+                appointment.setPaymentStatus(rs.getString("PAYMENT_STATUS"));
+                appointment.setServiceStatus(rs.getString("SERVICE_STATUS"));
+                appointment.setCustBookFor(rs.getString("CUST_BOOK_FOR"));
+                appointment.setCustType(rs.getString("CUST_TYPE"));
+                appointment.setBarberId(rs.getInt("BARBER_ID"));
+                appointments.add(appointment);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return appointments;
+    }
+
+    
 }

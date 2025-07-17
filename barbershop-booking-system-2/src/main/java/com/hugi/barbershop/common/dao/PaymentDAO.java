@@ -199,13 +199,14 @@ public class PaymentDAO {
 		}
 	}
 	
-	//View Transaction - Admin Part - alip
+		//View Transaction - Admin Part - alip
 	  public List<Payment> getAllPayments() {
 	      List<Payment> transactions = new ArrayList<>();
 
 	      String sql = """
 	          SELECT c.CUST_PICTURE, c.CUST_NAME, c.CUST_EMAIL, 
 			       p.PAYMENT_ID, p.PAYMENT_DATE, p.PAYMENT_AMOUNT,
+			       p.APPOINTMENT_ID,
 			       CASE 
 			           WHEN op.PAYMENT_ID IS NOT NULL THEN 'Online Payment'
 			           WHEN cs.PAYMENT_ID IS NOT NULL THEN 'Cash'
@@ -217,7 +218,6 @@ public class PaymentDAO {
 			LEFT JOIN ONLINE_PAYMENTS op ON p.PAYMENT_ID = op.PAYMENT_ID
 			LEFT JOIN CASHES cs ON p.PAYMENT_ID = cs.PAYMENT_ID
 			ORDER BY p.PAYMENT_ID DESC
-			FETCH FIRST 10 ROWS ONLY
 	      """;
 
 	      try (Connection conn = DBUtil.getConnection();
@@ -232,6 +232,7 @@ public class PaymentDAO {
 		            tx.setPaymentId(rs.getString("PAYMENT_ID"));
 		            tx.setFormattedDate(rs.getDate("PAYMENT_DATE").toLocalDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
 		            tx.setPaymentAmount(rs.getDouble("PAYMENT_AMOUNT"));
+		            tx.setAppointmentId(rs.getString("APPOINTMENT_ID"));
 		            tx.setPaymentMethod(rs.getString("PAYMENT_TYPE"));
 		            transactions.add(tx);
 	          }
