@@ -8,12 +8,21 @@ public class Payment {
 	private double paymentAmount;
 	private String appointmentId;
 	private String paymentMethod;
+	private String paymentStatus;
+
 	private String customerName;
 	private String customerPicture;
 	private String customerEmail;
 	private String formattedDate;
 	
 	// Getters and setters
+	public String getPaymentStatus() {
+		return paymentStatus;
+	}
+	public void setPaymentStatus(String paymentStatus) {
+		this.paymentStatus = paymentStatus;
+	}
+	
 	public String getPaymentId() { return paymentId; }
 	public void setPaymentId(String paymentId) { this.paymentId = paymentId; }
 

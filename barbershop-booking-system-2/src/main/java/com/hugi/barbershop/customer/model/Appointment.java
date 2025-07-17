@@ -18,6 +18,16 @@ public class Appointment implements Serializable {
 	private String staffId;
 	private int valueLoyalty;
 	private String appointmentBarber;
+	private String custPicture;
+	
+	
+	public String getCustPicture() {
+		return custPicture;
+	}
+	public void setCustPicture(String custPicture) {
+		this.custPicture = custPicture;
+	}
+
 	private String customerName;
 	private int barberId;
 	private String paymentMethod;
