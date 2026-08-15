@@ -204,7 +204,7 @@
                     aria-label="Show password"
                   >
                     <svg
-                      class="eye-icon w-5 h-5"
+                      class="hidden eye-icon w-5 h-5"
                       fill="none"
                       stroke="currentColor"
                       stroke-width="2"
@@ -270,7 +270,10 @@
                   class="w-full p-2 border border-gray-300 rounded"
                   required
                 />
-                <span class="field-error hidden block text-sm text-red-600 mt-1" data-error-for="registerName"></span>
+                <span
+                  class="field-error hidden block text-sm text-red-600 mt-1"
+                  data-error-for="registerName"
+                ></span>
               </div>
               <div>
                 <label class="block text-gray-700 mb-1">Email</label>
@@ -281,7 +284,10 @@
                   class="w-full p-2 border border-gray-300 rounded"
                   required
                 />
-                <span class="field-error hidden block text-sm text-red-600 mt-1" data-error-for="registerEmail"></span>
+                <span
+                  class="field-error hidden block text-sm text-red-600 mt-1"
+                  data-error-for="registerEmail"
+                ></span>
               </div>
               <div>
                 <label class="block text-gray-700 mb-1">Phone Number</label>
@@ -292,7 +298,10 @@
                   class="w-full p-2 border border-gray-300 rounded"
                   required
                 />
-                <span class="field-error hidden block text-sm text-red-600 mt-1" data-error-for="registerPhone"></span>
+                <span
+                  class="field-error hidden block text-sm text-red-600 mt-1"
+                  data-error-for="registerPhone"
+                ></span>
               </div>
               <div>
                 <label class="block text-gray-700 mb-1">Password</label>
@@ -347,15 +356,26 @@
                     </svg>
                   </button>
                 </div>
-                <span class="field-error hidden block text-sm text-red-600 mt-1" data-error-for="registerPassword"></span>
+                <span
+                  class="field-error hidden block text-sm text-red-600 mt-1"
+                  data-error-for="registerPassword"
+                ></span>
               </div>
               <div>
                 <p class="text-xs text-gray-500 mt-2 mb-1">Password strength</p>
                 <div class="flex gap-1" id="passwordStrength">
-                  <div class="strength-bar h-1.5 flex-1 rounded bg-gray-200 transition-colors"></div>
-                  <div class="strength-bar h-1.5 flex-1 rounded bg-gray-200 transition-colors"></div>
-                  <div class="strength-bar h-1.5 flex-1 rounded bg-gray-200 transition-colors"></div>
-                  <div class="strength-bar h-1.5 flex-1 rounded bg-gray-200 transition-colors"></div>
+                  <div
+                    class="strength-bar h-1.5 flex-1 rounded bg-gray-200 transition-colors"
+                  ></div>
+                  <div
+                    class="strength-bar h-1.5 flex-1 rounded bg-gray-200 transition-colors"
+                  ></div>
+                  <div
+                    class="strength-bar h-1.5 flex-1 rounded bg-gray-200 transition-colors"
+                  ></div>
+                  <div
+                    class="strength-bar h-1.5 flex-1 rounded bg-gray-200 transition-colors"
+                  ></div>
                 </div>
                 <p id="strengthText" class="text-xs mt-1 text-gray-500"></p>
               </div>
@@ -412,7 +432,10 @@
                     </svg>
                   </button>
                 </div>
-                <span id="passwordMatch" class="field-error hidden block text-sm mt-1"></span>
+                <span
+                  id="passwordMatch"
+                  class="field-error hidden block text-sm mt-1"
+                ></span>
               </div>
               <button
                 type="submit"
@@ -708,17 +731,10 @@
             "#22c55e",
             "#22c55e",
           ];
-          const labels = [
-            "Very weak",
-            "Weak",
-            "Fair",
-            "Strong",
-            "Very strong",
-          ];
+          const labels = ["Very weak", "Weak", "Fair", "Strong", "Very strong"];
           const filled = Math.max(1, Math.min(4, score));
           bars.forEach(function (b, i) {
-            b.style.backgroundColor =
-              i < filled ? colors[score] : "#e5e7eb";
+            b.style.backgroundColor = i < filled ? colors[score] : "#e5e7eb";
           });
           if (text) {
             text.textContent = "Strength: " + labels[Math.min(score, 4)];
@@ -753,4 +769,4 @@
       });
     </script>
   </body>
-  </html>
+</html>
