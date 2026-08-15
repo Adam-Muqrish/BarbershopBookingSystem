@@ -280,11 +280,16 @@ This document catalogues frontend issues, inconsistencies, and improvement oppor
 - **Enhancement:** Use `object-contain` or `max-width: 100%` with auto height on the image, and remove forced height on the wrapper.
 - **Status:** ✅ COMPLETED — Removed the fixed `width: 150px; height: 100px` from the `.logo-wrap` wrapper, and changed the logo image to `style="max-width: 150px; height: auto; display: block; object-fit: contain;"` so it scales proportionally without distortion. Rebuilt via `mvnw -o compile` → **BUILD SUCCESS**. ✅
 
-### 4.4 Admin Sidebar — Missing "Active" Class Highlighting for Current Page
+### 4.4 Admin Sidebar — Missing "Active" Class Highlighting for Current Page ✅ [COMPLETED]
 
 - **File:** `fragments/adminFragments.html:1-78`
 - **Issue:** The sidebar menu items don't have dynamic "active" class highlighting based on the current URL. The `scripts.js` has `CurrentLink` logic but the sidebar uses `nk-menu-link` class which may or may not be targeted.
 - **Enhancement:** Add `th:classappend` to highlight the current section based on `window.location.pathname` or a server-provided active menu variable.
+- **Status:** ✅ COMPLETED — Added server-side active-menu highlighting so it works without relying on the theme's `CurrentLink` JS:
+  - **New `config/AdminMenuAdvice.java`** (`@ControllerAdvice`) — exposes an `activeMenu` model attribute derived from `HttpServletRequest.getRequestURI()`, mapping admin/barber routes to `customer` / `staff` / `appointment` / `transaction` / `feedback`.
+  - **`fragments/adminFragments.html`** — each menu `<li>` now has `th:classappend="${activeMenu == 'xxx'} ? 'active' : ''"` (the theme CSS styles `.active > .nk-menu-link`), so the current section is highlighted on page load.
+  - Note: `#httpServletRequest` was initially considered but is **not reliably available** in Spring Boot 3.4 / Thymeleaf 3.1 (the `request`/`httpServletRequest` utility objects were removed), so the server-provided variable approach is used instead.
+  - Rebuilt via `mvnw -o compile` → **BUILD SUCCESS**. ✅
 
 ### 4.5 Staff List Page — "Admin" Column Shows Admin Name for Non-Admin Staff Only
 
@@ -443,7 +448,7 @@ This document catalogues frontend issues, inconsistencies, and improvement oppor
 | 4.1  | Layout           | `adminIndex.html`          | Low      | ✅ Done |
 | 4.2  | Code Quality     | `adminIndex.html`          | Low      | ✅ Done |
 | 4.3  | CSS Bug          | `adminFragments.html`      | Low      | ✅ Done |
-| 4.4  | UX               | `adminFragments.html`      | Medium   |
+| 4.4  | UX               | `adminFragments.html`      | Medium   | ✅ Done |
 | 4.5  | Clarity          | `listBarber.html`          | Low      |
 | 4.6  | UX               | `listBarber.html`          | Low      |
 | 4.7  | Bug              | `listAppointment.html`     | Medium   |

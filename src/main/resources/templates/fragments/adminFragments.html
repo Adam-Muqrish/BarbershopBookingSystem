@@ -22,10 +22,8 @@
             <h6 class="overline-title">Hugi Barbershop</h6>
           </li>
 
-          <!-- 1. CUSTOMER MENU -->
-          <!-- Admin: Lihat semua customer (/listCustomer) -->
-          <!-- Barber: Lihat customer sendiri sahaja (/barber/customers) -->
-          <li class="nk-menu-item">
+          <li class="nk-menu-item"
+            th:classappend="${activeMenu == 'customer'} ? 'active' : ''">
             <a th:href="${staffRole == 'ADMIN' ? '/listCustomer' : '/barber/customers'}" class="nk-menu-link">
               Customer
             </a>
@@ -34,14 +32,16 @@
           <!-- 2. BARBER LIST (STAFF) -->
           <!-- Admin sahaja boleh tengok senarai staff & register baru -->
           <!-- Barber tak nampak menu ni -->
-          <li th:if="${staffRole == 'ADMIN'}" class="nk-menu-item">
+          <li th:if="${staffRole == 'ADMIN'}" class="nk-menu-item"
+            th:classappend="${activeMenu == 'staff'} ? 'active' : ''">
             <a th:href="@{/listBarber}" class="nk-menu-link">Staff</a>
           </li>
 
           <!-- 3. APPOINTMENT LIST -->
           <!-- Admin: Lihat semua appointment (/listAppointment) -->
           <!-- Barber: Lihat appointment sendiri (/barber/appointments) -->
-          <li class="nk-menu-item">
+          <li class="nk-menu-item"
+            th:classappend="${activeMenu == 'appointment'} ? 'active' : ''">
             <a th:href="${staffRole == 'ADMIN' ? '/listAppointment' : '/barber/appointments'}" class="nk-menu-link">
               Appointment
             </a>
@@ -51,7 +51,8 @@
           <!-- Admin: /admin/list-transactions -->
           <!-- Barber: /barber/transactions -->
           <!-- Note: Dah ada sekaran th:if="ADMIN", kita tukar supaya Barber juga boleh tengok -->
-          <li class="nk-menu-item">
+          <li class="nk-menu-item"
+            th:classappend="${activeMenu == 'transaction'} ? 'active' : ''">
             <a th:href="${staffRole == 'ADMIN' ? '/admin/list-transactions' : '/barber/transactions'}"
               class="nk-menu-link">
               Transaction
@@ -61,7 +62,8 @@
           <!-- 5. FEEDBACK LIST -->
           <!-- Admin: /admin/list-feedback -->
           <!-- Barber: /barber/feedbacks -->
-          <li class="nk-menu-item">
+          <li class="nk-menu-item"
+            th:classappend="${activeMenu == 'feedback'} ? 'active' : ''">
             <a th:href="${staffRole == 'ADMIN' ? '/admin/list-feedback' : '/barber/feedbacks'}" class="nk-menu-link">
               Feedback
             </a>
