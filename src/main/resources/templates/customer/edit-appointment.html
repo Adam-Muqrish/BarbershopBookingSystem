@@ -43,7 +43,7 @@
                         class="w-full border rounded px-3 py-2 shadow mb-2 bg-gray-100" 
                         value="--:-- --" readonly />
                     
-                    <div class="grid grid-cols-6 gap-2">
+                    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2">
                         <th:block th:each="slot : ${slots}">
                             <label class="flex items-center space-x-1">
                                 <input type="radio" name="slot" th:value="${slot}" class="slot-radio" 
@@ -53,6 +53,7 @@
                             </label>
                         </th:block>
                     </div>
+                    <p id="slot-notice" class="hidden text-sm text-red-600 mt-1"></p>
                 </div>
 
                 <!-- Customer Category -->
@@ -121,34 +122,56 @@
                 });
         });
 
+        // Filter barber dropdown ikut slot yang dipilih (booking page logic)
+        function filterBarbersForSlot(slot, selectedDate) {
+            const barberSelect = document.getElementById('barber');
+            const unavailableForSlot = unavailableBarbersBySlot[slot] || [];
+
+            Array.from(barberSelect.options).forEach(opt => {
+                if (opt.value === "") return;
+
+                const optBarberId = parseInt(opt.getAttribute('data-id'));
+                const isUnavailable = unavailableForSlot.includes(optBarberId);
+
+                // Exception: Jika ini adalah gabungan Date+Time+Barber asal, biarkan enabled
+                const isOriginalCombo = (selectedDate === originalDate && slot === originalTime && optBarberId === originalBarberId);
+
+                if (isUnavailable && !isOriginalCombo) {
+                    opt.style.display = "none";
+                    opt.disabled = true;
+                } else {
+                    opt.style.display = "";
+                    opt.disabled = false;
+                }
+            });
+
+            // Jika barber yang sedang dipilih tiba-tiba disabled, reset pilihan
+            if (barberSelect.options[barberSelect.selectedIndex] && barberSelect.options[barberSelect.selectedIndex].disabled) {
+                barberSelect.selectedIndex = 0;
+            }
+        }
+
         function updateSlotStatus(selectedDate, totalBarbers) {
             const radios = document.querySelectorAll('.slot-radio');
             const today = new Date().toISOString().split('T')[0];
             let isToday = (selectedDate === today);
-            
-            console.log('updateSlotStatus called:');
-            console.log('  selectedDate =', selectedDate);
-            console.log('  today =', today);
-            console.log('  isToday =', isToday);
 
             if (isToday) {
                 const now = new Date();
                 currentTimeVal = now.getHours() + (now.getMinutes() / 60);
-                console.log('Today: Current time as decimal =', currentTimeVal, '(', now.getHours() + ':' + String(now.getMinutes()).padStart(2, '0'), ')');
             } else {
                 currentTimeVal = 0; // Reset jika bukan hari ini
-                console.log('Future date - no time restriction');
             }
 
             radios.forEach(radio => {
                 const slotValStr = radio.value; // e.g., "10:00 am"
                 const unavailableList = unavailableBarbersBySlot[slotValStr] || [];
-                
+
                 // Logic Availability
                 // 1. Jika ini slot asal user, ia TIDAK boleh disabled kerana full (dia dah booking tempat tu)
                 const isOriginalSlot = (selectedDate === originalDate && slotValStr === originalTime);
                 const unavailableCount = unavailableList.length;
-                
+
                 // Slot full jika unavailableCount >= totalBarbers
                 let isFull = (unavailableCount >= totalBarbers);
 
@@ -176,7 +199,6 @@
                         isTimePassed = false;
                     } else if (slotVal < (currentTimeVal + 0.5)) {
                         isTimePassed = true;
-                        console.log('Slot', slotValStr, '-> decimal', slotVal, 'is past (current:', currentTimeVal, ')');
                     }
                 }
 
@@ -184,9 +206,19 @@
                 radio.disabled = isFull || isTimePassed;
             });
 
-            // JANGAN reset fields di sini - biarkan nilai asal tetap
-            // (Ini adalah edit page, bukan booking page baru)
-            // Reset hanya untuk booking page baru
+            // Jika slot yang sebelum ini dipilih menjadi disabled (full / masa dah lepas),
+            // kosongkan pilihan supaya form tidak submit slot yang disabled
+            const checkedRadio = document.querySelector('input[name="slot"]:checked');
+            if (checkedRadio && checkedRadio.disabled) {
+                checkedRadio.checked = false;
+                document.getElementById('selected-time').value = '--:-- --';
+                filterBarbersForSlot('', selectedDate);
+                const notice = document.getElementById('slot-notice');
+                if (notice) {
+                    notice.textContent = 'The previously selected time is no longer available. Please choose a new time slot.';
+                    notice.classList.remove('hidden');
+                }
+            }
         }
 
         // Bila user klik slot
@@ -194,32 +226,14 @@
             radio.addEventListener('change', function () {
                 const slot = this.value;
                 document.getElementById('selected-time').value = slot;
-                
-                const barberSelect = document.getElementById('barber');
-                const unavailableForSlot = unavailableBarbersBySlot[slot] || [];
+
                 const selectedDate = document.getElementById('date').value;
+                filterBarbersForSlot(slot, selectedDate);
 
-                Array.from(barberSelect.options).forEach(opt => {
-                    if (opt.value === "") return;
-                    
-                    const optBarberId = parseInt(opt.getAttribute('data-id'));
-                    const isUnavailable = unavailableForSlot.includes(optBarberId);
-
-                    // Exception: Jika ini adalah gabungan Date+Time+Barber asal, biarkan enabled
-                    const isOriginalCombo = (selectedDate === originalDate && slot === originalTime && optBarberId === originalBarberId);
-
-                    if (isUnavailable && !isOriginalCombo) {
-                        opt.style.display = "none";
-                        opt.disabled = true;
-                    } else {
-                        opt.style.display = "";
-                        opt.disabled = false;
-                    }
-                });
-                
-                // Jika barber yang sedang dipilih tiba-tiba disabled, reset pilihan
-                if (barberSelect.options[barberSelect.selectedIndex].disabled) {
-                    barberSelect.selectedIndex = 0;
+                const notice = document.getElementById('slot-notice');
+                if (notice) {
+                    notice.textContent = '';
+                    notice.classList.add('hidden');
                 }
             });
         });

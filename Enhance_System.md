@@ -185,6 +185,12 @@ This document catalogues frontend issues, inconsistencies, and improvement oppor
 - **File:** `customer/edit-appointment.html`
 - **Issue:** Unlike the new `booking.html`, the `edit-appointment.html` page renders **all** time slots as enabled radio buttons (no `disabled` attribute) and the JS only updates the selected-time display field. It fetches availability from `/booking/unavailable` but then **never disables any slots** based on the result in `updateSlotStatus()`. The availability logic from `booking.html` is not replicated here.
 - **Enhancement:** Port the availability + time-past disabling logic from `booking.html` into `edit-appointment.html`'s `updateSlotStatus` function.
+- **Status:** ✅ COMPLETED — The baseline already had a partial port in `updateSlotStatus` (availability count vs. `totalBarbers` + time-past check with an exception for the appointment's original slot/barber combo). Completed and hardened it:
+  - Added the responsive slot grid (`grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6`) to match `booking.html` (3.3).
+  - Extracted the barber-dropdown filtering into a reusable `filterBarbersForSlot(slot, selectedDate)` so it works on slot change **and** when a stale selection is cleared (previously only the slot `change` listener filtered barbers).
+  - `updateSlotStatus` now detects when the previously-checked slot becomes disabled (full / time passed) and clears it: unchecks the radio, resets `#selected-time` to `--:-- --`, resets the barber dropdown, and shows an inline notice ("The previously selected time is no longer available…") via a new `#slot-notice` element. This prevents submitting a disabled radio (browser omits disabled radios from the form payload, which previously caused a missing `slot` param on `/update-appointment`).
+  - Removed the leftover `console.log` debug lines.
+  - Rebuilt `main.css` (`npm run build:css`); verified with `node --check` (JS syntax OK) and `mvnw -o compile` → **BUILD SUCCESS**. ✅
 
 ### 3.6 Payment Page — Online Banking Is a Mock with No Real Checkout Flow
 
@@ -397,7 +403,7 @@ This document catalogues frontend issues, inconsistencies, and improvement oppor
 | 3.2  | UX               | `register.html`            | Medium   | ✅ Done |
 | 3.3  | Responsive       | `booking.html`             | Low      | ✅ Done |
 | 3.4  | UX               | `booking.html`             | Low      | ✅ Done |
-| 3.5  | Bug              | `edit-appointment.html`    | High     |
+| 3.5  | Bug              | `edit-appointment.html`    | High     | ✅ Done |
 | 3.6  | Functionality    | `payment.html`             | High     |
 | 3.7  | Logic Bug        | `payment.html`             | Medium   |
 | 3.8  | UX               | `editProfile.html`         | Low      |
