@@ -266,11 +266,12 @@ This document catalogues frontend issues, inconsistencies, and improvement oppor
 - **Enhancement:** Wrap the canvas in a container with a fixed aspect ratio (e.g., `style="position: relative; height: 300px;"`) or use Chart.js's `maintainAspectRatio: false` with an explicit height.
 - **Status:** ✅ COMPLETED — Wrapped the `<canvas id="salesChart">` in a `.chart-container` div with `style="position: relative; height: 300px;"` and added `maintainAspectRatio: false` to the chart options so the chart fills the fixed-height container instead of collapsing or stretching. Rebuilt via `mvnw -o compile` → **BUILD SUCCESS**. ✅
 
-### 4.2 Admin Dashboard — Sales Chart Labels Don't Match Data Order
+### 4.2 Admin Dashboard — Sales Chart Labels Don't Match Data Order ✅ [COMPLETED]
 
 - **File:** `admin/adminIndex.html:100-117`
 - **Issue:** The `dayLabels` array is defined but **never used**. The chart labels array is `['Sun', 'Mon', 'Tue', ...]` while the data is pushed from the `days` array which is in the same order, so it works but the unused variable is dead code.
 - **Enhancement:** Remove the unused `dayLabels` variable. Consider labeling full day names for accessibility.
+- **Status:** ✅ COMPLETED — Instead of deleting `dayLabels` as dead code, it is now used: the chart labels were changed from the hardcoded `['Sun', 'Mon', ...]` short names to `dayLabels` (full day names `["Sunday", ...]`), which are in the same `SUNDAY → SATURDAY` order as the `days`/`salesData` arrays, improving accessibility. The hardcoded unused short-label array was removed. Rebuilt via `mvnw -o compile` → **BUILD SUCCESS**. ✅
 
 ### 4.3 Admin Sidebar — Logo Link Uses Inline Width/Height Styles
 
@@ -439,7 +440,7 @@ This document catalogues frontend issues, inconsistencies, and improvement oppor
 | 3.10 | Consistency      | `appointment-history.html` | Low      | ✅ Done |
 | 3.11 | Feature          | `receipt.html`             | Low      | ✅ Done |
 | 4.1  | Layout           | `adminIndex.html`          | Low      | ✅ Done |
-| 4.2  | Code Quality     | `adminIndex.html`          | Low      |
+| 4.2  | Code Quality     | `adminIndex.html`          | Low      | ✅ Done |
 | 4.3  | CSS Bug          | `adminFragments.html`      | Low      |
 | 4.4  | UX               | `adminFragments.html`      | Medium   |
 | 4.5  | Clarity          | `listBarber.html`          | Low      |

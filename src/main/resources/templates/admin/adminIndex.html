@@ -124,7 +124,7 @@
     const myChart = new Chart(ctx, {
       type: 'line', // atau 'bar', bergantung jenis chart anda
       data: {
-        labels: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+        labels: dayLabels,
         datasets: [{
           label: 'Sales (RM)',
           // GANTI data dummy di sini dengan variable salesData
