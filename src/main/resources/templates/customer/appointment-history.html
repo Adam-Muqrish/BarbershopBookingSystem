@@ -35,16 +35,16 @@
 
                         <div class="flex gap-2 mt-4 justify-end">
 
-                            <!-- ✅ 1. FEEDBACK BUTTON (Hanya kalau Service = Done) -->
+                            <!-- ✅ 1. FEEDBACK BUTTON (Hanya kalau Service = Done) — Primary action -->
                             <a th:if="${#strings.equalsIgnoreCase(appt.serviceStatus, 'done')}"
                                 th:href="@{/feedback(appointmentId=${appt.appointmentId})}"
-                                class="inline-block bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-300 transition">
+                                class="inline-block bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition">
                                 Give Feedback
                             </a>
 
-                            <!-- ✅ 2. RECEIPT BUTTON -->
+                            <!-- ✅ 2. RECEIPT BUTTON — Secondary action -->
                             <a th:href="@{/receipt(appointmentId=${appt.appointmentId}, source='appointment-history')}"
-                                class="inline-block bg-blue-200 text-blue-800 px-4 py-2 rounded hover:bg-blue-300 transition">
+                                class="inline-block bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition">
                                 View Receipt
                             </a>
 

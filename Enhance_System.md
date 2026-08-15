@@ -239,7 +239,7 @@ This document catalogues frontend issues, inconsistencies, and improvement oppor
 
   **Follow-up bug fix (preview went blank on upload):** The preview `<img>` (`#imagePreview`) was rendered with `th:if="${customer.custPicture != null}"`, so for users **without** a current picture the `<img>` did not exist in the DOM at all. The JS then had nothing to update — hiding the fallback icon left a blank area. Fixed by always rendering both elements and toggling visibility: `<img id="imagePreview">` and `#imagePreviewFallback` are both always present, each starting `hidden` via `th:classappend` based on `customer.custPicture`. The change handler now always finds the `<img>`, sets `URL.createObjectURL(file)`, un-hides it, and hides the fallback. ✅
 
-### 3.10 Appointment History — Cards Have Inconsistent Action Button Styling
+### 3.10 Appointment History — Cards Have Inconsistent Action Button Styling ✅ [COMPLETED]
 
 - **File:** `customer/appointment-history.html:36-49`
 - **Issue:** The "View Receipt" button uses a custom Tailwind class (`bg-blue-200 text-blue-800`) while "Give Feedback" uses (`bg-blue-500 text-white`). The styling is inconsistent.
