@@ -273,11 +273,12 @@ This document catalogues frontend issues, inconsistencies, and improvement oppor
 - **Enhancement:** Remove the unused `dayLabels` variable. Consider labeling full day names for accessibility.
 - **Status:** ✅ COMPLETED — Instead of deleting `dayLabels` as dead code, it is now used: the chart labels were changed from the hardcoded `['Sun', 'Mon', ...]` short names to `dayLabels` (full day names `["Sunday", ...]`), which are in the same `SUNDAY → SATURDAY` order as the `days`/`salesData` arrays, improving accessibility. The hardcoded unused short-label array was removed. Rebuilt via `mvnw -o compile` → **BUILD SUCCESS**. ✅
 
-### 4.3 Admin Sidebar — Logo Link Uses Inline Width/Height Styles
+### 4.3 Admin Sidebar — Logo Link Uses Inline Width/Height Styles ✅ [COMPLETED]
 
 - **File:** `fragments/adminFragments.html:9-13`
 - **Issue:** The sidebar logo image has `style="width: 150px; height: 100px"` which will distort the image (not maintain aspect ratio). The logo wrapper also has fixed dimensions.
 - **Enhancement:** Use `object-contain` or `max-width: 100%` with auto height on the image, and remove forced height on the wrapper.
+- **Status:** ✅ COMPLETED — Removed the fixed `width: 150px; height: 100px` from the `.logo-wrap` wrapper, and changed the logo image to `style="max-width: 150px; height: auto; display: block; object-fit: contain;"` so it scales proportionally without distortion. Rebuilt via `mvnw -o compile` → **BUILD SUCCESS**. ✅
 
 ### 4.4 Admin Sidebar — Missing "Active" Class Highlighting for Current Page
 
@@ -441,7 +442,7 @@ This document catalogues frontend issues, inconsistencies, and improvement oppor
 | 3.11 | Feature          | `receipt.html`             | Low      | ✅ Done |
 | 4.1  | Layout           | `adminIndex.html`          | Low      | ✅ Done |
 | 4.2  | Code Quality     | `adminIndex.html`          | Low      | ✅ Done |
-| 4.3  | CSS Bug          | `adminFragments.html`      | Low      |
+| 4.3  | CSS Bug          | `adminFragments.html`      | Low      | ✅ Done |
 | 4.4  | UX               | `adminFragments.html`      | Medium   |
 | 4.5  | Clarity          | `listBarber.html`          | Low      |
 | 4.6  | UX               | `listBarber.html`          | Low      |
