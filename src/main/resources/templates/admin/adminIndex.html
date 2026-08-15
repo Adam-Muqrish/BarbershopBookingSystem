@@ -87,7 +87,9 @@
                 <div class="card">
                   <div class="card-body">
                     <h4 class="title mb-3">Weekly Sales</h4>
-                    <canvas id="salesChart"></canvas>
+                    <div class="chart-container" style="position: relative; height: 300px;">
+                      <canvas id="salesChart"></canvas>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -135,6 +137,7 @@
       },
       options: {
         responsive: true,
+        maintainAspectRatio: false,
         scales: {
           y: {
             beginAtZero: true

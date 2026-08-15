@@ -259,11 +259,12 @@ This document catalogues frontend issues, inconsistencies, and improvement oppor
 
 ## 4. Admin / Staff Dashboard & Management Pages
 
-### 4.1 Admin Dashboard — Chart.js Canvas Has No Aspect Ratio Container
+### 4.1 Admin Dashboard — Chart.js Canvas Has No Aspect Ratio Container ✅ [COMPLETED]
 
 - **File:** `admin/adminIndex.html:86-93`
 - **Issue:** The `<canvas id="salesChart">` is placed directly inside a `.card` with no height constraint. On some screen sizes the chart can render with zero height or stretched proportions.
 - **Enhancement:** Wrap the canvas in a container with a fixed aspect ratio (e.g., `style="position: relative; height: 300px;"`) or use Chart.js's `maintainAspectRatio: false` with an explicit height.
+- **Status:** ✅ COMPLETED — Wrapped the `<canvas id="salesChart">` in a `.chart-container` div with `style="position: relative; height: 300px;"` and added `maintainAspectRatio: false` to the chart options so the chart fills the fixed-height container instead of collapsing or stretching. Rebuilt via `mvnw -o compile` → **BUILD SUCCESS**. ✅
 
 ### 4.2 Admin Dashboard — Sales Chart Labels Don't Match Data Order
 
@@ -437,7 +438,7 @@ This document catalogues frontend issues, inconsistencies, and improvement oppor
 | 3.9  | UX               | `editProfile.html`         | Low      | ✅ Done |
 | 3.10 | Consistency      | `appointment-history.html` | Low      | ✅ Done |
 | 3.11 | Feature          | `receipt.html`             | Low      | ✅ Done |
-| 4.1  | Layout           | `adminIndex.html`          | Low      |
+| 4.1  | Layout           | `adminIndex.html`          | Low      | ✅ Done |
 | 4.2  | Code Quality     | `adminIndex.html`          | Low      |
 | 4.3  | CSS Bug          | `adminFragments.html`      | Low      |
 | 4.4  | UX               | `adminFragments.html`      | Medium   |
