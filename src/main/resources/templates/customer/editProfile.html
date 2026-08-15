@@ -40,16 +40,31 @@
                 </div>
                 <div class="mb-4">
                     <label class="block text-sm font-semibold mb-1" for="image">Profile Picture:</label>
-                    <div class="flex items-center justify-between w-full p-2 border rounded bg-white">
-                        <label for="image"
-                            class="cursor-pointer bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-600 transition text-sm">
-                            Choose File
-                        </label>
-                        <span id="fileNameDisplay" class="text-gray-500 text-sm bg-gray-100 px-3 py-1 rounded border">No
-                            file chosen</span>
+                    <div class="flex items-center gap-4 w-full p-2 border rounded bg-white">
+                        <div class="flex-shrink-0">
+                            <img id="imagePreview" th:if="${customer.custPicture != null}"
+                                th:src="@{'/resources/uploads/' + ${customer.custPicture}}"
+                                alt="Profile preview"
+                                class="w-16 h-16 rounded-full object-cover border border-gray-300" />
+                            <div id="imagePreviewFallback" th:if="${customer.custPicture == null}"
+                                class="w-16 h-16 rounded-full bg-gray-200 border border-gray-300 flex items-center justify-center">
+                                <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" stroke-width="1.5"
+                                    viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="flex-1">
+                            <label for="image"
+                                class="cursor-pointer inline-block bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-600 transition text-sm">
+                                Choose File
+                            </label>
+                            <span id="fileNameDisplay" class="text-gray-500 text-sm bg-gray-100 px-3 py-1 rounded border ml-2">No
+                                file chosen</span>
+                        </div>
                         <input type="file" id="image" name="image" accept="image/png, image/jpeg, image/jpg"
-                            class="hidden"
-                            onchange="document.getElementById('fileNameDisplay').innerText = this.files[0] ? this.files[0].name : 'No file chosen'" />
+                            class="hidden" />
                     </div>
                 </div>
                 <div class="mb-4">
@@ -165,6 +180,40 @@
             passwordInput.addEventListener('input', updateMatch);
             confirmInput.addEventListener('input', updateMatch);
             confirmInput.addEventListener('blur', updateMatch);
+        });
+
+        // 3.9 Live image upload preview (equivalent of NioApp.Custom.uploadImage,
+        // self-contained since customer pages don't load the admin scripts)
+        document.addEventListener('DOMContentLoaded', function () {
+            var fileInput = document.getElementById('image');
+            if (!fileInput) return;
+
+            var preview = document.getElementById('imagePreview');
+            var fallback = document.getElementById('imagePreviewFallback');
+            var fileNameDisplay = document.getElementById('fileNameDisplay');
+
+            fileInput.addEventListener('change', function () {
+                var file = this.files && this.files[0];
+                fileNameDisplay.innerText = file ? file.name : 'No file chosen';
+                if (!file) return;
+
+                var allowed = ['jpg', 'jpeg', 'png'];
+                var ext = (file.name.split('.').pop() || '').toLowerCase();
+                if (!allowed.includes(ext)) {
+                    alert(ext + ' file type not allowed. Please upload a JPG, JPEG, or PNG file.');
+                    this.value = '';
+                    fileNameDisplay.innerText = 'No file chosen';
+                    return;
+                }
+
+                if (preview) {
+                    preview.src = URL.createObjectURL(file);
+                    preview.classList.remove('hidden');
+                }
+                if (fallback) {
+                    fallback.classList.add('hidden');
+                }
+            });
         });
     </script>
 </body>

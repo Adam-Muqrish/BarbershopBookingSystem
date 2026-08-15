@@ -216,7 +216,7 @@ This document catalogues frontend issues, inconsistencies, and improvement oppor
   - **Backend (`PaymentController.processPayment`):** For `price == 0`, the cash path now sets `paymentStatus` to `"completed"` (was always `"pending"`) and consumes the loyalty reward with the same points formula used by the online path (`(currentPoints % MAX_LOYALTY_POINTS) + 1`), so a redeemed free appointment resets the customer's points instead of silently keeping them.
   - Rebuilt `main.css` (`npm run build:css`); verified with `node --check` (JS syntax OK) and `mvnw -o compile` → **BUILD SUCCESS**. ✅
 
-### 3.8 Profile Page — No Change Password Confirmation Field
+### 3.8 Profile Page — No Change Password Confirmation Field ✅ [COMPLETED]
 
 - **File:** `customer/editProfile.html:55-59`
 - **Issue:** The "New Password" field has no "Confirm Password" field, unlike the register form. Users could mistype their new password.
@@ -227,11 +227,15 @@ This document catalogues frontend issues, inconsistencies, and improvement oppor
   - **Backend (`ProfileController.updateProfile`):** Now accepts an optional `confirmPassword` param. If a new password is provided but confirm is empty, or the two differ, it flashes an error and redirects back to `/edit-profile` without saving — mirroring the register flow's server-side guard so the confirmation isn't only client-side.
   - Rebuilt via `mvnw -o compile` → **BUILD SUCCESS**; verified with `node --check` (JS syntax OK). ✅
 
-### 3.9 Profile Page — Image Upload Preview Is Missing
+### 3.9 Profile Page — Image Upload Preview Is Missing ✅ [COMPLETED]
 
 - **File:** `customer/editProfile.html:41-53`
 - **Issue:** The file upload shows the filename but no image preview. The existing `NioApp.Custom.uploadImage` function in `scripts.js` supports preview but isn't used here.
 - **Enhancement:** Add a live image preview thumbnail that appears when a file is selected.
+- **Status:** ✅ COMPLETED — Added a live preview thumbnail to the Profile Picture upload:
+  - **Template (`customer/editProfile.html`):** Reworked the upload row into a flex layout with a circular 64px thumbnail: `#imagePreview` (`<img>`, shown when `customer.custPicture != null`) or a person-icon `#imagePreviewFallback` (shown when no picture yet). Added the file input with a separate "Choose File" label + `#fileNameDisplay`.
+  - **JS:** Added a self-contained preview handler (equivalent to `NioApp.Custom.uploadImage`, but inline because customer pages don't load the admin `nioapp.js`/`scripts.js` stack): on `change`, it shows the selected filename, validates the extension (`jpg`/`jpeg`/`png` — same allowlist as the NioBoard util), swaps in `URL.createObjectURL(file)` as the preview, hides the fallback icon, and reverts on an invalid file with an alert.
+  - Rebuilt `main.css` (`npm run build:css`) to include `flex-shrink-0`, `gap-4`, `rounded-full`, `object-cover`, `w-16`, `h-16`; verified with `node --check` (JS syntax OK) and `mvnw -o compile` → **BUILD SUCCESS**. ✅
 
 ### 3.10 Appointment History — Cards Have Inconsistent Action Button Styling
 
@@ -424,7 +428,7 @@ This document catalogues frontend issues, inconsistencies, and improvement oppor
 | 3.6  | Functionality    | `payment.html`             | High     | ✅ Done |
 | 3.7  | Logic Bug        | `payment.html`             | Medium   | ✅ Done |
 | 3.8  | UX               | `editProfile.html`         | Low      | ✅ Done |
-| 3.9  | UX               | `editProfile.html`         | Low      |
+| 3.9  | UX               | `editProfile.html`         | Low      | ✅ Done |
 | 3.10 | Consistency      | `appointment-history.html` | Low      |
 | 3.11 | Feature          | `receipt.html`             | Low      |
 | 4.1  | Layout           | `adminIndex.html`          | Low      |
