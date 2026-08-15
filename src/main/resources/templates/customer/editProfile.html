@@ -42,11 +42,13 @@
                     <label class="block text-sm font-semibold mb-1" for="image">Profile Picture:</label>
                     <div class="flex items-center gap-4 w-full p-2 border rounded bg-white">
                         <div class="flex-shrink-0">
-                            <img id="imagePreview" th:if="${customer.custPicture != null}"
-                                th:src="@{'/resources/uploads/' + ${customer.custPicture}}"
+                            <img id="imagePreview"
+                                th:src="${customer.custPicture != null} ? @{'/resources/uploads/' + ${customer.custPicture}} : ''"
+                                th:classappend="${customer.custPicture == null} ? ' hidden' : ''"
                                 alt="Profile preview"
                                 class="w-16 h-16 rounded-full object-cover border border-gray-300" />
-                            <div id="imagePreviewFallback" th:if="${customer.custPicture == null}"
+                            <div id="imagePreviewFallback"
+                                th:classappend="${customer.custPicture != null} ? ' hidden' : ''"
                                 class="w-16 h-16 rounded-full bg-gray-200 border border-gray-300 flex items-center justify-center">
                                 <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" stroke-width="1.5"
                                     viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">

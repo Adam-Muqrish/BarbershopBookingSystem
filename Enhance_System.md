@@ -237,6 +237,8 @@ This document catalogues frontend issues, inconsistencies, and improvement oppor
   - **JS:** Added a self-contained preview handler (equivalent to `NioApp.Custom.uploadImage`, but inline because customer pages don't load the admin `nioapp.js`/`scripts.js` stack): on `change`, it shows the selected filename, validates the extension (`jpg`/`jpeg`/`png` — same allowlist as the NioBoard util), swaps in `URL.createObjectURL(file)` as the preview, hides the fallback icon, and reverts on an invalid file with an alert.
   - Rebuilt `main.css` (`npm run build:css`) to include `flex-shrink-0`, `gap-4`, `rounded-full`, `object-cover`, `w-16`, `h-16`; verified with `node --check` (JS syntax OK) and `mvnw -o compile` → **BUILD SUCCESS**. ✅
 
+  **Follow-up bug fix (preview went blank on upload):** The preview `<img>` (`#imagePreview`) was rendered with `th:if="${customer.custPicture != null}"`, so for users **without** a current picture the `<img>` did not exist in the DOM at all. The JS then had nothing to update — hiding the fallback icon left a blank area. Fixed by always rendering both elements and toggling visibility: `<img id="imagePreview">` and `#imagePreviewFallback` are both always present, each starting `hidden` via `th:classappend` based on `customer.custPicture`. The change handler now always finds the `<img>`, sets `URL.createObjectURL(file)`, un-hides it, and hides the fallback. ✅
+
 ### 3.10 Appointment History — Cards Have Inconsistent Action Button Styling
 
 - **File:** `customer/appointment-history.html:36-49`
