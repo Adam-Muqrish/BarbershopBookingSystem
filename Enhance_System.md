@@ -250,6 +250,10 @@ This document catalogues frontend issues, inconsistencies, and improvement oppor
 - **File:** `customer/receipt.html`
 - **Issue:** The receipt page has a "Back" button but no "Print Receipt" button. Users would want to print or save the receipt as PDF.
 - **Enhancement:** Add a print button that calls `window.print()` and applies receipt-specific print styles.
+- **Status:** ✅ COMPLETED — Added a "Print Receipt" button and print styles to `customer/receipt.html`:
+  - **Button:** Added `Print Receipt` (secondary style, `bg-gray-500 hover:bg-gray-600 text-white`) beside the "Back" button, wrapped in a `.no-print` action row with `gap-3`; it calls `window.print()`.
+  - **Print styles:** Added an inline `@media print` block — hides `nav`, `footer`, and `.no-print`; forces white page background; resets `main` margins/padding; strips the receipt card's shadow/border/max-width via `.print-area` so only the receipt itself prints.
+  - Rebuilt `main.css` (`npm run build:css`) — confirmed `gap-3` present; `mvnw -o compile` → **BUILD SUCCESS**. ✅
 
 ---
 
@@ -431,8 +435,8 @@ This document catalogues frontend issues, inconsistencies, and improvement oppor
 | 3.7  | Logic Bug        | `payment.html`             | Medium   | ✅ Done |
 | 3.8  | UX               | `editProfile.html`         | Low      | ✅ Done |
 | 3.9  | UX               | `editProfile.html`         | Low      | ✅ Done |
-| 3.10 | Consistency      | `appointment-history.html` | Low      |
-| 3.11 | Feature          | `receipt.html`             | Low      |
+| 3.10 | Consistency      | `appointment-history.html` | Low      | ✅ Done |
+| 3.11 | Feature          | `receipt.html`             | Low      | ✅ Done |
 | 4.1  | Layout           | `adminIndex.html`          | Low      |
 | 4.2  | Code Quality     | `adminIndex.html`          | Low      |
 | 4.3  | CSS Bug          | `adminFragments.html`      | Low      |

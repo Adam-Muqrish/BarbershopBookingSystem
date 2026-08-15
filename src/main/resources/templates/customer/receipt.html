@@ -4,9 +4,32 @@
 <head th:replace="~{fragments/header :: head}"></head>
 
 <body class="flex flex-col h-screen justify-between bg-yellow-100">
+    <style>
+        @media print {
+            nav,
+            footer {
+                display: none !important;
+            }
+            body {
+                background: white !important;
+            }
+            main {
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+            .no-print {
+                display: none !important;
+            }
+            .print-area {
+                box-shadow: none !important;
+                border: none !important;
+                max-width: 100% !important;
+            }
+        }
+    </style>
     <nav th:replace="~{fragments/nav :: nav}"></nav>
     <main class="flex flex-col items-center mx-3 my-4 flex-grow">
-        <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-5xl mx-auto">
+        <div class="print-area bg-white rounded-lg shadow-lg p-6 w-full max-w-5xl mx-auto">
             <h1 class="text-2xl font-bold text-center mb-2">Receipt</h1>
             <!-- Show different message based on payment method -->
             <p class="text-center text-lg mb-6">
@@ -50,7 +73,11 @@
             <p class="text-sm text-center text-gray-600 mt-4">This receipt is generated automatically and does not
                 require a signature.</p>
 
-            <div class="flex justify-center mt-6">
+            <div class="no-print flex justify-center gap-3 mt-6">
+                <button type="button" onclick="window.print()"
+                    class="bg-gray-500 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded">
+                    Print Receipt
+                </button>
                 <a th:href="@{'/' + ${source}}"
                     class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded">
                     <span th:if="${source == 'appointment-history'}">Back to Appointment History</span>
