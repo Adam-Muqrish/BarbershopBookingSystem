@@ -210,6 +210,11 @@ This document catalogues frontend issues, inconsistencies, and improvement oppor
 - **File:** `customer/payment.html:95-116`
 - **Issue:** When `price === 0` (free appointment via loyalty points), the button text changes to "Proceed" but selecting "Cash" or "Online Banking" still triggers the bank modal check. The `togglePaymentDetails()` function doesn't account for the free case properly — if price is 0 and user selects online, the bank modal still appears.
 - **Enhancement:** When price is 0, hide the payment method selection entirely and only show the "Proceed" button, or auto-set payment method to "cash" with completed status.
+- **Status:** ✅ COMPLETED — Implemented the "hide selection + auto-set cash + completed" option:
+  - **Template:** The payment-method radio block (Cash / Online Banking + their detail panels) is now rendered only when `price > 0` (`th:if="${price > 0}"`). For `price == 0`, a "No payment is required for this appointment." note is shown instead and a hidden `<input name="paymentMethod" value="cash">` is emitted, so the free flow submits as cash without the user ever seeing the bank modal.
+  - **JS:** `togglePaymentDetails()` now guards against the hidden payment-method section (`if (!cashEl) return`). The submit handler treats `price === 0` first: it sets `isPaymentSubmitting`, shows the "Processing…" spinner, and submits directly — bypassing both the "Please select a payment method" alert and the online bank-modal branch. Button text stays "Proceed".
+  - **Backend (`PaymentController.processPayment`):** For `price == 0`, the cash path now sets `paymentStatus` to `"completed"` (was always `"pending"`) and consumes the loyalty reward with the same points formula used by the online path (`(currentPoints % MAX_LOYALTY_POINTS) + 1`), so a redeemed free appointment resets the customer's points instead of silently keeping them.
+  - Rebuilt `main.css` (`npm run build:css`); verified with `node --check` (JS syntax OK) and `mvnw -o compile` → **BUILD SUCCESS**. ✅
 
 ### 3.8 Profile Page — No Change Password Confirmation Field
 
@@ -412,7 +417,7 @@ This document catalogues frontend issues, inconsistencies, and improvement oppor
 | 3.4  | UX               | `booking.html`             | Low      | ✅ Done |
 | 3.5  | Bug              | `edit-appointment.html`    | High     | ✅ Done |
 | 3.6  | Functionality    | `payment.html`             | High     | ✅ Done |
-| 3.7  | Logic Bug        | `payment.html`             | Medium   |
+| 3.7  | Logic Bug        | `payment.html`             | Medium   | ✅ Done |
 | 3.8  | UX               | `editProfile.html`         | Low      |
 | 3.9  | UX               | `editProfile.html`         | Low      |
 | 3.10 | Consistency      | `appointment-history.html` | Low      |

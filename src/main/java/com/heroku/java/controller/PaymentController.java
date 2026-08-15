@@ -188,7 +188,24 @@ public class PaymentController {
             cp.setCashReceive(0.0);
             payment = paymentRepository.save(cp);
 
-            savedAppointment.setPaymentStatus("pending");
+            // Free appointment (loyalty reward) is already settled - mark completed
+            savedAppointment.setPaymentStatus(price == 0 ? "completed" : "pending");
+
+            // If this was a free appointment redeemed via loyalty points, consume the reward
+            if (price == 0) {
+                customerRepository.findById(custId).ifPresent(customer -> {
+                    int currentPoints = customer.getCustLoyaltyPoints() == null ? 0 : customer.getCustLoyaltyPoints();
+                    int newPoints = (currentPoints % MAX_LOYALTY_POINTS) + 1;
+                    customer.setCustLoyaltyPoints(newPoints);
+                    customerRepository.save(customer);
+
+                    // Update session user
+                    Customer sessionCustomer = (Customer) session.getAttribute("customer");
+                    if (sessionCustomer != null && sessionCustomer.getCustId().equals(custId)) {
+                        session.setAttribute("customer", customer);
+                    }
+                });
+            }
         }
 
         appointmentRepository.save(savedAppointment);
