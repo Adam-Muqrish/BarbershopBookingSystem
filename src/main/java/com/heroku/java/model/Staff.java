@@ -29,6 +29,9 @@ public class Staff implements Serializable {
     @Column(name = "staff_picture")
     private String staffPicture;
 
+    @Column(name = "staff_picture_data")
+    private byte[] staffPictureData;
+
     @Column(name = "staff_description")
     private String description;
 
@@ -85,6 +88,14 @@ public class Staff implements Serializable {
 
     public void setStaffPicture(String staffPicture) {
         this.staffPicture = staffPicture;
+    }
+
+    public byte[] getStaffPictureData() {
+        return staffPictureData;
+    }
+
+    public void setStaffPictureData(byte[] staffPictureData) {
+        this.staffPictureData = staffPictureData;
     }
 
     public String getDescription() {

@@ -245,7 +245,7 @@ This document catalogues frontend issues, inconsistencies, and improvement oppor
 - **Issue:** The "View Receipt" button uses a custom Tailwind class (`bg-blue-200 text-blue-800`) while "Give Feedback" uses (`bg-blue-500 text-white`). The styling is inconsistent.
 - **Enhancement:** Standardize action button styles across all customer pages (use a consistent color palette for primary/secondary actions).
 
-### 3.11 Receipt Page — No Print Button
+### 3.11 Receipt Page — No Print Button ✅ [COMPLETED]
 
 - **File:** `customer/receipt.html`
 - **Issue:** The receipt page has a "Back" button but no "Print Receipt" button. Users would want to print or save the receipt as PDF.

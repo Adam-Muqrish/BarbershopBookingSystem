@@ -105,7 +105,7 @@
             <!-- Link gambar juga perlu ikut role supaya tak redirect salah -->
             <a th:href="${staffRole == 'ADMIN' ? '/admin/profile' : '/barber/profile'}">
               <img th:if="${staff != null && staff.staffPicture != null}"
-                th:src="@{'/resources/uploads/' + ${staff.staffPicture}}" alt="Staff Avatar"
+                th:src="@{'/image/staff/' + ${staff.staffId}}" alt="Staff Avatar"
                 style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
               <em th:unless="${staff != null && staff.staffPicture != null}" class="icon ni ni-user-alt"></em>
             </a>

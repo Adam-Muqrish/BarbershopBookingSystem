@@ -37,7 +37,7 @@
                     <div
                         class="w-20 h-20 bg-gray-300 rounded-full mb-3 flex items-center justify-center overflow-hidden">
                         <img th:if="${customer.custPicture != null}"
-                            th:src="@{'/resources/uploads/' + ${customer.custPicture}}"
+                            th:src="@{'/image/customer/' + ${customer.custId}}"
                             class="w-full h-full object-cover" alt="Profile Picture" />
                         <svg th:unless="${customer.custPicture != null}" class="w-12 h-12 text-gray-400"
                             fill="currentColor" viewBox="0 0 20 20">

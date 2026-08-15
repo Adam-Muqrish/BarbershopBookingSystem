@@ -43,7 +43,7 @@
                     <div class="flex items-center gap-4 w-full p-2 border rounded bg-white">
                         <div class="flex-shrink-0">
                             <img id="imagePreview"
-                                th:src="${customer.custPicture != null} ? @{'/resources/uploads/' + ${customer.custPicture}} : ''"
+                                th:src="${customer.custPicture != null} ? @{'/image/customer/' + ${customer.custId}} : ''"
                                 th:classappend="${customer.custPicture == null} ? ' hidden' : ''"
                                 alt="Profile preview"
                                 class="w-16 h-16 rounded-full object-cover border border-gray-300" />

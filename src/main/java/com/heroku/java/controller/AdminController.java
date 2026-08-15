@@ -358,12 +358,8 @@ public class AdminController {
         if (staffPicture != null && !staffPicture.isEmpty()) {
             try {
                 String fileName = System.currentTimeMillis() + "_" + staffPicture.getOriginalFilename();
-                String uploadDir = System.getProperty("user.dir") + "/uploads/";
-                java.nio.file.Path uploadPath = java.nio.file.Paths.get(uploadDir);
-                if (!java.nio.file.Files.exists(uploadPath))
-                    java.nio.file.Files.createDirectories(uploadPath);
-                java.nio.file.Files.write(uploadPath.resolve(fileName), staffPicture.getBytes());
                 barber.setStaffPicture(fileName);
+                barber.setStaffPictureData(staffPicture.getBytes());
             } catch (Exception e) {
                 e.printStackTrace();
                 redirectAttributes.addFlashAttribute("error", "Failed to upload picture");
@@ -1077,14 +1073,8 @@ public class AdminController {
             if (staffPicture != null && !staffPicture.isEmpty()) {
                 try {
                     String fileName = System.currentTimeMillis() + "_" + staffPicture.getOriginalFilename();
-                    String uploadDir = System.getProperty("user.dir") + "/uploads/";
-                    java.nio.file.Path uploadPath = java.nio.file.Paths.get(uploadDir);
-                    if (!java.nio.file.Files.exists(uploadPath)) {
-                        java.nio.file.Files.createDirectories(uploadPath);
-                    }
-                    java.nio.file.Path path = uploadPath.resolve(fileName);
-                    java.nio.file.Files.write(path, staffPicture.getBytes());
                     staff.setStaffPicture(fileName);
+                    staff.setStaffPictureData(staffPicture.getBytes());
                 } catch (Exception e) {
                     e.printStackTrace();
                     redirectAttributes.addFlashAttribute("error", "Failed to upload picture");

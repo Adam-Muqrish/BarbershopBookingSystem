@@ -68,7 +68,7 @@
                                     <div th:if="${barber}" class="card" style="padding:30px;">
                                         <div style="display:flex; flex-direction:column; align-items:center;">
                                             <img th:if="${barber.staffPicture != null}"
-                                                th:src="@{'/resources/uploads/' + ${barber.staffPicture}}"
+                                                th:src="@{'/image/staff/' + ${barber.staffId}}"
                                                 style="width:100px;height:100px;border-radius:50%;object-fit:cover;margin-bottom:20px;" />
 
                                             <div th:if="${barber.staffPicture == null}" style="width:100px;height:100px;border-radius:50%;background:#f2f2f2;

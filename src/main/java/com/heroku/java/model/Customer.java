@@ -29,6 +29,9 @@ public class Customer implements Serializable {
     @Column(name = "cust_picture")
     private String custPicture;
 
+    @Column(name = "cust_picture_data")
+    private byte[] custPictureData;
+
     @Column(name = "cust_loyalty_points")
     private Integer custLoyaltyPoints = 0;
 
@@ -79,6 +82,14 @@ public class Customer implements Serializable {
 
     public void setCustPicture(String custPicture) {
         this.custPicture = custPicture;
+    }
+
+    public byte[] getCustPictureData() {
+        return custPictureData;
+    }
+
+    public void setCustPictureData(byte[] custPictureData) {
+        this.custPictureData = custPictureData;
     }
 
     public Integer getCustLoyaltyPoints() {

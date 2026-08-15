@@ -125,18 +125,8 @@ public class ProfileController {
             if (image != null && !image.isEmpty()) {
                 try {
                     String fileName = java.util.UUID.randomUUID().toString() + "_" + image.getOriginalFilename();
-                    java.nio.file.Path uploadPath = java.nio.file.Paths
-                            .get(System.getProperty("user.dir"), "uploads");
-
-                    if (!java.nio.file.Files.exists(uploadPath)) {
-                        java.nio.file.Files.createDirectories(uploadPath);
-                    }
-
-                    java.nio.file.Path filePath = uploadPath.resolve(fileName);
-                    java.nio.file.Files.copy(image.getInputStream(), filePath,
-                            java.nio.file.StandardCopyOption.REPLACE_EXISTING);
-
                     customer.setCustPicture(fileName);
+                    customer.setCustPictureData(image.getBytes());
                 } catch (java.io.IOException e) {
                     e.printStackTrace();
                     redirectAttributes.addFlashAttribute("error", "Failed to upload image.");

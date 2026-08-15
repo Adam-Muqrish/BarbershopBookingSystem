@@ -80,7 +80,7 @@
                         <div class="relative w-10 h-10 overflow-hidden bg-gray-100 rounded-full hidden md:block">
                             <a th:href="@{/profile}">
                                 <img th:if="${session.customer.custPicture != null}"
-                                    th:src="@{'/resources/uploads/' + ${session.customer.custPicture}}"
+                                    th:src="@{'/image/customer/' + ${session.customer.custId}}"
                                     class="absolute w-10 h-10 rounded-full object-cover object-center" alt="Profile picture" />
                                 <svg th:unless="${session.customer.custPicture != null}"
                                     class="absolute w-10 h-10 text-gray-400" fill="currentColor"
