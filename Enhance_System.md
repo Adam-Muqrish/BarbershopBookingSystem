@@ -197,6 +197,13 @@ This document catalogues frontend issues, inconsistencies, and improvement oppor
 - **File:** `customer/payment.html`
 - **Issue:** The "Online Banking" option shows a fake "Select Bank" modal with hardcoded bank options (Maybank, CIMB, Public Bank). Clicking "Confirm Payment" just submits the form with a hidden bank name — no real payment gateway integration. The bank modal is a placeholder.
 - **Enhancement:** Either integrate a real payment gateway (e.g., Stripe, SenangPay, FPX) **or** clearly label this as a simulation with a disclaimer and auto-complete step. At minimum, show a spinner/loading state on "Confirm Payment" to indicate processing.
+- **Status:** ✅ COMPLETED — Implemented the simulation approach (no real gateway/merchant credentials are available for this project):
+  - Added a **"Demo Mode" disclaimer** in the Online Banking details panel and a **simulation notice** inside the bank modal, clearly stating that no real bank transaction is performed and no money is deducted.
+  - Added a **spinner + "Processing…" state** on the "Confirm Payment" button (`#bankSpinner` / `#bankConfirmText`): the button disables, the spinner shows, and the form submits after a short simulated delay (1.2s).
+  - Added a **spinner + "Processing…" state** on the main "Pay Now" button for the cash path (`#paySpinner` / `#payButtonText`), disabled during the 600ms simulated processing to prevent double-submits.
+  - **Fixed a latent bug:** calling `form.submit()` from `confirmBank` re-fired the submit handler, which (with online checked) re-opened the modal and never actually submitted. Added an `isPaymentSubmitting` flag so the programmatic submit after bank/cash confirmation bypasses the interception and goes through to `/processPayment`.
+  - Refactored button-text updates to target the new `<span id="payButtonText">` (previously `btn.innerText` on the button itself, which now contains the spinner SVG).
+  - Rebuilt `main.css` (`npm run build:css`) to include `animate-spin`, `bg-yellow-50`, `border-yellow-400`, `text-yellow-800`, `gap-2`, `items-center`; verified with `node --check` (JS syntax OK) and `mvnw -o compile` → **BUILD SUCCESS**. ✅
 
 ### 3.7 Payment Page — Button Text/State Inconsistency on Price = 0
 
@@ -404,7 +411,7 @@ This document catalogues frontend issues, inconsistencies, and improvement oppor
 | 3.3  | Responsive       | `booking.html`             | Low      | ✅ Done |
 | 3.4  | UX               | `booking.html`             | Low      | ✅ Done |
 | 3.5  | Bug              | `edit-appointment.html`    | High     | ✅ Done |
-| 3.6  | Functionality    | `payment.html`             | High     |
+| 3.6  | Functionality    | `payment.html`             | High     | ✅ Done |
 | 3.7  | Logic Bug        | `payment.html`             | Medium   |
 | 3.8  | UX               | `editProfile.html`         | Low      |
 | 3.9  | UX               | `editProfile.html`         | Low      |

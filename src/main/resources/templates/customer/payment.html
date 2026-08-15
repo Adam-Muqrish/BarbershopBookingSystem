@@ -63,13 +63,27 @@
 
                     <div id="online-details" class="mt-2 text-sm">
                         <p>Secure online payment.</p>
+                        <div class="bg-yellow-50 border border-yellow-400 text-yellow-800 px-3 py-2 rounded mt-2"
+                            role="note">
+                            <strong>Demo Mode:</strong> This online banking payment is a <strong>simulation</strong> for
+                            demonstration purposes only. No real bank transaction is performed and no money will be
+                            deducted. Click <em>"Confirm Payment"</em> to complete the simulated checkout.
+                        </div>
                     </div>
                     <div id="cash-details" class="mt-2 text-sm hidden">
                         <p>Pay in cash upon arrival.</p>
                     </div>
                 </div>
                 <button type="submit" id="payButton"
-                    class="bg-blue-500 text-white px-4 py-2 rounded w-full hover:bg-blue-600">Pay Now</button>
+                    class="bg-blue-500 text-white px-4 py-2 rounded w-full hover:bg-blue-600 flex items-center justify-center gap-2">
+                    <svg id="paySpinner" class="hidden w-4 h-4 animate-spin text-white" viewBox="0 0 24 24" fill="none">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor"
+                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                        </path>
+                    </svg>
+                    <span id="payButtonText">Pay Now</span>
+                </button>
 
                 <!-- Mock bank fields for Online Payment -->
                 <input type="hidden" name="bankName" id="hiddenBankName" value="Maybank" />
@@ -82,13 +96,26 @@
     <!-- Mock Bank Modal -->
     <div id="bankModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center hidden z-50">
         <div class="bg-white p-6 rounded-lg shadow-xl max-w-md w-full">
-            <h3 class="text-lg font-medium mb-4">Select Bank</h3>
+            <h3 class="text-lg font-medium mb-2">Select Bank</h3>
+            <div class="bg-yellow-50 border border-yellow-400 text-yellow-800 px-3 py-2 rounded mb-4 text-xs" role="note">
+                This is a <strong>simulated checkout</strong> for demonstration purposes. Selecting a bank will complete
+                the payment instantly; no real transaction is performed.
+            </div>
             <select id="bankSelect" class="w-full border p-2 rounded mb-4">
                 <option>Maybank</option>
                 <option>CIMB Bank</option>
                 <option>Public Bank</option>
             </select>
-            <button id="confirmBank" class="w-full bg-green-600 text-white p-2 rounded">Confirm Payment</button>
+            <button id="confirmBank"
+                class="w-full bg-green-600 text-white p-2 rounded flex items-center justify-center gap-2">
+                <svg id="bankSpinner" class="hidden w-4 h-4 animate-spin text-white" viewBox="0 0 24 24" fill="none">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                    </path>
+                </svg>
+                <span id="bankConfirmText">Confirm Payment</span>
+            </button>
         </div>
     </div>
 
@@ -96,26 +123,32 @@
         /*<![CDATA[*/
         const price = /*[[${price}]]*/ 15.0;
         /*]]>*/
+        let isPaymentSubmitting = false;
 
         function togglePaymentDetails() {
             const isCash = document.getElementById('cash').checked;
             document.getElementById('cash-details').classList.toggle('hidden', !isCash);
             document.getElementById('online-details').classList.toggle('hidden', isCash);
 
-            const btn = document.getElementById('payButton');
+            const btnText = document.getElementById('payButtonText');
             if (price === 0) {
-                btn.innerText = 'Proceed';
+                btnText.innerText = 'Proceed';
             } else {
-                btn.innerText = isCash ? 'Confirm Cash Payment' : 'Pay Now';
+                btnText.innerText = isCash ? 'Confirm Cash Payment' : 'Pay Now';
             }
         }
 
         // Initialize button text based on price
         if (price === 0) {
-            document.getElementById('payButton').innerText = 'Proceed';
+            document.getElementById('payButtonText').innerText = 'Proceed';
         }
 
         document.getElementById('paymentForm').addEventListener('submit', function (e) {
+            // Let the programmatic submit after bank/cash confirmation go through
+            if (isPaymentSubmitting) {
+                return;
+            }
+
             // Check if payment method is selected
             const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked');
             if (!paymentMethod) {
@@ -132,12 +165,43 @@
             if (document.getElementById('online').checked) {
                 e.preventDefault();
                 document.getElementById('bankModal').classList.remove('hidden');
+                return;
             }
+
+            // Cash: show loading state before submitting
+            e.preventDefault();
+            isPaymentSubmitting = true;
+            setPayButtonProcessing(true);
+            setTimeout(function () {
+                document.getElementById('paymentForm').submit();
+            }, 600);
         });
 
+        // Show spinner / disable button to indicate processing
+        function setPayButtonProcessing(processing) {
+            const btn = document.getElementById('payButton');
+            const spinner = document.getElementById('paySpinner');
+            const text = document.getElementById('payButtonText');
+            btn.disabled = processing;
+            spinner.classList.toggle('hidden', !processing);
+            text.textContent = processing ? 'Processing...' : (price === 0 ? 'Proceed' : 'Pay Now');
+        }
+
+        // Simulated checkout: show spinner, then submit after short delay
         document.getElementById('confirmBank').addEventListener('click', function () {
+            const btn = this;
+            const spinner = document.getElementById('bankSpinner');
+            const text = document.getElementById('bankConfirmText');
+            btn.disabled = true;
+            spinner.classList.remove('hidden');
+            text.textContent = 'Processing...';
+
             document.getElementById('hiddenBankName').value = document.getElementById('bankSelect').value;
-            document.getElementById('paymentForm').submit();
+
+            setTimeout(function () {
+                isPaymentSubmitting = true;
+                document.getElementById('paymentForm').submit();
+            }, 1200);
         });
     </script>
 </body>
