@@ -126,7 +126,7 @@ public class ProfileController {
                 try {
                     String fileName = java.util.UUID.randomUUID().toString() + "_" + image.getOriginalFilename();
                     java.nio.file.Path uploadPath = java.nio.file.Paths
-                            .get("src/main/resources/static/resources/uploads");
+                            .get(System.getProperty("user.dir"), "uploads");
 
                     if (!java.nio.file.Files.exists(uploadPath)) {
                         java.nio.file.Files.createDirectories(uploadPath);

@@ -358,7 +358,7 @@ public class AdminController {
         if (staffPicture != null && !staffPicture.isEmpty()) {
             try {
                 String fileName = System.currentTimeMillis() + "_" + staffPicture.getOriginalFilename();
-                String uploadDir = System.getProperty("user.dir") + "/src/main/resources/static/resources/uploads/";
+                String uploadDir = System.getProperty("user.dir") + "/uploads/";
                 java.nio.file.Path uploadPath = java.nio.file.Paths.get(uploadDir);
                 if (!java.nio.file.Files.exists(uploadPath))
                     java.nio.file.Files.createDirectories(uploadPath);
@@ -1077,7 +1077,7 @@ public class AdminController {
             if (staffPicture != null && !staffPicture.isEmpty()) {
                 try {
                     String fileName = System.currentTimeMillis() + "_" + staffPicture.getOriginalFilename();
-                    String uploadDir = System.getProperty("user.dir") + "/src/main/resources/static/resources/uploads/";
+                    String uploadDir = System.getProperty("user.dir") + "/uploads/";
                     java.nio.file.Path uploadPath = java.nio.file.Paths.get(uploadDir);
                     if (!java.nio.file.Files.exists(uploadPath)) {
                         java.nio.file.Files.createDirectories(uploadPath);
