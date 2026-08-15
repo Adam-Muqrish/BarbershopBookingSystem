@@ -60,6 +60,7 @@ public class ProfileController {
             @RequestParam String email,
             @RequestParam String phone,
             @RequestParam(required = false) String password,
+            @RequestParam(required = false) String confirmPassword,
             @RequestParam("image") org.springframework.web.multipart.MultipartFile image,
             HttpSession session,
             RedirectAttributes redirectAttributes) {
@@ -67,6 +68,18 @@ public class ProfileController {
         Long custId = (Long) session.getAttribute("custId");
         if (custId == null)
             return "redirect:/register";
+
+        // --- VALIDASI PASSWORD: jika password diisi, confirm mesti padan ---
+        if (password != null && !password.isEmpty()) {
+            if (confirmPassword == null || confirmPassword.isEmpty()) {
+                redirectAttributes.addFlashAttribute("error", "Please confirm your new password.");
+                return "redirect:/edit-profile";
+            }
+            if (!password.equals(confirmPassword)) {
+                redirectAttributes.addFlashAttribute("error", "New password and confirm password do not match.");
+                return "redirect:/edit-profile";
+            }
+        }
 
         Optional<Customer> customerOpt = customerRepository.findById(custId);
         if (customerOpt.isPresent()) {

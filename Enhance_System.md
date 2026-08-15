@@ -156,20 +156,20 @@ This document catalogues frontend issues, inconsistencies, and improvement oppor
 
   **Important deployment note:** With `spring.thymeleaf.cache=false` the server re-reads templates from `target/classes` on each request, so after editing `src/` you must rebuild/copy resources into `target/classes` and confirm the app process is running the latest build (restart the server). The customer inline-SVG toggle renders without external CSS, so it is a reliable signal of whether fresh templates are being served.
 
-### 3.2 Registration Form Lacks Client-Side Validation
+### 3.2 Registration Form Lacks Client-Side Validation ✅ [COMPLETED]
 
 - **File:** `customer/register.html:166-214`
 - **Issue:** The form has `required` attributes and server-side validation, but no client-side validation feedback. The phone field strips non-numeric chars (good), but there's no email format validation, no password strength check, and no match indicator for confirm password.
 - **Enhancement:** Add real-time validation feedback (error messages inline, password strength meter, confirm-password match indicator).
 - **Status:** ✅ COMPLETED — Added `id`s to all register inputs (`registerName`, `registerEmail`, `registerPhone`, `registerPassword`, `registerConfirmPassword`), inline error `<span>`s (`data-error-for`), a 4-bar password strength meter (`#passwordStrength`/`#strengthText`), and a confirm-password match indicator (`#passwordMatch`, green "Passwords match." / red "Passwords do not match."). New `<script>` (DOMContentLoaded) validates name/email(regex `^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$`)/phone(7-15 digits)/password(min 8)/confirm on `input`+`blur` and blocks submit when invalid. `form-container` height raised 600→680px and register panel given `overflow-y-auto` to fit the meter. Rebuilt `main.css` via `mvnw -o compile`; verified `/register` renders HTTP 200 with all new elements.
 
-### 3.3 Booking Page — Slot Grid Uses `grid-cols-6` Without Mobile Responsiveness
+### 3.3 Booking Page — Slot Grid Uses `grid-cols-6` Without Mobile Responsiveness ✅ [COMPLETED]
 
 - **File:** `customer/booking.html:27-36`
 - **Issue:** Time slots are rendered in a fixed `grid grid-cols-6 gap-2` which doesn't adapt on small screens. On mobile, 6 columns is too cramped — labels overlap.
 - **Enhancement:** Use responsive grid (`grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6`) so slots wrap nicely on all screen sizes.
 
-### 3.4 Booking Page — "Booking For" Field Has No Input Validation / Labeling
+### 3.4 Booking Page — "Booking For" Field Has No Input Validation / Labeling ✅ [COMPLETED]
 
 - **File:** `customer/booking.html:12-17`
 - **Issue:** The "Booking For" text input allows any value with no pattern or suggestion. There's no clear label association error (the `for` matches `id`, which is correct, but the field name `booking-for` with a hyphen is fine). The main issue is no guidance on expected input format.
@@ -180,7 +180,7 @@ This document catalogues frontend issues, inconsistencies, and improvement oppor
   - Added a DOMContentLoaded script that validates on `input`+`blur` (required, letters/spaces/`.`/`'`/`-` only) and blocks form submission when invalid, reusing the same `border-red-500`/hidden-span error convention as `register.html` (3.2).
   - Regenerated `main.css` (`npm run build:css`) to include `text-gray-500`/`text-red-600`/`border-red-500`; `mvnw -o compile` → **BUILD SUCCESS**. ✅
 
-### 3.5 Edit Appointment — Duplicate Slot Radio JS Logic (No Availability Check)
+### 3.5 Edit Appointment — Duplicate Slot Radio JS Logic (No Availability Check) ✅ [COMPLETED]
 
 - **File:** `customer/edit-appointment.html`
 - **Issue:** Unlike the new `booking.html`, the `edit-appointment.html` page renders **all** time slots as enabled radio buttons (no `disabled` attribute) and the JS only updates the selected-time display field. It fetches availability from `/booking/unavailable` but then **never disables any slots** based on the result in `updateSlotStatus()`. The availability logic from `booking.html` is not replicated here.
@@ -192,7 +192,7 @@ This document catalogues frontend issues, inconsistencies, and improvement oppor
   - Removed the leftover `console.log` debug lines.
   - Rebuilt `main.css` (`npm run build:css`); verified with `node --check` (JS syntax OK) and `mvnw -o compile` → **BUILD SUCCESS**. ✅
 
-### 3.6 Payment Page — Online Banking Is a Mock with No Real Checkout Flow
+### 3.6 Payment Page — Online Banking Is a Mock with No Real Checkout Flow ✅ [COMPLETED]
 
 - **File:** `customer/payment.html`
 - **Issue:** The "Online Banking" option shows a fake "Select Bank" modal with hardcoded bank options (Maybank, CIMB, Public Bank). Clicking "Confirm Payment" just submits the form with a hidden bank name — no real payment gateway integration. The bank modal is a placeholder.
@@ -205,7 +205,7 @@ This document catalogues frontend issues, inconsistencies, and improvement oppor
   - Refactored button-text updates to target the new `<span id="payButtonText">` (previously `btn.innerText` on the button itself, which now contains the spinner SVG).
   - Rebuilt `main.css` (`npm run build:css`) to include `animate-spin`, `bg-yellow-50`, `border-yellow-400`, `text-yellow-800`, `gap-2`, `items-center`; verified with `node --check` (JS syntax OK) and `mvnw -o compile` → **BUILD SUCCESS**. ✅
 
-### 3.7 Payment Page — Button Text/State Inconsistency on Price = 0
+### 3.7 Payment Page — Button Text/State Inconsistency on Price = 0 ✅ [COMPLETED]
 
 - **File:** `customer/payment.html:95-116`
 - **Issue:** When `price === 0` (free appointment via loyalty points), the button text changes to "Proceed" but selecting "Cash" or "Online Banking" still triggers the bank modal check. The `togglePaymentDetails()` function doesn't account for the free case properly — if price is 0 and user selects online, the bank modal still appears.
@@ -221,6 +221,11 @@ This document catalogues frontend issues, inconsistencies, and improvement oppor
 - **File:** `customer/editProfile.html:55-59`
 - **Issue:** The "New Password" field has no "Confirm Password" field, unlike the register form. Users could mistype their new password.
 - **Enhancement:** Add a "Confirm New Password" field with match validation.
+- **Status:** ✅ COMPLETED — Added a "Confirm New Password" field with live match validation:
+  - **Template (`customer/editProfile.html`):** Added a `#confirm-password` input with the same eye/eye-off visibility toggle used by the existing password field (the shared `.password-toggle` binding in the page's inline script covers it automatically), plus a `#passwordMatch` indicator span.
+  - **JS:** Added a DOMContentLoaded handler that validates the confirm field on `input`+`blur`: if the values differ it shows "Passwords do not match." in red with a red border on the input; if they match it shows "Passwords match." in green; empty confirm field hides the indicator. Uses the same `text-red-600`/`text-green-600`/`border-red-500` styling as the register form (3.2).
+  - **Backend (`ProfileController.updateProfile`):** Now accepts an optional `confirmPassword` param. If a new password is provided but confirm is empty, or the two differ, it flashes an error and redirects back to `/edit-profile` without saving — mirroring the register flow's server-side guard so the confirmation isn't only client-side.
+  - Rebuilt via `mvnw -o compile` → **BUILD SUCCESS**; verified with `node --check` (JS syntax OK). ✅
 
 ### 3.9 Profile Page — Image Upload Preview Is Missing
 
@@ -418,7 +423,7 @@ This document catalogues frontend issues, inconsistencies, and improvement oppor
 | 3.5  | Bug              | `edit-appointment.html`    | High     | ✅ Done |
 | 3.6  | Functionality    | `payment.html`             | High     | ✅ Done |
 | 3.7  | Logic Bug        | `payment.html`             | Medium   | ✅ Done |
-| 3.8  | UX               | `editProfile.html`         | Low      |
+| 3.8  | UX               | `editProfile.html`         | Low      | ✅ Done |
 | 3.9  | UX               | `editProfile.html`         | Low      |
 | 3.10 | Consistency      | `appointment-history.html` | Low      |
 | 3.11 | Feature          | `receipt.html`             | Low      |
