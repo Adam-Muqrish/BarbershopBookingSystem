@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Hugi Barbershop System - Customers</title>
+    <link rel="stylesheet" th:href="@{/resources/assetsAdmin/css/style.css}">
+    <link rel="stylesheet" th:href="@{/resources/assetsAdmin/css/fontawesome/css/all.min.css}">
+    <style>
+        .nk-wrap {
+            padding-top: 60px;
+        }
+    </style>
+</head>
+
+<body class="nk-body" data-sidebar-collapse="lg" data-navbar-collapse="lg">
+    <div class="nk-app-root">
+        <div class="nk-main">
+            <div th:replace="~{fragments/adminFragments :: sidebar}"></div>
+            <div class="nk-wrap">
+                <div th:replace="~{fragments/adminFragments :: header}"></div>
+                <div class="nk-content">
+                    <div class="container">
+                        <div class="nk-block-head">
+                            <h2 class="nk-block-title">Customers List</h2>
+                        </div>
+                        <div style="display: flex; gap: 30px;">
+                            <!-- Customer Table -->
+                            <div class="nk-block" style="flex:2;">
+                                <div class="card">
+                                    <table class="table">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Phone Number</th>
+                                                <th>Loyalty Points</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr th:each="cust : ${customerList}">
+                                                <td th:text="${cust.custName}"></td>
+                                                <td th:text="${cust.custPhoneNumber}"></td>
+                                                <td th:text="${cust.custLoyaltyPoints}"></td>
+                                                <!-- 
+                                                ✅ LOGIK ACTION BUTTON:
+                                                Admin -> /listCustomer
+                                                Barber -> /barber/customers
+                                                -->
+                                                <td>
+                                                    <a th:if="${staffRole == 'ADMIN'}"
+                                                        th:href="@{/listCustomer(custId=${cust.custId})}"
+                                                        class="btn btn-sm btn-primary">View</a>
+
+                                                    <a th:if="${staffRole == 'BARBER'}"
+                                                        th:href="@{/barber/customers(custId=${cust.custId})}"
+                                                        class="btn btn-sm btn-primary">View</a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <!-- Customer Details Panel -->
+                            <div style="flex:1;">
+                                <div th:if="${customer}" class="card" style="padding: 30px; min-width: 350px;">
+                                    <div style="display: flex; flex-direction: column; align-items: center;">
+                                        <img th:if="${customer.custPicture != null}"
+                                            th:src="@{'/resources/uploads/' + ${customer.custPicture}}"
+                                            alt="Profile Picture"
+                                            style="width:100px;height:100px;border-radius:50%;object-fit:cover;background:#f2f2f2;margin-bottom:20px;" />
+                                        <div th:if="${customer.custPicture == null}"
+                                            style="width:100px;height:100px;border-radius:50%;background:#f2f2f2;display:flex;align-items:center;justify-content:center;font-size:20px;color:#888;margin-bottom:20px;">
+                                            <span>No<br>Picture</span>
+                                        </div>
+                                        <h5>Details</h5>
+                                        <div style="width:100%;">
+                                            <div class="mb-2"><strong>Full Name:</strong> <span
+                                                    th:text="${customer.custName}"></span>
+                                            </div>
+                                            <div class="mb-2"><strong>Email:</strong> <span
+                                                    th:text="${customer.custEmail}"></span>
+                                            </div>
+                                            <div class="mb-2"><strong>Phone Number:</strong> <span
+                                                    th:text="${customer.custPhoneNumber}"></span>
+                                            </div>
+                                            <div class="mb-2"><strong>Loyalty Points:</strong> <span
+                                                    th:text="${customer.custLoyaltyPoints}"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div th:if="${param.custId != null and customer == null}"
+                                    class="alert alert-danger mt-3">
+                                    Customer not found.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div th:replace="~{fragments/adminScripts :: adminJs}"></div>
+</body>
+
+</html>
