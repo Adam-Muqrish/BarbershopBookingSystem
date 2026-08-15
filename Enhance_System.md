@@ -174,6 +174,11 @@ This document catalogues frontend issues, inconsistencies, and improvement oppor
 - **File:** `customer/booking.html:12-17`
 - **Issue:** The "Booking For" text input allows any value with no pattern or suggestion. There's no clear label association error (the `for` matches `id`, which is correct, but the field name `booking-for` with a hyphen is fine). The main issue is no guidance on expected input format.
 - **Enhancement:** Add a placeholder like "e.g., John Doe" and consider making it a select with "Myself" / "Someone else" for better UX.
+- **Status:** ✅ COMPLETED — Kept the free-text input (the value is stored server-side as `appointment.custBookFor`, so a "Myself"/"Someone else" select would discard the actual name) and instead:
+  - Added `placeholder="e.g., John Doe"`, `maxlength="50"`, and a name `pattern="^[A-Za-z][A-Za-z .'-]{1,49}$"`.
+  - Added a helper line ("Enter the name of the person the appointment is for.") and an inline error `<span>` (`#booking-for-error`), both wired via `aria-describedby` for accessible labeling.
+  - Added a DOMContentLoaded script that validates on `input`+`blur` (required, letters/spaces/`.`/`'`/`-` only) and blocks form submission when invalid, reusing the same `border-red-500`/hidden-span error convention as `register.html` (3.2).
+  - Regenerated `main.css` (`npm run build:css`) to include `text-gray-500`/`text-red-600`/`border-red-500`; `mvnw -o compile` → **BUILD SUCCESS**. ✅
 
 ### 3.5 Edit Appointment — Duplicate Slot Radio JS Logic (No Availability Check)
 
@@ -390,8 +395,8 @@ This document catalogues frontend issues, inconsistencies, and improvement oppor
 | 2.5  | UX               | `script.js`                | Low      | ✅ Done |
 | 3.1  | UX               | `register.html`            | Low      | ✅ Done |
 | 3.2  | UX               | `register.html`            | Medium   | ✅ Done |
-| 3.3  | Responsive       | `booking.html`             | Low      |
-| 3.4  | UX               | `booking.html`             | Low      |
+| 3.3  | Responsive       | `booking.html`             | Low      | ✅ Done |
+| 3.4  | UX               | `booking.html`             | Low      | ✅ Done |
 | 3.5  | Bug              | `edit-appointment.html`    | High     |
 | 3.6  | Functionality    | `payment.html`             | High     |
 | 3.7  | Logic Bug        | `payment.html`             | Medium   |
