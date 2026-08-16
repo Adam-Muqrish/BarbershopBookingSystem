@@ -62,6 +62,7 @@
                                                             th:if="${a.paymentMethod == 'CASH' and staffRole == 'ADMIN'}"
                                                             th:action="@{/admin/update-payment-status}" method="post"
                                                             class="d-inline">
+                                                            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
                                                             <input type="hidden" name="appointmentId"
                                                                 th:value="${a.appointmentId}" />
 
@@ -103,6 +104,7 @@
                                                         <form th:if="${staffRole == 'ADMIN'}"
                                                             th:action="@{/admin/update-service-status}" method="post"
                                                             class="d-inline">
+                                                            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
                                                             <input type="hidden" name="appointmentId"
                                                                 th:value="${a.appointmentId}" />
 
@@ -176,6 +178,7 @@
                                         <form th:action="@{/admin/update-appointment}" method="post">
 
                                             <!-- HIDDEN ID -->
+                                            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
                                             <input type="hidden" name="appointmentId"
                                                 th:value="${appointment.appointmentId}" />
 
@@ -219,6 +222,7 @@
                                                 <label class="form-label">Barber</label>
                                                 <select class="form-select" id="editBarber" name="barberId"
                                                     onchange="updateAvailableTimes()">
+                                                    <option value="">Select a barber first</option>
                                                     <option th:each="b : ${barberList}" th:value="${b.staffId}"
                                                         th:text="${b.staffName}" th:selected="${appointment != null && appointment.barberId ==
                                                         b.staffId}">
@@ -298,21 +302,23 @@
                 const appointmentId = document.querySelector('input[name="appointmentId"]')?.value;
                 const currentlySelectedTime = timeSelect.value;
 
-                // Kosongkan dropdown dulu
-                timeSelect.innerHTML = '<option value="">Select Time</option>';
+                // Kosongkan dropdown dulu dan tunjuk status loading
+                timeSelect.innerHTML = '<option value="">Loading available times...</option>';
 
                 // SYARAT BARU: Tarikh mesti ada. Barber OPTIONAL (boleh null).
                 if (!date) {
+                    timeSelect.innerHTML = '<option value="">Select Time</option>';
+                    return;
+                }
+
+                // Bimbing admin: pilih barber dahulu
+                if (!barberId) {
+                    timeSelect.innerHTML = '<option value="">Select a barber first</option>';
                     return;
                 }
 
                 // Bina URL
-                let url = `/api/available-times?date=${date}`;
-
-                // Hanya append barberId jika user memilih barber
-                if (barberId) {
-                    url += `&barberId=${barberId}`;
-                }
+                let url = `/api/available-times?date=${date}&barberId=${barberId}`;
 
                 // Hantar exclude ID jika ada
                 if (appointmentId) {
@@ -320,8 +326,19 @@
                 }
 
                 fetch(url)
-                    .then(response => response.json())
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Request failed (' + response.status + ')');
+                        }
+                        return response.json();
+                    })
                     .then(times => {
+                        if (times.length === 0) {
+                            timeSelect.innerHTML = '<option value="">No available times</option>';
+                            return;
+                        }
+                        timeSelect.innerHTML = '<option value="">Select Time</option>';
+
                         times.forEach(time => {
                             // Filter out past times for today
                             const today = new Date().toISOString().split('T')[0];
@@ -346,6 +363,7 @@
                     })
                     .catch(error => {
                         console.error('Error:', error);
+                        timeSelect.innerHTML = '<option value="">Error loading times. Please try again.</option>';
                     });
             }
         </script>

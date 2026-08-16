@@ -60,8 +60,7 @@ public class SecurityConfig {
                                                 .permitAll())
                                 .csrf(csrf -> csrf
                                                 .ignoringRequestMatchers("/staffAuth", "/auth")
-                                                .ignoringRequestMatchers("/payment/**", "/booking/**", "/feedback/**")
-                                                .ignoringRequestMatchers("/admin/**"));
+                                                .ignoringRequestMatchers("/payment/**", "/booking/**", "/feedback/**"));
 
                 return http.build();
         }

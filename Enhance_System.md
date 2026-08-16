@@ -315,29 +315,52 @@ This document catalogues frontend issues, inconsistencies, and improvement oppor
 - **Enhancement:** Set `th:min="${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}"` server-side as a fallback.
 - **Status:** ✅ COMPLETED — Added `th:min="${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}"` to the `#editDate` date input in `admin/listAppointment.html:200` so the native picker prevents past dates even before JS runs (the existing JS `min` + change guard remains as a secondary check). Rebuilt via `mvnw -o compile` → **BUILD SUCCESS**. ✅
 
-### 4.8 Appointment List — Time Select Starts Empty, No "Loading" State
+### 4.8 Appointment List — Time Select Starts Empty, No "Loading" State ✅ [COMPLETED]
 
 - **File:** `admin/listAppointment.html:206-214` + JS `:292-348`
 - **Issue:** When editing an appointment, the time `<select>` starts with only a "Select Time" placeholder option. The `updateAvailableTimes()` function fetches options via AJAX but there's no loading indicator or error handling. If the fetch fails, the user sees an empty dropdown with no feedback.
 - **Enhancement:** Add a loading spinner placeholder option and a `.catch()` handler that shows an error message in the dropdown.
+- **Status:** ✅ COMPLETED — Updated `updateAvailableTimes()` in `admin/listAppointment.html`:
+  - **Loading state:** the dropdown now shows `Loading available times...` while the AJAX fetch is in flight (restoring `Select Time` when no date is chosen).
+  - **Error handling:** the `.catch()` handler now replaces the dropdown contents with `Error loading times. Please try again.` instead of silently logging to the console; `response.ok` is also checked so HTTP errors surface as the error message.
+  - **Empty state:** if the API returns no times, the dropdown shows `No available times` instead of an empty list.
+  - Rebuilt via `mvnw -o compile` → **BUILD SUCCESS**. ✅
 
-### 4.9 Appointment List / Edit Appointment — Barber Hidden When All Slots Full
+### 4.9 Appointment List / Edit Appointment — Barber Hidden When All Slots Full ✅ [COMPLETED]
 
 - **File:** `admin/listAppointment.html:219-224`
 - **Issue:** When no barber is selected, the available-times API returns all slots booked (checks all appointments for that date). The time dropdown will be nearly empty. There's no guidance telling the admin to select a barber first.
 - **Enhancement:** Default the barber select to the appointment's current barber so times load immediately. Add a "Select a barber first" placeholder message.
+- **Status:** ✅ COMPLETED — Updated `admin/listAppointment.html`:
+  - Added `<option value="">Select a barber first</option>` as the first option in the `#editBarber` select (the appointment's current barber remains pre-selected via `th:selected`, so times load immediately on page load).
+  - In `updateAvailableTimes()`, when no barber is selected, the time dropdown now shows `Select a barber first` instead of fetching and returning a near-empty list.
+  - Since the barber is now mandatory for the fetch, the URL always includes `barberId`.
+  - Rebuilt via `mvnw -o compile` → **BUILD SUCCESS**. ✅
 
-### 4.10 Admin Login Page — Layout Is Not Centered on Large Screens
+### 4.10 Admin Login Page — Layout Is Not Centered on Large Screens ✅ [COMPLETED]
 
 - **File:** `admin/adminLogin.html:11-16`
 - **Issue:** The login container has `d-flex` (Bootstrap) but the wrapper uses `display: flex` with `align-items: center` inline style. On very large screens the login form can appear left-aligned rather than perfectly centered.
 - **Enhancement:** Add `justify-content-center` to the flex container or use `mx-auto` centering.
+- **Status:** ✅ COMPLETED — Added `justify-content: center` to the inline `style` of the `.nk-wrap` flex container in `admin/adminLogin.html:14` (it already had the `justify-content-center` class, but inlining it guarantees horizontal centering regardless of stylesheet specificity on large screens). Rebuilt via `mvnw -o compile` → **BUILD SUCCESS**. ✅
 
-### 4.11 All Admin Pages — Missing CSRF Token Handling
+### 4.11 All Admin Pages — Missing CSRF Token Handling ✅ [COMPLETED]
 
 - **File:** `config/SecurityConfig.java:48-51`
 - **Issue:** The CSRF configuration ignores `/staffAuth`, `/auth`, `/payment/**`, `/booking/**`, `/feedback/**`, and `/admin/**`. While this allows forms to submit without tokens, it also disables CSRF protection on admin actions (delete staff, update appointment, register staff, etc.). This is a security concern, though the CSRF exemption was likely intentional to avoid adding token fields to every form.
 - **Enhancement (Frontend):** Add `<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />` to all admin POST forms. Remove the `/admin/**` CSRF exemption from `SecurityConfig`. _This requires a backend change but the frontend template updates are documented here._
+- **Status:** ✅ COMPLETED —
+  - **Backend:** Removed `.ignoringRequestMatchers("/admin/**")` from `config/SecurityConfig.java` (remaining exemptions: `/staffAuth`, `/auth`, `/payment/**`, `/booking/**`, `/feedback/**`). `/staffAuth` (admin login) stays exempt, so `adminLogin.html` needs no token.
+  - **Frontend:** Added the CSRF hidden input to every admin POST form:
+    - `admin/edit-staff.html:55` → `/admin/update-staff`
+    - `admin/listBarber.html:116` → `/admin/delete-staff`
+    - `admin/listBarber.html:150` → `/admin/register-staff`
+    - `admin/listAppointment.html:65` → `/admin/update-payment-status`
+    - `admin/listAppointment.html:107` → `/admin/update-service-status`
+    - `admin/listAppointment.html:181` → `/admin/update-appointment`
+    - `admin/profile.html:72` → `/admin/update-my-profile` / `/barber/update-profile`
+    - `admin/registerStaff.html:60` → `/admin/register-staff`
+  - Rebuilt via `mvnw -o compile` → **BUILD SUCCESS**. ✅
 
 ---
 
@@ -458,10 +481,10 @@ This document catalogues frontend issues, inconsistencies, and improvement oppor
 | 4.5  | Clarity          | `listBarber.html`          | Low      | ✅ Done |
 | 4.6  | UX               | `listBarber.html`          | Low      | ✅ Done |
 | 4.7  | Bug              | `listAppointment.html`     | Medium   | ✅ Done |
-| 4.8  | UX               | `listAppointment.html`     | Medium   |
-| 4.9  | UX               | `listAppointment.html`     | Medium   |
-| 4.10 | Layout           | `adminLogin.html`          | Low      |
-| 4.11 | Security         | Admin POST forms           | High     |
+| 4.8  | UX               | `listAppointment.html`     | Medium   | ✅ Done |
+| 4.9  | UX               | `listAppointment.html`     | Medium   | ✅ Done |
+| 4.10 | Layout           | `adminLogin.html`          | Low      | ✅ Done |
+| 4.11 | Security         | Admin POST forms           | High     | ✅ Done |
 | 5.1  | UX               | `booking.html`             | Low      |
 | 5.2  | Bug              | `booking.html`             | Medium   |
 | 5.3  | UX               | `booking.html`             | Low      |

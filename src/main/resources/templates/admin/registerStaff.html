@@ -57,6 +57,7 @@
                                     </div>
 
                                     <form th:action="@{/admin/register-staff}" method="post">
+                                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 
                                         <div class="row g-4">
 

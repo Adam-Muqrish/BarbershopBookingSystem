@@ -52,6 +52,7 @@
                                 <div class="card-inner">
 
                                     <form th:action="@{/admin/update-staff}" method="post">
+                                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 
                                         <input type="hidden" name="staffId" th:value="${staff.staffId}" />
 
