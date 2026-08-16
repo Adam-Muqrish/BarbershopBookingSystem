@@ -48,6 +48,9 @@ public class Appointment {
     @Transient
     private String paymentMethod;
 
+    @Transient
+    private boolean past;
+
     @Column(name = "updated_by")
     private Long updatedBy;
 
@@ -109,6 +112,14 @@ public class Appointment {
 
     public void setPaymentMethod(String paymentMethod) {
         this.paymentMethod = paymentMethod;
+    }
+
+    public boolean isPast() {
+        return past;
+    }
+
+    public void setPast(boolean past) {
+        this.past = past;
     }
 
     public Integer getValueLoyalty() {

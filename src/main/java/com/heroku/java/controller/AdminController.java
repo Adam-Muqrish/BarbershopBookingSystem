@@ -576,6 +576,9 @@ public class AdminController {
 
         for (Appointment a : appointments) {
 
+            // past appointment flag (lock rescheduling)
+            a.setPast(isPastSlot(a.getAppointmentDate(), a.getAppointmentTime()));
+
             // customer name
             customerRepository.findById(a.getCustId())
                     .ifPresent(c -> a.setCustomerName(c.getCustName()));
@@ -602,6 +605,9 @@ public class AdminController {
         if (appointmentId != null) {
             appointmentRepository.findById(appointmentId)
                     .ifPresent(a -> {
+                        // past appointment flag (lock rescheduling)
+                        a.setPast(isPastSlot(a.getAppointmentDate(), a.getAppointmentTime()));
+
                         customerRepository.findById(a.getCustId())
                                 .ifPresent(c -> a.setCustomerName(c.getCustName()));
 
@@ -1338,6 +1344,23 @@ public class AdminController {
         }
 
         return String.format("%02d:%02d", hour, Integer.parseInt(hm[1]));
+    }
+
+    // Is this appointment slot already in the past? (locks rescheduling)
+    private boolean isPastSlot(String date, String time) {
+        if (date == null || date.isEmpty() || time == null || time.isEmpty()) {
+            return false;
+        }
+
+        try {
+            String time24 = convertTimeTo24Hour(time);
+            java.time.LocalDateTime slot = java.time.LocalDateTime.parse(
+                    date + " " + time24,
+                    java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+            return slot.isBefore(java.time.LocalDateTime.now());
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     // 25. ADMIN DELETE APPOINTMENT
