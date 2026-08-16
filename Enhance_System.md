@@ -376,7 +376,7 @@ This document catalogues frontend issues, inconsistencies, and improvement oppor
   - In the existing form `submit` handler (after client-side validation passes), the button is now disabled and shows a spinning Tailwind spinner (`.animate-spin` ring) with "Booking..." text, preventing double-submission while the request is in flight.
   - Rebuilt Tailwind `main.css` (`npm run build:css`) so the new utility classes (`border-t-transparent`, `opacity-60`, `align-middle`) are included. Rebuilt via `mvnw -o compile` → **BUILD SUCCESS**. ✅
 
-### 5.2 Booking Page — Barber Dropdown Hides Options Based on First Slot Only
+### 5.2 Booking Page — Barber Dropdown Hides Options Based on First Slot Only ✅ [COMPLETED]
 
 - **File:** `customer/booking.html:51-55`
 - **Issue:** The `th:style` on barber `<option>` elements checks only `unavailableBarbersBySlot[slots[0]]` (the first slot). This hides barbers who are unavailable at the **first time slot** regardless of which slot the user will actually select. This is incorrect — it should not pre-hide barbers based on the first slot.
@@ -388,6 +388,11 @@ This document catalogues frontend issues, inconsistencies, and improvement oppor
 - **File:** `customer/booking.html:68-85` (JS)
 - **Issue:** When the date changes, `updateSlotStatus()` disables time slots and resets the barber dropdown. But if a time was previously selected and becomes disabled, the `selected-time` input keeps the old (now invalid) value. There's no visual cue that the previously selected time is no longer available.
 - **Enhancement:** When date changes and no time is selected, or when a previously selected time becomes disabled, show a notice like "Please select a new time slot."
+- **Status:** ✅ COMPLETED — Updated `customer/booking.html`:
+  - Added a `#slot-notice` element (`Please select a new time slot.`, amber) below the `#selected-time` input, hidden by default.
+  - `updateSlotStatus()` now un-hides the notice whenever it runs (date change or initial load), since it resets the selected time to `--:-- --`.
+  - The slot radio `change` listener hides the notice again as soon as the user picks a new time.
+  - Rebuilt Tailwind `main.css` (`npm run build:css`) to include `text-amber-600`. Rebuilt via `mvnw -o compile` → **BUILD SUCCESS**. ✅
 
 ---
 
@@ -492,7 +497,7 @@ This document catalogues frontend issues, inconsistencies, and improvement oppor
 | 4.11 | Security         | Admin POST forms           | High     | ✅ Done |
 | 5.1  | UX               | `booking.html`             | Low      | ✅ Done |
 | 5.2  | Bug              | `booking.html`             | Medium   | ✅ Done |
-| 5.3  | UX               | `booking.html`             | Low      |
+| 5.3  | UX               | `booking.html`             | Low      | ✅ Done |
 | 6.1  | Consistency      | All pages                  | Medium   |
 | 6.2  | Bug              | All admin pages            | High     |
 | 6.3  | Code Quality     | `header.html`              | Low      |

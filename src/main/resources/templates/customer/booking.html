@@ -31,6 +31,9 @@
                     <label class="block mb-1 font-semibold">Booking Time:</label>
                     <input id="selected-time" name="selected-time" type="text"
                         class="w-full border rounded px-3 py-2 shadow mb-2 bg-gray-100" value="--:-- --" readonly />
+                    <p id="slot-notice" class="hidden text-sm text-amber-600 mb-2">
+                        Please select a new time slot.
+                    </p>
                     <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2">
                         <th:block th:each="slot : ${slots}">
                             <label class="flex items-center space-x-1">
@@ -94,6 +97,7 @@
         function updateSlotStatus(selectedDate, totalBarbers) {
             const radios = document.querySelectorAll('.slot-radio');
             const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
+            const notice = document.getElementById('slot-notice');
 
             let currentTimeStr = ""; // Masa sekarang dalam format "HH:mm"
             let isToday = (selectedDate === today);
@@ -151,6 +155,11 @@
 
             document.getElementById('selected-time').value = '--:-- --';
             document.getElementById('barber').selectedIndex = 0;
+
+            // ✅ NOTICE: date changed - previously selected time may no longer be valid
+            if (notice) {
+                notice.classList.remove('hidden');
+            }
         }
 
         // Event listener bila pilih slot
@@ -158,6 +167,8 @@
             radio.addEventListener('change', function () {
                 const slot = this.value;
                 document.getElementById('selected-time').value = slot;
+                const notice = document.getElementById('slot-notice');
+                if (notice) notice.classList.add('hidden');
                 const barberSelect = document.getElementById('barber');
                 const unavailableForSlot = unavailableBarbersBySlot[slot] || [];
 
