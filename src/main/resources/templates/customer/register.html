@@ -247,6 +247,13 @@
               >
                 Login
               </button>
+              <button
+                type="button"
+                id="autofillTestBtn"
+                class="bg-gray-200 text-gray-700 py-2 px-6 rounded-full hover:bg-gray-300 transition-colors"
+              >
+                Autofill Test Account
+              </button>
             </form>
             <a th:href="@{/adminLogin}"
               class="block text-center mt-4 text-sm text-gray-600 hover:text-blue-600 underline">
@@ -524,6 +531,19 @@
           toggleRegisterBtn.style.display = "block";
           toggleLoginBtn.style.display = "none";
         });
+
+        // Autofill test credentials into the login form
+        const autofillTestBtn = document.getElementById("autofillTestBtn");
+        if (autofillTestBtn) {
+          autofillTestBtn.addEventListener("click", function () {
+            const loginForm = document.getElementById("login-form");
+            if (!loginForm) return;
+            const emailInput = loginForm.querySelector('input[name="email"]');
+            const passwordInput = document.getElementById("loginPassword");
+            if (emailInput) emailInput.value = "user1@gmail.com";
+            if (passwordInput) passwordInput.value = "password";
+          });
+        }
       });
       // Cari elemen input phone
       const phoneInput = document.querySelector('input[name="phone"]');

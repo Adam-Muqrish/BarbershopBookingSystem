@@ -161,6 +161,7 @@
 
             // Free appointment: no payment method selection required
             if (price === 0) {
+                e.preventDefault();
                 isPaymentSubmitting = true;
                 setPayButtonProcessing(true);
                 setTimeout(function () {
