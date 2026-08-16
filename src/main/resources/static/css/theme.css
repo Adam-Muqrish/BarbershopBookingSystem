@@ -1,9 +1,31 @@
-/*!
- * Theme: Default
- * Package: NioBoard
- * Version: 1.0.0
- * Updated: 10.21.2022
- * Author: Softnio
- * Author URI: http://themeforest.net/user/softnio
-**/
-/** WRITE YOUR OWN STYLE **/
+/* ============================================================
+   Hugi Barbershop - Shared Theme Tokens (6.1)
+   Single source of truth for the color palette across all pages.
+   ============================================================ */
+
+:root {
+  /* Brand / primary dark (nav, footer, buttons) */
+  --color-brand: #101820;
+  --color-brand-soft: #1f2937;
+
+  /* Customer-facing pages */
+  --color-page-bg: #fef9c3;      /* unified warm page background (was bg-yellow-100) */
+  --color-surface: #ffffff;
+
+  /* Admin / staff pages */
+  --color-admin-bg: #f4f7f6;     /* unified light admin background */
+  --color-admin-surface: #ffffff;
+
+  /* Accent */
+  --color-accent: #2dc58c;
+}
+
+/* Customer pages: warm unified background */
+body.customer-bg {
+  background-color: var(--color-page-bg);
+}
+
+/* Admin pages: light unified background (NioBoard layout) */
+body.nk-body {
+  background-color: var(--color-admin-bg);
+}

@@ -1,6 +1,6 @@
 <nav xmlns:th="http://www.thymeleaf.org" class="border-b border-gray-200 shadow-xl bg-neutral-900" th:fragment="nav">
     <div class="flex flex-col md:flex-row items-center justify-between p-4 mx-auto space-y-4 lg:space-y-0"
-        style="background-color: #101820; border-bottom: 1px solid #FFFCFB;">
+        style="background-color: var(--color-brand); border-bottom: 1px solid #FFFCFB;">
         <ul class="flex flex-col lg:flex-row justify-start md:justify-end space-x-6 text-left w-full md:w-auto">
             <li class="block text-white">CONTACT US: <span th:text="${barbershop.phone}">0127865132</span></li>
             <li class="block text-white">OPENING HOUR: <span
@@ -24,7 +24,7 @@
         </div>
     </div>
     <div class="flex flex-wrap items-center p-4 mx-auto justify-between relative z-50"
-        style="background-color: #101820;">
+        style="background-color: var(--color-brand);">
         <a th:href="@{/index}" class="flex items-center"> <span
                 class="self-center text-2xl font-semibold whitespace-nowrap text-white">Hugi
                 Barbershop</span>

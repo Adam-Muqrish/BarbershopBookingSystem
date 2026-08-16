@@ -213,6 +213,6 @@ public class PaymentController {
         // ✅ 7. CLEAR SESSION (PENTING!)
         session.removeAttribute("pendingAppointment");
 
-        return "redirect:/receipt?appointmentId=" + newAppointmentId + "&source=booking";
+        return "redirect:/receipt?appointmentId=" + newAppointmentId + "&source=view-appointment";
     }
 }

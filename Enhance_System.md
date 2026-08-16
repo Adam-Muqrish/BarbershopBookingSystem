@@ -383,7 +383,7 @@ This document catalogues frontend issues, inconsistencies, and improvement oppor
 - **Enhancement:** Remove the `th:style` on options. Let the JS (slot change listener) dynamically hide/show barbers based on the actually selected slot.
 - **Status:** ✅ COMPLETED — Removed the `th:style` expression from the barber `<option>` elements in `customer/booking.html` (the barber options now always render initially). The existing JS slot-change listener already dynamically hides (`display:none`) and disables barbers unavailable for the actually selected slot, so all barbers are visible until the user picks a time. Rebuilt via `mvnw -o compile` → **BUILD SUCCESS**. ✅
 
-### 5.3 Booking Page — Radio Button Disabling Doesn't Update Barber Dropdown on Date Change
+### 5.3 Booking Page — Radio Button Disabling Doesn't Update Barber Dropdown on Date Change ✅ [COMPLETED]
 
 - **File:** `customer/booking.html:68-85` (JS)
 - **Issue:** When the date changes, `updateSlotStatus()` disables time slots and resets the barber dropdown. But if a time was previously selected and becomes disabled, the `selected-time` input keeps the old (now invalid) value. There's no visual cue that the previously selected time is no longer available.
@@ -402,6 +402,7 @@ This document catalogues frontend issues, inconsistencies, and improvement oppor
 
 - **Files:** All customer pages use `bg-yellow-100` on `<body>`. Admin pages use a white/light-gray bg with `#101820` color scheme. There is no unified theme.
 - **Enhancement:** Define a consistent color palette in CSS custom properties (`:root`) and use them across all pages. Consider a shared theme token file.
+- **Status:** ✅ COMPLETED — Added shared `static/css/theme.css` with `:root` palette tokens (`--color-brand`, `--color-page-bg`, `--color-admin-bg`, etc.). Linked on all customer pages (`fragments/header.html`) and all admin pages + `view-customer-details.html`. Customer bodies switched from `bg-yellow-100` to `customer-bg`; admin login uses `var(--color-admin-bg)`; nav/footer/register hardcoded `#101820` replaced with `var(--color-brand)` / `bg-[var(--color-brand)]`.
 
 ### 6.2 Admin Pages Don't Load `script.js` or NioBoard Scripts
 
@@ -498,7 +499,7 @@ This document catalogues frontend issues, inconsistencies, and improvement oppor
 | 5.1  | UX               | `booking.html`             | Low      | ✅ Done |
 | 5.2  | Bug              | `booking.html`             | Medium   | ✅ Done |
 | 5.3  | UX               | `booking.html`             | Low      | ✅ Done |
-| 6.1  | Consistency      | All pages                  | Medium   |
+| 6.1  | Consistency      | All pages                  | Medium   | ✅ Done |
 | 6.2  | Bug              | All admin pages            | High     |
 | 6.3  | Code Quality     | `header.html`              | Low      |
 | 6.4  | Feature          | All pages                  | Low      |

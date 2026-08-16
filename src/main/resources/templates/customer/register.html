@@ -43,7 +43,7 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        background-color: #101820;
+        background-color: var(--color-brand);
         padding: 2rem;
         border-top-left-radius: 1rem;
         border-bottom-left-radius: 1rem;
@@ -156,7 +156,7 @@
     </style>
   </head>
 
-  <body class="flex flex-col h-screen justify-between bg-yellow-100">
+  <body class="flex flex-col h-screen justify-between customer-bg">
     <div id="modal-overlay" class="modal-overlay">
       <div class="modal-content" id="modal-content"></div>
     </div>
@@ -243,7 +243,7 @@
               </div>
               <button
                 type="submit"
-                class="bg-[#101820] text-white py-2 px-6 rounded-full hover:bg-gray-800 transition-colors"
+                class="bg-[var(--color-brand)] text-white py-2 px-6 rounded-full hover:bg-gray-800 transition-colors"
               >
                 Login
               </button>
