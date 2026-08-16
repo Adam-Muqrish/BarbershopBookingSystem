@@ -366,7 +366,7 @@ This document catalogues frontend issues, inconsistencies, and improvement oppor
 
 ## 5. Booking Flow / Appointment Management
 
-### 5.1 Booking Page — No Visual Feedback After Form Submission
+### 5.1 Booking Page — No Visual Feedback After Form Submission ✅ [COMPLETED]
 
 - **File:** `customer/booking.html`
 - **Issue:** When the user clicks "Book Appointment", the form submits and redirects to `/payment`. There's no loading state or confirmation. If the server is slow, the user may double-submit.
@@ -381,6 +381,7 @@ This document catalogues frontend issues, inconsistencies, and improvement oppor
 - **File:** `customer/booking.html:51-55`
 - **Issue:** The `th:style` on barber `<option>` elements checks only `unavailableBarbersBySlot[slots[0]]` (the first slot). This hides barbers who are unavailable at the **first time slot** regardless of which slot the user will actually select. This is incorrect — it should not pre-hide barbers based on the first slot.
 - **Enhancement:** Remove the `th:style` on options. Let the JS (slot change listener) dynamically hide/show barbers based on the actually selected slot.
+- **Status:** ✅ COMPLETED — Removed the `th:style` expression from the barber `<option>` elements in `customer/booking.html` (the barber options now always render initially). The existing JS slot-change listener already dynamically hides (`display:none`) and disables barbers unavailable for the actually selected slot, so all barbers are visible until the user picks a time. Rebuilt via `mvnw -o compile` → **BUILD SUCCESS**. ✅
 
 ### 5.3 Booking Page — Radio Button Disabling Doesn't Update Barber Dropdown on Date Change
 
@@ -490,7 +491,7 @@ This document catalogues frontend issues, inconsistencies, and improvement oppor
 | 4.10 | Layout           | `adminLogin.html`          | Low      | ✅ Done |
 | 4.11 | Security         | Admin POST forms           | High     | ✅ Done |
 | 5.1  | UX               | `booking.html`             | Low      | ✅ Done |
-| 5.2  | Bug              | `booking.html`             | Medium   |
+| 5.2  | Bug              | `booking.html`             | Medium   | ✅ Done |
 | 5.3  | UX               | `booking.html`             | Low      |
 | 6.1  | Consistency      | All pages                  | Medium   |
 | 6.2  | Bug              | All admin pages            | High     |

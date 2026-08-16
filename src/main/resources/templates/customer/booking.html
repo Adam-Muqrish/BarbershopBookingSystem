@@ -56,8 +56,7 @@
                     <select id="barber" name="barber" class="w-full border rounded px-3 py-2 shadow" required>
                         <option value="" selected disabled>-- Select Barber --</option>
                         <th:block th:each="barber : ${barbers}">
-                            <option th:value="${barber.staffId}" th:text="${barber.staffName}"
-                                th:style="${unavailableBarbersBySlot[slots[0]] != null && unavailableBarbersBySlot[slots[0]].contains(barber.staffId) ? 'display:none' : ''}">
+                            <option th:value="${barber.staffId}" th:text="${barber.staffName}">
                             </option>
                         </th:block>
                     </select>
