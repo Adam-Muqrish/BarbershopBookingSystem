@@ -291,7 +291,7 @@ This document catalogues frontend issues, inconsistencies, and improvement oppor
   - Note: `#httpServletRequest` was initially considered but is **not reliably available** in Spring Boot 3.4 / Thymeleaf 3.1 (the `request`/`httpServletRequest` utility objects were removed), so the server-provided variable approach is used instead.
   - Rebuilt via `mvnw -o compile` → **BUILD SUCCESS**. ✅
 
-### 4.5 Staff List Page — "Admin" Column Shows Admin Name for Non-Admin Staff Only
+### 4.5 Staff List Page — "Admin" Column Shows Admin Name for Non-Admin Staff Only ✅ [COMPLETED]
 
 - **File:** `admin/listBarber.html:54`
 - **Issue:** The "Admin" column shows `${adminNameMap[barber.staffId]}`, which only includes entries where `staff.adminId != null`. Admins themselves (who have `adminId == null`) show `—`. This is actually correct behavior, but the column header says "Admin" which is ambiguous — it really means "Created By".
@@ -303,6 +303,10 @@ This document catalogues frontend issues, inconsistencies, and improvement oppor
 - **File:** `admin/listBarber.html:178-181`
 - **Issue:** The phone number input in the register staff modal has no input masking (unlike the customer register page which strips non-numeric chars). Users could enter invalid characters.
 - **Enhancement:** Add `inputmode="numeric"` and the same non-numeric stripping script as the customer register page.
+- **Status:** ✅ COMPLETED — Updated `admin/listBarber.html` register modal:
+  - Phone input changed to `type="tel"` with `inputmode="numeric"` (was `type="text"`).
+  - Added the same non-numeric stripping listener from the customer register page: on `input`, `this.value.replace(/[^0-9]/g, "")`, guarded with a null check inside the existing `DOMContentLoaded` handler.
+  - Rebuilt via `mvnw -o compile` → **BUILD SUCCESS**. ✅
 
 ### 4.7 Appointment List — Edit Panel Date Picker Min Attribute Logic is Client-Side Only
 
@@ -451,7 +455,7 @@ This document catalogues frontend issues, inconsistencies, and improvement oppor
 | 4.3  | CSS Bug          | `adminFragments.html`      | Low      | ✅ Done |
 | 4.4  | UX               | `adminFragments.html`      | Medium   | ✅ Done |
 | 4.5  | Clarity          | `listBarber.html`          | Low      | ✅ Done |
-| 4.6  | UX               | `listBarber.html`          | Low      |
+| 4.6  | UX               | `listBarber.html`          | Low      | ✅ Done |
 | 4.7  | Bug              | `listAppointment.html`     | Medium   |
 | 4.8  | UX               | `listAppointment.html`     | Medium   |
 | 4.9  | UX               | `listAppointment.html`     | Medium   |

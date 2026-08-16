@@ -195,7 +195,7 @@
                                 </div>
                             <div class="col-12">
                                 <label class="form-label">Phone Number</label>
-                                <input type="text" name="phone" class="form-control" required>
+                                <input type="tel" name="phone" class="form-control" inputmode="numeric" required>
                             </div>
                             <div class="col-12">
                                 <label class="form-label">Role</label>
@@ -234,6 +234,14 @@
             if (hasError === 'true') {
                 var myModal = new bootstrap.Modal(document.getElementById('addBarberModal'));
                 myModal.show();
+            }
+
+            // Phone number input masking: strip non-numeric chars
+            var registerPhoneInput = document.querySelector('input[name="phone"]');
+            if (registerPhoneInput) {
+                registerPhoneInput.addEventListener('input', function () {
+                    this.value = this.value.replace(/[^0-9]/g, "");
+                });
             }
 
             // Password visibility toggle
