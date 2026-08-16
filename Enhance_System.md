@@ -298,7 +298,7 @@ This document catalogues frontend issues, inconsistencies, and improvement oppor
 - **Enhancement:** Rename the column header to "Created By" for clarity.
 - **Status:** ✅ COMPLETED — Renamed the table header from "Admin" to "Created By" in `admin/listBarber.html:45` (column data unchanged — it correctly shows the admin who created each staff member, and `—` for admins who have no creator). Rebuilt via `mvnw -o compile` → **BUILD SUCCESS**. ✅
 
-### 4.6 Staff List Page — Register Modal Phone Field Lacks Input Masking
+### 4.6 Staff List Page — Register Modal Phone Field Lacks Input Masking ✅ [COMPLETED]
 
 - **File:** `admin/listBarber.html:178-181`
 - **Issue:** The phone number input in the register staff modal has no input masking (unlike the customer register page which strips non-numeric chars). Users could enter invalid characters.
@@ -308,11 +308,12 @@ This document catalogues frontend issues, inconsistencies, and improvement oppor
   - Added the same non-numeric stripping listener from the customer register page: on `input`, `this.value.replace(/[^0-9]/g, "")`, guarded with a null check inside the existing `DOMContentLoaded` handler.
   - Rebuilt via `mvnw -o compile` → **BUILD SUCCESS**. ✅
 
-### 4.7 Appointment List — Edit Panel Date Picker Min Attribute Logic is Client-Side Only
+### 4.7 Appointment List — Edit Panel Date Picker Min Attribute Logic is Client-Side Only ✅ [COMPLETED]
 
 - **File:** `admin/listAppointment.html:198-203`
 - **Issue:** The date picker has `th:value="${appointment.appointmentDate}"` but no `min` attribute set server-side. The `min` is only set via JS in `DOMContentLoaded`. This means the native date picker could allow selecting past dates before JS runs.
 - **Enhancement:** Set `th:min="${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}"` server-side as a fallback.
+- **Status:** ✅ COMPLETED — Added `th:min="${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}"` to the `#editDate` date input in `admin/listAppointment.html:200` so the native picker prevents past dates even before JS runs (the existing JS `min` + change guard remains as a secondary check). Rebuilt via `mvnw -o compile` → **BUILD SUCCESS**. ✅
 
 ### 4.8 Appointment List — Time Select Starts Empty, No "Loading" State
 
@@ -456,7 +457,7 @@ This document catalogues frontend issues, inconsistencies, and improvement oppor
 | 4.4  | UX               | `adminFragments.html`      | Medium   | ✅ Done |
 | 4.5  | Clarity          | `listBarber.html`          | Low      | ✅ Done |
 | 4.6  | UX               | `listBarber.html`          | Low      | ✅ Done |
-| 4.7  | Bug              | `listAppointment.html`     | Medium   |
+| 4.7  | Bug              | `listAppointment.html`     | Medium   | ✅ Done |
 | 4.8  | UX               | `listAppointment.html`     | Medium   |
 | 4.9  | UX               | `listAppointment.html`     | Medium   |
 | 4.10 | Layout           | `adminLogin.html`          | Low      |
