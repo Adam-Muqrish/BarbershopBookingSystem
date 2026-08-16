@@ -40,6 +40,18 @@ public class SecurityConfig {
                                 .formLogin(form -> form
                                                 .loginPage("/login")
                                                 .permitAll())
+                                .exceptionHandling(ex -> ex
+                                                .authenticationEntryPoint((request, response, authException) -> {
+                                                        String uri = request.getRequestURI();
+                                                        if (uri.startsWith("/admin") || uri.startsWith("/barber")
+                                                                        || uri.startsWith("/listCustomer")
+                                                                        || uri.startsWith("/listBarber")
+                                                                        || uri.startsWith("/listAppointment")) {
+                                                                response.sendRedirect(request.getContextPath() + "/adminLogin");
+                                                        } else {
+                                                                response.sendRedirect(request.getContextPath() + "/login");
+                                                        }
+                                                }))
                                 .logout(logout -> logout
                                                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET"))
                                                 .logoutSuccessUrl("/index")
