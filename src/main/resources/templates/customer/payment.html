@@ -48,6 +48,7 @@
             </div>
 
             <form th:action="@{/processPayment}" method="post" id="paymentForm">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
                 <div th:if="${price > 0}" class="bg-gray-100 rounded-md p-6 mb-6">
                     <h2 class="text-lg font-semibold mb-2">Payment Information:</h2>
                     <div class="flex items-center mb-2">
