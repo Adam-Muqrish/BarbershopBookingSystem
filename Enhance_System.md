@@ -398,7 +398,7 @@ This document catalogues frontend issues, inconsistencies, and improvement oppor
 
 ## 6. CSS / Styling Consistency
 
-### 6.1 Inconsistent Background Colors Across Pages
+### 6.1 Inconsistent Background Colors Across Pages ✅ [COMPLETED]
 
 - **Files:** All customer pages use `bg-yellow-100` on `<body>`. Admin pages use a white/light-gray bg with `#101820` color scheme. There is no unified theme.
 - **Enhancement:** Define a consistent color palette in CSS custom properties (`:root`) and use them across all pages. Consider a shared theme token file.
@@ -409,6 +409,7 @@ This document catalogues frontend issues, inconsistencies, and improvement oppor
 - **Files:** `admin/adminIndex.html`, `admin/listBarber.html`, `admin/listAppointment.html`, etc.
 - **Issue:** These pages load `assetsAdmin/css/style.css` (the NioBoard theme) but don't load `assetsAdmin/js/scripts.js` or any JS. This means sidebar toggle, dropdown menus, and other NioBoard interactions **don't work** on admin pages.
 - **Enhancement:** Add `<script>` includes for jQuery, Bootstrap 5, and `scripts.js` (NioBoard) to a shared admin layout/head fragment so all admin pages get interactivity.
+- **Status:** ✅ COMPLETED — Shared fragment `fragments/adminScripts.html :: adminJs` loads `jquery-3.6.0.min.js`, `bootstrap.bundle.min.js`, `nioapp.js`, and `scripts.js`. It is referenced by all 11 admin pages plus `customer/view-customer-details.html` (which uses the same NioBoard layout). All pages place the fragment before their inline scripts so NioBoard sidebar/dropdown interactions work.
 
 ### 6.3 Customer Pages Load `script.js` Twice (via header + body inline script)
 
@@ -500,7 +501,7 @@ This document catalogues frontend issues, inconsistencies, and improvement oppor
 | 5.2  | Bug              | `booking.html`             | Medium   | ✅ Done |
 | 5.3  | UX               | `booking.html`             | Low      | ✅ Done |
 | 6.1  | Consistency      | All pages                  | Medium   | ✅ Done |
-| 6.2  | Bug              | All admin pages            | High     |
+| 6.2  | Bug              | All admin pages            | High     | ✅ Done |
 | 6.3  | Code Quality     | `header.html`              | Low      |
 | 6.4  | Feature          | All pages                  | Low      |
 | 7.1  | a11y             | All forms                  | Medium   |
