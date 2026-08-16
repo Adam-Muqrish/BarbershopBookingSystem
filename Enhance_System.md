@@ -371,6 +371,10 @@ This document catalogues frontend issues, inconsistencies, and improvement oppor
 - **File:** `customer/booking.html`
 - **Issue:** When the user clicks "Book Appointment", the form submits and redirects to `/payment`. There's no loading state or confirmation. If the server is slow, the user may double-submit.
 - **Enhancement:** Add a loading spinner to the submit button on click (`disabled` + spinner text).
+- **Status:** ✅ COMPLETED — Updated `customer/booking.html`:
+  - Gave the submit button an id (`bookButton`).
+  - In the existing form `submit` handler (after client-side validation passes), the button is now disabled and shows a spinning Tailwind spinner (`.animate-spin` ring) with "Booking..." text, preventing double-submission while the request is in flight.
+  - Rebuilt Tailwind `main.css` (`npm run build:css`) so the new utility classes (`border-t-transparent`, `opacity-60`, `align-middle`) are included. Rebuilt via `mvnw -o compile` → **BUILD SUCCESS**. ✅
 
 ### 5.2 Booking Page — Barber Dropdown Hides Options Based on First Slot Only
 
@@ -485,7 +489,7 @@ This document catalogues frontend issues, inconsistencies, and improvement oppor
 | 4.9  | UX               | `listAppointment.html`     | Medium   | ✅ Done |
 | 4.10 | Layout           | `adminLogin.html`          | Low      | ✅ Done |
 | 4.11 | Security         | Admin POST forms           | High     | ✅ Done |
-| 5.1  | UX               | `booking.html`             | Low      |
+| 5.1  | UX               | `booking.html`             | Low      | ✅ Done |
 | 5.2  | Bug              | `booking.html`             | Medium   |
 | 5.3  | UX               | `booking.html`             | Low      |
 | 6.1  | Consistency      | All pages                  | Medium   |

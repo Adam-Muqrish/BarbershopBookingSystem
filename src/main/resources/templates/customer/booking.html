@@ -63,7 +63,7 @@
                     </select>
                 </div>
                 <div class="flex">
-                    <button type="submit"
+                    <button type="submit" id="bookButton"
                         class="bg-blue-500 text-white px-5 py-2 rounded shadow hover:bg-blue-600 transition">Book
                         Appointment</button>
                 </div>
@@ -231,6 +231,15 @@
                 if (!validate()) {
                     event.preventDefault();
                     input.focus();
+                    return;
+                }
+
+                // Loading state on the submit button to prevent double-submit
+                const btn = document.getElementById("bookButton");
+                if (btn) {
+                    btn.disabled = true;
+                    btn.classList.add("opacity-60", "cursor-not-allowed");
+                    btn.innerHTML = '<span class="inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin align-middle"></span> Booking...';
                 }
             });
         });
