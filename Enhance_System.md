@@ -296,6 +296,7 @@ This document catalogues frontend issues, inconsistencies, and improvement oppor
 - **File:** `admin/listBarber.html:54`
 - **Issue:** The "Admin" column shows `${adminNameMap[barber.staffId]}`, which only includes entries where `staff.adminId != null`. Admins themselves (who have `adminId == null`) show `—`. This is actually correct behavior, but the column header says "Admin" which is ambiguous — it really means "Created By".
 - **Enhancement:** Rename the column header to "Created By" for clarity.
+- **Status:** ✅ COMPLETED — Renamed the table header from "Admin" to "Created By" in `admin/listBarber.html:45` (column data unchanged — it correctly shows the admin who created each staff member, and `—` for admins who have no creator). Rebuilt via `mvnw -o compile` → **BUILD SUCCESS**. ✅
 
 ### 4.6 Staff List Page — Register Modal Phone Field Lacks Input Masking
 
@@ -449,7 +450,7 @@ This document catalogues frontend issues, inconsistencies, and improvement oppor
 | 4.2  | Code Quality     | `adminIndex.html`          | Low      | ✅ Done |
 | 4.3  | CSS Bug          | `adminFragments.html`      | Low      | ✅ Done |
 | 4.4  | UX               | `adminFragments.html`      | Medium   | ✅ Done |
-| 4.5  | Clarity          | `listBarber.html`          | Low      |
+| 4.5  | Clarity          | `listBarber.html`          | Low      | ✅ Done |
 | 4.6  | UX               | `listBarber.html`          | Low      |
 | 4.7  | Bug              | `listAppointment.html`     | Medium   |
 | 4.8  | UX               | `listAppointment.html`     | Medium   |
