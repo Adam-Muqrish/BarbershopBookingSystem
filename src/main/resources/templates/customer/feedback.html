@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head th:replace="~{fragments/header :: head}"></head>
@@ -6,7 +6,7 @@
 <body class="flex flex-col h-screen justify-between customer-bg">
     <nav th:replace="~{fragments/nav :: nav}"></nav>
     <main class="flex flex-col items-center mx-3 my-4 flex-grow">
-        <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-5xl mx-auto">
+        <div class="bg-white rounded-md border border-gray-200 p-6 w-full max-w-5xl mx-auto">
             <h1 class="text-2xl font-semibold mb-4">Feedback</h1>
             <div th:if="${error}" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4"
                 role="alert">
@@ -43,17 +43,17 @@
                 </div>
                 <div class="mb-6">
                     <label class="block text-sm font-medium mb-2">Your Feedback:</label>
-                    <textarea name="feedback" class="w-full h-32 p-3 border rounded shadow-sm resize-none"
+                    <textarea name="feedback" class="w-full h-32 p-3 border rounded resize-none"
                         th:text="${existingFeedback?.comments}" required></textarea>
                 </div>
                 <div class="flex space-x-4">
                     <button type="submit"
-                        class="bg-blue-500 text-white font-semibold py-2 px-6 rounded-full hover:bg-blue-600">
+                        class="bg-blue-500 text-white font-semibold py-2 px-6 rounded-md hover:bg-blue-600">
                         Submit Feedback
                     </button>
                     <button type="button" th:if="${existingFeedback != null}"
                         onclick="document.getElementById('deleteForm').submit()"
-                        class="bg-red-500 text-white font-semibold py-2 px-6 rounded-full hover:bg-red-600 hidden">
+                        class="bg-red-500 text-white font-semibold py-2 px-6 rounded-md hover:bg-red-600 hidden">
                         Delete Feedback
                     </button>
                 </div>
@@ -66,30 +66,7 @@
     </main>
     <footer th:replace="~{fragments/footer :: footer}"></footer>
 
-    <script th:inline="javascript">
-        const stars = document.querySelectorAll('.star');
-        const ratingInput = document.getElementById('rating-input');
-        let currentRating = parseInt(ratingInput.value) || 0;
-
-        function updateStars(val) {
-            stars.forEach((s, idx) => {
-                s.classList.toggle('text-yellow-400', idx < val);
-                s.classList.toggle('text-gray-400', idx >= val);
-            });
-        }
-
-        stars.forEach((s, idx) => {
-            s.addEventListener('click', () => {
-                currentRating = idx + 1;
-                ratingInput.value = currentRating;
-                updateStars(currentRating);
-            });
-            s.addEventListener('mouseover', () => updateStars(idx + 1));
-            s.addEventListener('mouseout', () => updateStars(currentRating));
-        });
-
-        updateStars(currentRating);
-    </script>
+    <script th:src="@{/resources/js/feedback.js}"></script>
 </body>
 
 </html>

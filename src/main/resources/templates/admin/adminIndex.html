@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
@@ -103,50 +103,9 @@
   <div th:replace="~{fragments/adminScripts :: adminJs}"></div>
 
   <script th:inline="javascript">
-    var rawData = /*[[${salesByDay}]]*/ {};
-    const dayLabels = [
-      "Sunday",
-      "Monday",
-      "Tuesday",
-      "Wednesday",
-      "Thursday",
-      "Friday",
-      "Saturday",
-    ];
-    var days = ["SUNDAY", "MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY"];
-    var salesData = [];
-
-    days.forEach(function (day) {
-      // Jika hari tu ada data, ambil. Jika tidak, guna 0
-      salesData.push(rawData[day] || 0);
-    });
-
-    const ctx = document.getElementById('salesChart').getContext('2d');
-    const myChart = new Chart(ctx, {
-      type: 'line', // atau 'bar', bergantung jenis chart anda
-      data: {
-        labels: dayLabels,
-        datasets: [{
-          label: 'Sales (RM)',
-          // GANTI data dummy di sini dengan variable salesData
-          data: salesData,
-          backgroundColor: 'rgba(54, 162, 235, 0.2)',
-          borderColor: 'rgba(54, 162, 235, 1)',
-          borderWidth: 1,
-          tension: 0.4 // Buat garis licin
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        scales: {
-          y: {
-            beginAtZero: true
-          }
-        }
-      }
-    });
+    window.ADMIN_INDEX_DATA = { salesByDay: /*[[${salesByDay}]]*/ {} };
   </script>
+  <script th:src="@{/resources/js/admin-index.js}"></script>
 </body>
 
 </html>

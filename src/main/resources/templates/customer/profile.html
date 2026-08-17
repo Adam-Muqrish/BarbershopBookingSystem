@@ -6,7 +6,7 @@
 <body class="flex flex-col h-screen justify-between customer-bg">
     <nav th:replace="~{fragments/nav :: nav}"></nav>
     <main class="flex flex-col items-center mx-3 my-20 flex-grow">
-        <div class="w-full max-w-3xl p-6 rounded-2xl bg-white shadow-xl border border-gray-200">
+        <div class="w-full max-w-3xl p-6 rounded-md bg-white border border-gray-200">
             <h1 class="text-2xl font-extrabold mb-6 text-gray-800 flex items-center gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-9 w-9" fill="none" viewBox="0 0 24 24"
                     stroke="currentColor">
@@ -33,7 +33,7 @@
             </div>
             <div class="flex flex-col md:flex-row gap-6">
                 <!-- Left box (Loyalty) -->
-                <div class="bg-gray-100 rounded-xl p-4 flex flex-col items-center w-full md:w-1/3">
+                <div class="bg-gray-100 rounded-md p-4 flex flex-col items-center w-full md:w-1/3">
                     <div
                         class="w-20 h-20 bg-gray-300 rounded-full mb-3 flex items-center justify-center overflow-hidden">
                         <img th:if="${customer.custPicture != null}"
@@ -68,7 +68,7 @@
 
             <a th:href="@{/edit-profile}" class="block mt-6">
                 <button
-                    class="w-full bg-green-500 text-white rounded py-2 px-4 shadow-md hover:bg-green-600 transition">Edit
+                    class="w-full bg-green-500 text-white rounded py-2 px-4 hover:bg-green-600 transition">Edit
                     Profile</button>
             </a>
         </div>

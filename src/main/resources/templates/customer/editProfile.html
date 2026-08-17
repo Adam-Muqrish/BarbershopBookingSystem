@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head th:replace="~{fragments/header :: head}"></head>
@@ -6,7 +6,7 @@
 <body class="flex flex-col h-screen justify-between customer-bg">
     <nav th:replace="~{fragments/nav :: nav}"></nav>
     <main class="flex flex-col items-center mx-3 my-20 flex-grow">
-        <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-5xl mx-auto">
+        <div class="bg-white rounded-md border border-gray-200 p-6 w-full max-w-5xl mx-auto">
             <h1 class="text-2xl font-bold mb-4">Profile Management</h1>
             <!-- ✅ ALERT ERROR (Tailwind CSS) -->
             <div th:if="${error}" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4"
@@ -131,94 +131,7 @@
     </main>
     <footer th:replace="~{fragments/footer :: footer}"></footer>
 
-    <script>
-        // Password visibility toggle
-        document.addEventListener('DOMContentLoaded', function () {
-            document.querySelectorAll('.password-toggle').forEach(function (button) {
-                button.addEventListener('click', function () {
-                    var input = document.getElementById(button.getAttribute('data-target'));
-                    if (!input) return;
-
-                    var isPassword = input.type === 'password';
-                    input.type = isPassword ? 'text' : 'password';
-
-                    var eyeIcon = button.querySelector('.eye-icon');
-                    var eyeOffIcon = button.querySelector('.eye-off-icon');
-                    if (eyeIcon) eyeIcon.classList.toggle('hidden', !isPassword);
-                    if (eyeOffIcon) eyeOffIcon.classList.toggle('hidden', isPassword);
-
-                    button.setAttribute('aria-label', isPassword ? 'Hide password' : 'Show password');
-                });
-            });
-        });
-
-        // 3.8 Confirm-new-password match validation
-        document.addEventListener('DOMContentLoaded', function () {
-            var passwordInput = document.getElementById('password');
-            var confirmInput = document.getElementById('confirm-password');
-            var matchSpan = document.getElementById('passwordMatch');
-            if (!passwordInput || !confirmInput || !matchSpan) return;
-
-            function updateMatch() {
-                var value = confirmInput.value;
-                if (!value) {
-                    matchSpan.textContent = '';
-                    matchSpan.classList.add('hidden');
-                    confirmInput.classList.remove('border-red-500');
-                    return;
-                }
-                if (value !== passwordInput.value) {
-                    matchSpan.textContent = 'Passwords do not match.';
-                    matchSpan.classList.remove('hidden', 'text-green-600');
-                    matchSpan.classList.add('text-red-600');
-                    confirmInput.classList.add('border-red-500');
-                } else {
-                    matchSpan.textContent = 'Passwords match.';
-                    matchSpan.classList.remove('hidden', 'text-red-600');
-                    matchSpan.classList.add('text-green-600');
-                    confirmInput.classList.remove('border-red-500');
-                }
-            }
-
-            passwordInput.addEventListener('input', updateMatch);
-            confirmInput.addEventListener('input', updateMatch);
-            confirmInput.addEventListener('blur', updateMatch);
-        });
-
-        // 3.9 Live image upload preview (equivalent of NioApp.Custom.uploadImage,
-        // self-contained since customer pages don't load the admin scripts)
-        document.addEventListener('DOMContentLoaded', function () {
-            var fileInput = document.getElementById('image');
-            if (!fileInput) return;
-
-            var preview = document.getElementById('imagePreview');
-            var fallback = document.getElementById('imagePreviewFallback');
-            var fileNameDisplay = document.getElementById('fileNameDisplay');
-
-            fileInput.addEventListener('change', function () {
-                var file = this.files && this.files[0];
-                fileNameDisplay.innerText = file ? file.name : 'No file chosen';
-                if (!file) return;
-
-                var allowed = ['jpg', 'jpeg', 'png'];
-                var ext = (file.name.split('.').pop() || '').toLowerCase();
-                if (!allowed.includes(ext)) {
-                    alert(ext + ' file type not allowed. Please upload a JPG, JPEG, or PNG file.');
-                    this.value = '';
-                    fileNameDisplay.innerText = 'No file chosen';
-                    return;
-                }
-
-                if (preview) {
-                    preview.src = URL.createObjectURL(file);
-                    preview.classList.remove('hidden');
-                }
-                if (fallback) {
-                    fallback.classList.add('hidden');
-                }
-            });
-        });
-    </script>
+    <script th:src="@{/resources/js/edit-profile.js}"></script>
 </body>
 
 </html>

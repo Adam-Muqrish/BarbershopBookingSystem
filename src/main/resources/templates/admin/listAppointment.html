@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
@@ -267,122 +267,7 @@
             </div>
         </div>
     <div th:replace="~{fragments/adminScripts :: adminJs}"></div>
-        <script th:inline="javascript">
-            document.addEventListener('DOMContentLoaded', function () {
-                const today = new Date().toISOString().split('T')[0];
-                const dateInput = document.getElementById('editDate');
-                if (dateInput) {
-                    dateInput.setAttribute('min', today);
-                    // Add change listener to validate past dates
-                    dateInput.addEventListener('change', function() {
-                        if (this.value && this.value < today) {
-                            this.value = '';
-                            alert('Cannot select a past date.');
-                        }
-                    });
-                }
-
-                // ✅ PENTING: Panggil updateAvailableTimes() sekali pada load
-                // ini akan isi dropdown masa dengan data yang betul bila edit panel dibuka
-                if (dateInput) {
-                    updateAvailableTimes();
-                }
-            });
-
-            function isTimeInPast(dateStr, timeStr) {
-                if (!dateStr || !timeStr) return false;
-                
-                try {
-                    // Convert time format (e.g., "02:00 pm" -> "14:00")
-                    const timeParts = timeStr.split(' ');
-                    const [hour, minute] = timeParts[0].split(':');
-                    let h = parseInt(hour);
-                    const ampm = timeParts[1].toLowerCase();
-                    
-                    if (ampm === 'pm' && h !== 12) h += 12;
-                    if (ampm === 'am' && h === 12) h = 0;
-                    
-                    const appointmentDateTime = new Date(dateStr + ' ' + String(h).padStart(2, '0') + ':' + minute);
-                    const now = new Date();
-                    
-                    return appointmentDateTime < now;
-                } catch (e) {
-                    return false;
-                }
-            }
-
-            function updateAvailableTimes() {
-                const date = document.getElementById('editDate').value;
-                const barberId = document.getElementById('editBarber').value;
-                const timeSelect = document.getElementById('editTime');
-                const appointmentId = document.querySelector('input[name="appointmentId"]')?.value;
-                const currentlySelectedTime = timeSelect.value;
-
-                // Kosongkan dropdown dulu dan tunjuk status loading
-                timeSelect.innerHTML = '<option value="">Loading available times...</option>';
-
-                // SYARAT BARU: Tarikh mesti ada. Barber OPTIONAL (boleh null).
-                if (!date) {
-                    timeSelect.innerHTML = '<option value="">Select Time</option>';
-                    return;
-                }
-
-                // Bimbing admin: pilih barber dahulu
-                if (!barberId) {
-                    timeSelect.innerHTML = '<option value="">Select a barber first</option>';
-                    return;
-                }
-
-                // Bina URL
-                let url = `/api/available-times?date=${date}&barberId=${barberId}`;
-
-                // Hantar exclude ID jika ada
-                if (appointmentId) {
-                    url += `&excludeAppointmentId=${appointmentId}`;
-                }
-
-                fetch(url)
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('Request failed (' + response.status + ')');
-                        }
-                        return response.json();
-                    })
-                    .then(times => {
-                        if (times.length === 0) {
-                            timeSelect.innerHTML = '<option value="">No available times</option>';
-                            return;
-                        }
-                        timeSelect.innerHTML = '<option value="">Select Time</option>';
-
-                        times.forEach(time => {
-                            // Filter out past times for today
-                            const today = new Date().toISOString().split('T')[0];
-                            if (date === today && isTimeInPast(date, time)) {
-                                // Skip past times
-                                return;
-                            }
-                            
-                            const option = document.createElement('option');
-                            option.value = time;
-                            option.textContent = time;
-                            timeSelect.appendChild(option);
-                        });
-
-                        // Auto-Select Logic (sama seperti sebelum ini)
-                        const originalTime = document.getElementById('originalTime')?.value;
-                        if (originalTime && Array.from(timeSelect.options).some(o => o.value === originalTime)) {
-                            timeSelect.value = originalTime;
-                        } else if (currentlySelectedTime && Array.from(timeSelect.options).some(o => o.value === currentlySelectedTime)) {
-                            timeSelect.value = currentlySelectedTime;
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        timeSelect.innerHTML = '<option value="">Error loading times. Please try again.</option>';
-                    });
-            }
-        </script>
+    <script th:src="@{/resources/js/list-appointment.js}"></script>
 </body>
 
 </html>

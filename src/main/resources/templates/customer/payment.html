@@ -1,11 +1,11 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head th:replace="~{fragments/header :: head}"></head>
 
 <body class="flex flex-col h-screen justify-between customer-bg">
     <main class="flex flex-col items-center mx-3 my-4 flex-grow justify-center">
-        <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-2xl">
+        <div class="bg-white rounded-md border border-gray-200 p-6 w-full max-w-2xl">
             <h1 class="text-2xl font-bold mb-4">Payment for Your Appointment</h1>
 
             <div class="bg-gray-100 rounded-md p-6 mb-6">
@@ -102,7 +102,7 @@
 
     <!-- Mock Bank Modal -->
     <div id="bankModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center hidden z-50">
-        <div class="bg-white p-6 rounded-lg shadow-xl max-w-md w-full">
+        <div class="bg-white p-6 rounded-md border border-gray-200 max-w-md w-full">
             <h3 class="text-lg font-medium mb-2">Select Bank</h3>
             <div class="bg-yellow-50 border border-yellow-400 text-yellow-800 px-3 py-2 rounded mb-4 text-xs" role="note">
                 This is a <strong>simulated checkout</strong> for demonstration purposes. Selecting a bank will complete
@@ -127,99 +127,9 @@
     </div>
 
     <script th:inline="javascript">
-        /*<![CDATA[*/
-        const price = /*[[${price}]]*/ 15.0;
-        /*]]>*/
-        let isPaymentSubmitting = false;
-
-        function togglePaymentDetails() {
-            const cashEl = document.getElementById('cash');
-            if (!cashEl) return; // Free appointment: payment methods are hidden
-
-            const isCash = cashEl.checked;
-            document.getElementById('cash-details').classList.toggle('hidden', !isCash);
-            document.getElementById('online-details').classList.toggle('hidden', isCash);
-
-            const btnText = document.getElementById('payButtonText');
-            if (price === 0) {
-                btnText.innerText = 'Proceed';
-            } else {
-                btnText.innerText = isCash ? 'Confirm Cash Payment' : 'Pay Now';
-            }
-        }
-
-        // Initialize button text based on price
-        if (price === 0) {
-            document.getElementById('payButtonText').innerText = 'Proceed';
-        }
-
-        document.getElementById('paymentForm').addEventListener('submit', function (e) {
-            // Let the programmatic submit after bank/cash confirmation go through
-            if (isPaymentSubmitting) {
-                return;
-            }
-
-            // Free appointment: no payment method selection required
-            if (price === 0) {
-                e.preventDefault();
-                isPaymentSubmitting = true;
-                setPayButtonProcessing(true);
-                setTimeout(function () {
-                    document.getElementById('paymentForm').submit();
-                }, 600);
-                return;
-            }
-
-            // Check if payment method is selected
-            const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked');
-            if (!paymentMethod) {
-                e.preventDefault();
-                alert('Please select a payment method (Cash or Online Banking)');
-                return;
-            }
-
-            if (document.getElementById('online').checked) {
-                e.preventDefault();
-                document.getElementById('bankModal').classList.remove('hidden');
-                return;
-            }
-
-            // Cash: show loading state before submitting
-            e.preventDefault();
-            isPaymentSubmitting = true;
-            setPayButtonProcessing(true);
-            setTimeout(function () {
-                document.getElementById('paymentForm').submit();
-            }, 600);
-        });
-
-        // Show spinner / disable button to indicate processing
-        function setPayButtonProcessing(processing) {
-            const btn = document.getElementById('payButton');
-            const spinner = document.getElementById('paySpinner');
-            const text = document.getElementById('payButtonText');
-            btn.disabled = processing;
-            spinner.classList.toggle('hidden', !processing);
-            text.textContent = processing ? 'Processing...' : (price === 0 ? 'Proceed' : 'Pay Now');
-        }
-
-        // Simulated checkout: show spinner, then submit after short delay
-        document.getElementById('confirmBank').addEventListener('click', function () {
-            const btn = this;
-            const spinner = document.getElementById('bankSpinner');
-            const text = document.getElementById('bankConfirmText');
-            btn.disabled = true;
-            spinner.classList.remove('hidden');
-            text.textContent = 'Processing...';
-
-            document.getElementById('hiddenBankName').value = document.getElementById('bankSelect').value;
-
-            setTimeout(function () {
-                isPaymentSubmitting = true;
-                document.getElementById('paymentForm').submit();
-            }, 1200);
-        });
+        window.PAYMENT_DATA = { price: /*[[${price}]]*/ 15.0 };
     </script>
+    <script th:src="@{/resources/js/payment.js}"></script>
 </body>
 
 </html>

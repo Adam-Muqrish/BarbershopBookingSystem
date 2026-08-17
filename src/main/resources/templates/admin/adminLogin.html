@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
@@ -15,7 +15,7 @@
             <div class="nk-wrap align-items-center justify-content-center" style="min-height: 100vh; display: flex; justify-content: center;">
                 <div class="container p-2 p-sm-4">
                     <div class="wide-xs mx-auto">
-                        <div class="card card-gutter-lg rounded-4 shadow-sm">
+                        <div class="card card-gutter-lg rounded-4 shadow-none">
                             <div class="card-body">
                                 <div class="nk-block-head text-center">
                                     <div class="nk-block-head-content">
@@ -115,28 +115,7 @@
         </script>
     <div th:replace="~{fragments/adminScripts :: adminJs}"></div>
 
-    <script>
-        // Password visibility toggle
-        document.addEventListener('DOMContentLoaded', function () {
-            document.querySelectorAll('.password-toggle').forEach(function (button) {
-                button.addEventListener('click', function () {
-                    var input = document.getElementById(button.getAttribute('data-target'));
-                    if (!input) return;
-
-                    var isPassword = input.type === 'password';
-                    input.type = isPassword ? 'text' : 'password';
-
-                    var eyeIcon = button.querySelector('.eye-icon');
-                    var eyeOffIcon = button.querySelector('.eye-off-icon');
-                    if (eyeIcon) eyeIcon.style.display = isPassword ? 'none' : 'inline-block';
-                    if (eyeOffIcon) eyeOffIcon.style.display = isPassword ? 'inline-block' : 'none';
-
-                    button.setAttribute('aria-label', isPassword ? 'Hide password' : 'Show password');
-                });
-            });
-        });
-    </script>
-
+    <script th:src="@{/resources/js/admin-forms.js}"></script>
 </body>
 
 </html>

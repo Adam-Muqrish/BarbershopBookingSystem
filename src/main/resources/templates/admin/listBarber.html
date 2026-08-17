@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
@@ -228,44 +228,8 @@
     <!-- Script -->
     <div th:replace="~{fragments/adminScripts :: adminJs}"></div>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            // Baca nilai dari hidden input
-            var hasError = document.getElementById('has-error-flag').value;
-
-            // Jika 'true', buka modal
-            if (hasError === 'true') {
-                var myModal = new bootstrap.Modal(document.getElementById('addBarberModal'));
-                myModal.show();
-            }
-
-            // Phone number input masking: strip non-numeric chars
-            var registerPhoneInput = document.querySelector('input[name="phone"]');
-            if (registerPhoneInput) {
-                registerPhoneInput.addEventListener('input', function () {
-                    this.value = this.value.replace(/[^0-9]/g, "");
-                });
-            }
-
-            // Password visibility toggle
-            document.querySelectorAll('.password-toggle').forEach(function (button) {
-                button.addEventListener('click', function () {
-                    var input = document.getElementById(button.getAttribute('data-target'));
-                    if (!input) return;
-
-                    var isPassword = input.type === 'password';
-                    input.type = isPassword ? 'text' : 'password';
-
-                    var eyeIcon = button.querySelector('.eye-icon');
-                    var eyeOffIcon = button.querySelector('.eye-off-icon');
-                    if (eyeIcon) eyeIcon.style.display = isPassword ? 'none' : 'inline-block';
-                    if (eyeOffIcon) eyeOffIcon.style.display = isPassword ? 'inline-block' : 'none';
-
-                    button.setAttribute('aria-label', isPassword ? 'Hide password' : 'Show password');
-                });
-            });
-        });
-    </script>
+    <script th:src="@{/resources/js/admin-forms.js}"></script>
+    <script th:src="@{/resources/js/list-barber.js}"></script>
 
 </body>
 

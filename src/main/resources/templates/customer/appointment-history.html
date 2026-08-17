@@ -6,7 +6,7 @@
 <body class="flex flex-col h-screen justify-between customer-bg">
     <nav th:replace="~{fragments/nav :: nav}"></nav>
     <main class="flex flex-col items-center mx-3 my-4 flex-grow justify-center">
-        <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-5xl mx-auto">
+        <div class="bg-white rounded-md border border-gray-200 p-6 w-full max-w-5xl mx-auto">
             <!-- TAMBAH NI DALAM appointment-history.html -->
             <div th:if="${success}"
                 class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4"
@@ -26,7 +26,7 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <!-- ✅ GUNA FILTERED APPOINTMENTS -->
                 <th:block th:each="appt : ${appointments}">
-                    <div class="bg-white p-6 rounded-lg shadow-md border">
+                    <div class="bg-white p-6 rounded-md border border-gray-200">
                         <p><strong>Book For:</strong> <span th:text="${appt.custBookFor}"></span></p>
                         <p><strong>Date:</strong> <span th:text="${appt.appointmentDate}"></span></p>
                         <p><strong>Time:</strong> <span th:text="${appt.appointmentTime}"></span></p>
